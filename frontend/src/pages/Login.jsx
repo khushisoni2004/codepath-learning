@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import logoIcon from "../assets/codepath-learning-logo2.png";
+import { API_URL } from "../config/api";
 import "../styles/login.css";
-
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5001/api").replace(/\/$/, "");
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", phone: "" });

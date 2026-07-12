@@ -15,10 +15,11 @@ const COURSES = {
 };
 
 function paymentConfig() {
-  const amount = Number(process.env.COURSE_PRICE);
+  const coursePrice = Number(process.env.COURSE_PRICE);
+  const amount = coursePrice * 100;
   const currency = process.env.RAZORPAY_CURRENCY;
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || amount !== 59900 || currency !== "INR") {
-    throw new Error("Payment environment must configure COURSE_PRICE=59900 and RAZORPAY_CURRENCY=INR.");
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || coursePrice !== 599 || currency !== "INR") {
+    throw new Error("Payment environment must configure COURSE_PRICE=599 and RAZORPAY_CURRENCY=INR.");
   }
   return { amount, currency };
 }

@@ -1,8 +1,7 @@
 import { useState } from "react";
 import logoIcon from "../assets/codepath-learning-logo2.png";
+import { API_URL } from "../config/api";
 import "../styles/verification.css";
-
-const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5001/api").replace(/\/$/, "");
 
 export default function VerifyRegistration() {
   const [registrationId, setRegistrationId] = useState("");

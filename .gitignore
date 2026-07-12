@@ -13,6 +13,8 @@ frontend/.env.production
 backend/.env
 
 # Build and hosting files
+dist/
+build/
 frontend/dist/
 frontend/.vercel/
 .vercel/
@@ -23,3 +25,5 @@ __MACOSX/
 *.log
 .vercel
 .env*
+!.env.example
+!**/.env.example

@@ -134,7 +134,7 @@ router.post("/login", async (req, res) => {
 
     return res.json({
       success: true,
-      token: jwt.sign({ userId: String(authenticatedRegistration._id) }, process.env.RAZORPAY_KEY_SECRET, { expiresIn: "7d" }),
+      token: jwt.sign({ userId: String(authenticatedRegistration._id) }, process.env.JWT_SECRET, { expiresIn: "7d" }),
       studentName: authenticatedRegistration.studentName,
       email: authenticatedRegistration.email,
       phone: authenticatedRegistration.phone,
