@@ -138,11 +138,43 @@ async function registerStudent(req, res) {
         });
       }
 
-      return res.status(409).json({
-        success: false,
-        message: "You are already registered for this course. Please login to view your details.",
+      const passwordMatches = await bcrypt.compare(password, existing.password);
+
+      if (!passwordMatches) {
+        await LoginLog.create({
+          email,
+          phone,
+          studentName: existing.studentName,
+          registrationIds: [existing.registrationId],
+          status: "failed",
+          message: "Duplicate registration attempted with wrong password",
+        });
+
+        return res.status(401).json({
+          success: false,
+          message: "You are already registered. Please enter the correct password to login.",
+        });
+      }
+
+      const existingRegistrations = await Registration.find({ email, phone })
+        .sort({ createdAt: -1 })
+        .select(SAFE_REGISTRATION_FIELDS);
+
+      await LoginLog.create({
+        email,
+        phone,
+        studentName: existing.studentName,
+        registrationIds: existingRegistrations.map((item) => item.registrationId),
+        status: "success",
+        message: "Existing student logged in from registration form",
+      });
+
+      return res.json({
+        success: true,
+        message: "You are already registered. Logged in successfully.",
         registrationId: existing.registrationId,
         registration: normalizeRegistration(existing),
+        ...authResponse(existing, existingRegistrations),
       });
     }
 
