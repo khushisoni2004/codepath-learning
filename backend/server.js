@@ -56,6 +56,16 @@ app.get("/api/health", (req, res) => {
   res.json({
     success: true,
     message: "CodePath Learning backend running",
+    database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+  });
+});
+
+app.use("/api", (req, res, next) => {
+  if (req.path === "/health" || mongoose.connection.readyState === 1) return next();
+
+  return res.status(503).json({
+    success: false,
+    message: "Database is not connected yet. Please try again shortly.",
   });
 });
 
@@ -75,24 +85,24 @@ app.use((error, _req, res, _next) => {
 });
 
 async function startServer() {
-  try {
-    if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI is required.");
-    }
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`CodePath Learning backend listening on port ${PORT}`);
+  });
 
+  if (!MONGODB_URI) {
+    console.error("MongoDB connection skipped: MONGODB_URI is required.");
+    return;
+  }
+
+  try {
     await mongoose.connect(MONGODB_URI, {
       serverSelectionTimeoutMS: 10000,
       connectTimeoutMS: 10000,
     });
 
     console.log(`MongoDB connected: ${mongoose.connection.name}`);
-
-    app.listen(PORT, () => {
-      console.log(`CodePath Learning backend listening on port ${PORT}`);
-    });
   } catch (error) {
-    console.error(`Backend startup failed: ${error.message}`);
-    process.exit(1);
+    console.error(`MongoDB connection failed: ${error.message}`);
   }
 }
 
