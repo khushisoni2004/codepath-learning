@@ -143,12 +143,22 @@ exports.verifyPayment = async (req, res) => {
 };
 
 exports.myCourses = async (req, res) => {
-  const enrollments = await Enrollment.find({ userId: req.user._id, status: "ACTIVE" }).select("courseSlug -_id");
-  return res.json({ success: true, paidCourses: enrollments.map((item) => item.courseSlug) });
+  try {
+    const enrollments = await Enrollment.find({ userId: req.user._id, status: "ACTIVE" }).select("courseSlug -_id");
+    return res.json({ success: true, paidCourses: enrollments.map((item) => item.courseSlug) });
+  } catch (error) {
+    console.error("Load paid courses error:", error);
+    return res.status(500).json({ success: false, message: "Unable to load paid courses." });
+  }
 };
 
 exports.getReceipt = async (req, res) => {
-  const payment = await Payment.findOne({ razorpayPaymentId: req.params.paymentId, userId: req.user._id, status: "PAID" });
-  if (!payment) return res.status(404).json({ success: false, message: "Receipt not found." });
-  return res.json({ success: true, receipt: receiptView(payment) });
+  try {
+    const payment = await Payment.findOne({ razorpayPaymentId: req.params.paymentId, userId: req.user._id, status: "PAID" });
+    if (!payment) return res.status(404).json({ success: false, message: "Receipt not found." });
+    return res.json({ success: true, receipt: receiptView(payment) });
+  } catch (error) {
+    console.error("Load receipt error:", error);
+    return res.status(500).json({ success: false, message: "Unable to load receipt." });
+  }
 };

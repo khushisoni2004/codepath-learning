@@ -1,6 +1,7 @@
 import { useState } from "react";
 import logoIcon from "../assets/codepath-learning-logo2.png";
 import { API_URL } from "../config/api";
+import { apiFetch } from "../services/api";
 import "../styles/verification.css";
 
 export default function VerifyRegistration() {
@@ -20,7 +21,7 @@ export default function VerifyRegistration() {
     setResult(null);
 
     try {
-      const response = await fetch(`${API_URL}/registrations/verify/${encodeURIComponent(id)}`);
+      const response = await apiFetch(`${API_URL}/registrations/verify/${encodeURIComponent(id)}`);
       const data = await response.json().catch(() => ({}));
 
       if (!response.ok) {

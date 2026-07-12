@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logoIcon from "../assets/codepath-learning-logo2.png";
 import { API_URL } from "../config/api";
+import { apiFetch } from "../services/api";
 import "../styles/login.css";
 
 export default function Login() {
@@ -22,7 +23,7 @@ export default function Login() {
     setStudent(null);
 
     try {
-      const response = await fetch(`${API_URL}/registrations/login`, {
+      const response = await apiFetch(`${API_URL}/registrations/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

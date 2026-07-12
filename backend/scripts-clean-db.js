@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 
 async function cleanDatabase() {
-  await mongoose.connect(process.env.MONGO_URI);
+  if (!process.env.MONGODB_URI) throw new Error("MONGODB_URI is required.");
+  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
 
   const db = mongoose.connection.db;
 

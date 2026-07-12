@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import logoIcon from "../assets/codepath-learning-logo2.png";
 import { API_URL } from "../config/api";
+import { apiFetch } from "../services/api";
 import "../styles/registration.css";
 
 const initialForm = {
@@ -56,7 +57,7 @@ Please keep this Registration ID safe for login and verification.`
     setError("");
 
     try {
-      const response = await fetch(`${API_URL}/registrations`, {
+      const response = await apiFetch(`${API_URL}/registrations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

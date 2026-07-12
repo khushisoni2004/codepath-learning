@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { API_URL } from "../config/api";
+import { apiFetch } from "../services/api";
 import "../styles/verification.css";
 
 export default function AdminVerification() {
@@ -13,7 +14,7 @@ export default function AdminVerification() {
     setLoading(true);
     setMessage("");
     try {
-      const response = await fetch(`${API_URL}/admin/payments`, {
+      const response = await apiFetch(`${API_URL}/admin/payments`, {
         headers: { "x-admin-key": adminKey },
       });
       const data = await response.json().catch(() => ({}));
@@ -29,7 +30,7 @@ export default function AdminVerification() {
   async function updateStatus(registrationId, action) {
     setMessage("");
     try {
-      const response = await fetch(`${API_URL}/admin/payments/${registrationId}`, {
+      const response = await apiFetch(`${API_URL}/admin/payments/${registrationId}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json", "x-admin-key": adminKey },
         body: JSON.stringify({ action: action === "approve" ? "verify" : "reject" }),
