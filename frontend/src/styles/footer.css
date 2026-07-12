@@ -1,0 +1,117 @@
+.codepath-footer {
+  background: #07133d;
+  color: #ffffff;
+  padding: 34px 0 16px;
+  margin-top: 0;
+}
+
+.codepath-footer-main {
+  display: grid;
+  grid-template-columns: 1fr 1.45fr;
+  gap: 38px;
+  align-items: start;
+}
+
+.codepath-footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.codepath-footer-logo img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  border-radius: 12px;
+  background: #ffffff;
+  padding: 5px;
+}
+
+.codepath-footer-logo strong {
+  display: block;
+  font-size: 18px;
+  line-height: 1.1;
+}
+
+.codepath-footer-logo span {
+  display: block;
+  margin-top: 4px;
+  color: #c7d2fe;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.codepath-footer-brand p {
+  max-width: 430px;
+  margin: 16px 0 0;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.codepath-footer-links {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.codepath-footer-links h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.codepath-footer-links a {
+  display: block;
+  width: fit-content;
+  margin: 8px 0;
+  color: #cbd5e1;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.codepath-footer-links a:hover {
+  color: #ffffff;
+  transform: translateX(3px);
+}
+
+.codepath-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 26px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94a3b8;
+  font-size: 12px;
+}
+
+@media (max-width: 850px) {
+  .codepath-footer-main {
+    grid-template-columns: 1fr;
+  }
+
+  .codepath-footer-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .codepath-footer-bottom {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .codepath-footer {
+    padding: 28px 0 14px;
+  }
+
+  .codepath-footer-links {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}

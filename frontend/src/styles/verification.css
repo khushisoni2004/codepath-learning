@@ -1,0 +1,191 @@
+.verify-page,
+.admin-verify-page {
+  min-height: 75vh;
+  padding: 70px 20px;
+  background:
+    radial-gradient(circle at 88% 10%, rgba(124, 58, 237, .12), transparent 30%),
+    radial-gradient(circle at 7% 90%, rgba(37, 99, 235, .09), transparent 30%),
+    linear-gradient(180deg, #fff, #f7f8ff);
+}
+.verify-card {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 38px;
+  text-align: center;
+  border: 1px solid #dfe4f3;
+  border-radius: 25px;
+  background: #fff;
+  box-shadow: 0 25px 58px rgba(37, 48, 96, .12);
+}
+.verify-logo { width: 68px; height: 68px; object-fit: contain; }
+.verify-kicker,
+.admin-verify-heading > span { display: inline-flex; margin-top: 10px; padding: 7px 12px; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #f0efff; font-size: 10px; font-weight: 850; letter-spacing: 1px; }
+.verify-card h1,
+.admin-verify-heading h1 { margin: 14px 0 9px; color: #14213d; font-size: clamp(30px, 4vw, 44px); letter-spacing: -1.5px; }
+.verify-card > p,
+.admin-verify-heading p { color: #718096; line-height: 1.7; }
+.verify-form,
+.admin-key-form { margin-top: 25px; display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+.verify-form input,
+.admin-key-form input { min-height: 50px; padding: 0 15px; border: 1px solid #d9dfec; border-radius: 12px; outline: none; }
+.verify-form input:focus,
+.admin-key-form input:focus { border-color: #7166e8; box-shadow: 0 0 0 4px rgba(79,70,229,.1); }
+.verify-form button,
+.admin-key-form button { min-height: 50px; padding: 0 23px; color: #fff; border: 0; border-radius: 12px; background: linear-gradient(90deg,#4f46e5,#7c3aed); font-weight: 850; cursor: pointer; }
+.verify-result { margin-top: 24px; padding: 24px; border-radius: 17px; text-align: left; }
+.verify-valid { border: 1px solid #a7f3d0; background: #ecfdf5; }
+.verify-pending { border: 1px solid #fde68a; background: #fffbeb; }
+.verify-invalid { border: 1px solid #fecaca; background: #fef2f2; }
+.verify-status-icon { width: 42px; height: 42px; margin-bottom: 10px; display: grid; place-items: center; color: #fff; border-radius: 50%; background: #10b981; font-weight: 900; }
+.verify-pending .verify-status-icon { background: #f59e0b; }
+.verify-result > strong { color: #14213d; font-size: 20px; }
+.verify-result > p { margin: 5px 0 17px; color: #5f6b7f; }
+.verify-result dl { margin: 0; display: grid; gap: 9px; }
+.verify-result dl > div { padding: 10px 12px; display: flex; justify-content: space-between; gap: 15px; border-radius: 10px; background: rgba(255,255,255,.72); }
+.verify-result dt { color: #7a8496; font-size: 11px; }
+.verify-result dd { margin: 0; color: #263653; font-size: 12px; font-weight: 800; text-align: right; }
+.admin-verify-shell { width: min(1000px, 100%); margin: 0 auto; }
+.admin-verify-heading { max-width: 720px; }
+.admin-key-form { max-width: 620px; }
+.admin-message { margin: 18px 0; padding: 12px 14px; border: 1px solid #dcdcff; border-radius: 11px; background: #f0efff; color: #4338ca; font-weight: 700; }
+.admin-registration-list { margin-top: 28px; display: grid; gap: 14px; }
+.admin-registration-card { padding: 20px; display: flex; justify-content: space-between; gap: 22px; border: 1px solid #e0e5f2; border-radius: 17px; background: #fff; box-shadow: 0 12px 28px rgba(37,48,96,.07); }
+.admin-registration-main > strong { color: #4f46e5; font-size: 12px; }
+.admin-registration-main h3 { margin: 5px 0 4px; color: #14213d; }
+.admin-registration-main p,
+.admin-registration-main small { display: block; margin: 0; color: #6f7a8d; }
+.admin-registration-status { min-width: 230px; display: grid; justify-items: end; gap: 14px; }
+.admin-registration-status > span { padding: 6px 10px; border-radius: 999px; background: #f3f4f6; color: #4b5563; font-size: 11px; font-weight: 800; }
+.admin-registration-status > div { display: flex; gap: 8px; }
+.admin-registration-status button { min-height: 39px; padding: 0 14px; border: 0; border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; }
+.admin-approve { background: #059669; }
+.admin-reject { background: #dc2626; }
+@media (max-width: 650px) {
+  .verify-card { padding: 24px; }
+  .verify-form,
+  .admin-key-form { grid-template-columns: 1fr; }
+  .admin-registration-card { flex-direction: column; }
+  .admin-registration-status { min-width: 0; justify-items: start; }
+  .verify-result dl > div { flex-direction: column; gap: 3px; }
+  .verify-result dd { text-align: left; }
+}
+
+/* Final verify page: bigger and clean */
+.verify-card {
+  max-width: 760px !important;
+  padding: 42px !important;
+}
+
+.verify-logo {
+  width: 82px !important;
+  height: 82px !important;
+}
+
+.verify-card h1 {
+  font-size: clamp(38px, 4.5vw, 58px) !important;
+  line-height: 1.08 !important;
+}
+
+.verify-card p {
+  font-size: 17px !important;
+  line-height: 1.7 !important;
+}
+
+.verify-form input {
+  font-size: 17px !important;
+  min-height: 54px !important;
+}
+
+.verify-form button {
+  font-size: 17px !important;
+  min-height: 54px !important;
+}
+
+.verify-result strong {
+  font-size: 24px !important;
+}
+
+.verify-result dl {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+}
+
+.verify-result dt {
+  font-size: 12px !important;
+}
+
+.verify-result dd {
+  font-size: 16px !important;
+}
+
+@media (max-width: 640px) {
+  .verify-card {
+    padding: 24px !important;
+    margin: 34px 14px !important;
+  }
+
+  .verify-result dl {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Final mobile friendly verify page */
+.verify-page {
+  overflow-x: hidden !important;
+}
+
+.verify-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease !important;
+}
+
+.verify-card h1 {
+  font-size: clamp(34px, 5vw, 58px) !important;
+}
+
+.verify-form input,
+.verify-form button {
+  min-height: 52px !important;
+}
+
+@media (max-width: 640px) {
+  .verify-card {
+    padding: 22px !important;
+    margin: 30px 14px !important;
+    border-radius: 24px !important;
+  }
+
+  .verify-logo {
+    width: 66px !important;
+    height: 66px !important;
+  }
+
+  .verify-card h1 {
+    font-size: 32px !important;
+    letter-spacing: -1px !important;
+  }
+
+  .verify-card p {
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+  }
+
+  .verify-form {
+    grid-template-columns: 1fr !important;
+  }
+
+  .verify-form input,
+  .verify-form button {
+    width: 100% !important;
+    font-size: 15px !important;
+  }
+
+  .verify-result dl {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 390px) {
+  .verify-card h1 {
+    font-size: 29px !important;
+  }
+}

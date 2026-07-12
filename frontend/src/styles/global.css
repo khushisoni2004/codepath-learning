@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap');
+
+:root {
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --surface-soft: #f1f5f9;
+  --line: #e2e8f0;
+  --line-strong: #cbd5e1;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-soft: #eef2ff;
+  --accent: #0f766e;
+  --shadow-sm: 0 10px 30px rgba(15, 23, 42, .06);
+  --shadow-md: 0 24px 70px rgba(15, 23, 42, .10);
+  --radius: 24px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-width: 320px;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(79,70,229,.08), transparent 28%),
+    radial-gradient(circle at 100% 12%, rgba(15,118,110,.06), transparent 24%),
+    var(--bg);
+  font-family: Manrope, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+img { max-width: 100%; }
+button, input, textarea, select { font: inherit; }
+.app { min-height: 100vh; }
+main { animation: pageIn .45s ease both; }
+.container { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+::selection { background: #c7d2fe; color: #1e1b4b; }
+@keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes floatSoft { 50% { transform: translateY(-8px); } }
+@media (max-width: 640px) { .container { width: min(100% - 24px, 1160px); } }
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ---------- Navbar + Footer Font Visibility Fix ---------- */
+
+.navbar,
+.site-header,
+.header,
+nav {
+  font-size: 16px;
+}
+
+.nav-links a,
+.navbar a,
+.site-header a,
+.header a,
+nav a {
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #1f1b3d !important;
+  letter-spacing: 0.2px;
+}
+
+.nav-links a:hover,
+.navbar a:hover,
+.site-header a:hover,
+.header a:hover,
+nav a:hover {
+  color: #6d28d9 !important;
+}
+
+.logo-text,
+.brand-text,
+.nav-brand,
+.navbar-brand {
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  color: #1f1b3d !important;
+}
+
+.footer,
+.site-footer {
+  font-size: 15px;
+  color: #312e4f !important;
+}
+
+.footer a,
+.site-footer a,
+.footer p,
+.site-footer p,
+.footer span,
+.site-footer span,
+.footer li,
+.site-footer li {
+  font-size: 15px !important;
+  color: #312e4f !important;
+  font-weight: 600;
+  line-height: 1.7;
+}
+
+.footer h3,
+.footer h4,
+.site-footer h3,
+.site-footer h4 {
+  font-size: 18px !important;
+  color: #1f1b3d !important;
+  font-weight: 900 !important;
+}
+
+.footer strong,
+.site-footer strong {
+  color: #1f1b3d !important;
+  font-weight: 900 !important;
+}
+
+/* Mobile navbar/footer */
+@media (max-width: 768px) {
+  .nav-links a,
+  .navbar a,
+  .site-header a,
+  .header a,
+  nav a {
+    font-size: 15px !important;
+  }
+
+  .logo-text,
+  .brand-text,
+  .nav-brand,
+  .navbar-brand {
+    font-size: 20px !important;
+  }
+
+  .footer a,
+  .site-footer a,
+  .footer p,
+  .site-footer p,
+  .footer span,
+  .site-footer span,
+  .footer li,
+  .site-footer li {
+    font-size: 14.5px !important;
+  }
+}

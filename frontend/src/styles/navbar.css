@@ -1,0 +1,671 @@
+.codepath-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 10px 34px rgba(15, 23, 42, 0.06);
+}
+
+.codepath-navbar-container {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.codepath-navbar-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: #07133d;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.codepath-logo-box {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 14px 32px rgba(79, 70, 229, 0.12);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.codepath-navbar-brand:hover .codepath-logo-box {
+  transform: translateY(-2px) rotate(-2deg);
+  box-shadow: 0 18px 40px rgba(79, 70, 229, 0.18);
+}
+
+.codepath-logo-box img {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.codepath-brand-text {
+  display: grid;
+  gap: 1px;
+  line-height: 1;
+}
+
+.codepath-brand-text strong {
+  color: #07133d;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.codepath-brand-text span {
+  color: #4f46e5;
+  font-size: 18px;
+  font-weight: 850;
+  letter-spacing: -0.3px;
+}
+
+.codepath-navbar-menu {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+  flex: 1;
+}
+
+.codepath-nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px;
+  border-radius: 999px;
+  background: rgba(248, 250, 252, 0.92);
+  border: 1px solid #e2e8f0;
+}
+
+.codepath-nav-links a {
+  position: relative;
+  padding: 10px 13px;
+  border-radius: 999px;
+  color: #475569;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+  transition: color 0.22s ease, background 0.22s ease, transform 0.22s ease;
+}
+
+.codepath-nav-links a:hover {
+  color: #4f46e5;
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.codepath-nav-links a.active {
+  color: #ffffff;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.22);
+}
+
+.codepath-register-button {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 900;
+  white-space: nowrap;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  box-shadow: 0 16px 34px rgba(79, 70, 229, 0.26);
+  overflow: hidden;
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+}
+
+.codepath-register-button::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.38), transparent);
+  transform: translateX(-120%);
+  animation: registerShine 3.2s ease-in-out infinite;
+}
+
+.codepath-register-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(79, 70, 229, 0.34);
+}
+
+.codepath-register-button span {
+  transition: transform 0.22s ease;
+}
+
+.codepath-register-button:hover span {
+  transform: translateX(3px);
+}
+
+@keyframes registerShine {
+  0% {
+    transform: translateX(-120%);
+  }
+  45% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+.codepath-menu-button {
+  display: none;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 15px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
+  cursor: pointer;
+}
+
+.codepath-menu-button span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin: 5px auto;
+  border-radius: 999px;
+  background: #07133d;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.codepath-profile { position: relative; flex-shrink: 0; }
+.codepath-profile-button { width: 46px; height: 46px; padding: 0; display: grid; place-items: center; border: 2px solid rgba(255,255,255,.85); border-radius: 50%; background: linear-gradient(135deg,#2563eb,#7c3aed); color: #fff; box-shadow: 0 12px 28px rgba(79,70,229,.28); cursor: pointer; }
+.codepath-profile-button span { font-size: 17px; font-weight: 900; }
+.codepath-profile-dropdown { position: absolute; z-index: 1100; top: calc(100% + 12px); right: 0; width: min(310px,calc(100vw - 28px)); padding: 16px; border: 1px solid rgba(148,163,184,.2); border-radius: 18px; background: #111827; color: #fff; box-shadow: 0 24px 60px rgba(15,23,42,.3); }
+.codepath-profile-heading { padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.codepath-profile-heading span,.codepath-profile-details span { display: block; color: #94a3b8; font-size: 11px; font-weight: 700; }
+.codepath-profile-heading strong { display: block; margin-top: 4px; font-size: 16px; overflow-wrap: anywhere; }
+.codepath-profile-details { padding: 4px 0 12px; }
+.codepath-profile-details p { margin: 10px 0 0; }
+.codepath-profile-details strong { display: block; margin-top: 3px; color: #f8fafc; font-size: 13px; font-weight: 650; overflow-wrap: anywhere; }
+.codepath-signout-button { width: 100%; min-height: 42px; border: 1px solid rgba(248,113,113,.35); border-radius: 11px; background: rgba(127,29,29,.3); color: #fecaca; font-size: 13px; font-weight: 800; cursor: pointer; }
+
+.codepath-menu-button.is-open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.codepath-menu-button.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.codepath-menu-button.is-open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Tablet */
+@media (max-width: 1120px) {
+  .codepath-navbar-container {
+    min-height: 72px;
+  }
+
+  .codepath-nav-links a {
+    padding: 9px 10px;
+    font-size: 13px;
+  }
+
+  .codepath-register-button {
+    padding: 0 15px;
+  }
+}
+
+/* Mobile and half-screen */
+@media (max-width: 920px) {
+  .codepath-menu-button {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .codepath-navbar-container {
+    position: relative;
+  }
+
+  .codepath-navbar-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 12px);
+    display: grid;
+    gap: 14px;
+    padding: 16px;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 26px 70px rgba(15, 23, 42, 0.16);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.98);
+    transform-origin: top;
+    transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s ease;
+  }
+
+  .codepath-navbar-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  .codepath-nav-links {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .codepath-nav-links a {
+    padding: 13px 14px;
+    border-radius: 16px;
+    background: #f8f9ff;
+    border: 1px solid #edf2f7;
+    text-align: center;
+  }
+
+  .codepath-nav-links a.active {
+    background: linear-gradient(135deg, #2563eb, #7c3aed);
+  }
+
+  .codepath-register-button {
+    width: 100%;
+    min-height: 50px;
+    border-radius: 17px;
+  }
+
+  .codepath-profile { width: 100%; }
+  .codepath-profile-button { margin-left: auto; margin-right: auto; }
+  .codepath-profile-dropdown { position: relative; top: auto; right: auto; width: 100%; margin-top: 12px; box-sizing: border-box; }
+}
+
+/* Small mobile */
+@media (max-width: 560px) {
+  .codepath-navbar-container {
+    min-height: 68px;
+  }
+
+  .codepath-logo-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 15px;
+  }
+
+  .codepath-logo-box img {
+    width: 34px;
+    height: 34px;
+  }
+
+  .codepath-brand-text strong {
+    font-size: 18px;
+  }
+
+  .codepath-brand-text span {
+    font-size: 16px;
+  }
+
+  .codepath-nav-links {
+    grid-template-columns: 1fr;
+  }
+
+  .codepath-navbar-menu {
+    top: calc(100% + 10px);
+    padding: 14px;
+    border-radius: 20px;
+  }
+}
+
+/* Final navbar logo size + left alignment + light hover fix */
+.codepath-navbar-container {
+  max-width: 1240px !important;
+  padding-left: 8px !important;
+  padding-right: 18px !important;
+}
+
+.codepath-navbar-brand {
+  margin-left: -10px !important;
+  gap: 14px !important;
+}
+
+.codepath-logo-box {
+  width: 58px !important;
+  height: 58px !important;
+  border-radius: 20px !important;
+}
+
+.codepath-logo-box img {
+  width: 45px !important;
+  height: 45px !important;
+}
+
+.codepath-brand-text strong {
+  font-size: 23px !important;
+  font-weight: 900 !important;
+}
+
+.codepath-brand-text span {
+  font-size: 20px !important;
+  font-weight: 850 !important;
+}
+
+/* Navbar hover should stay light and readable */
+.codepath-nav-links a:hover {
+  color: #4f46e5 !important;
+  background: #ffffff !important;
+  border-color: rgba(79, 70, 229, 0.16) !important;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* Active page readable but not too dark */
+.codepath-nav-links a.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed) !important;
+  box-shadow: 0 10px 22px rgba(79, 70, 229, 0.18) !important;
+}
+
+/* Register button slightly softer */
+.codepath-register-button {
+  background: linear-gradient(135deg, #3b82f6, #7c3aed) !important;
+  box-shadow: 0 14px 30px rgba(79, 70, 229, 0.22) !important;
+}
+
+.codepath-register-button:hover {
+  box-shadow: 0 18px 38px rgba(79, 70, 229, 0.28) !important;
+}
+
+/* Mobile logo not too huge */
+@media (max-width: 560px) {
+  .codepath-navbar-brand {
+    margin-left: 0 !important;
+  }
+
+  .codepath-logo-box {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .codepath-logo-box img {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .codepath-brand-text strong {
+    font-size: 19px !important;
+  }
+
+  .codepath-brand-text span {
+    font-size: 17px !important;
+  }
+}
+
+/* Final navbar brand: bigger logo + full name + tagline */
+.codepath-navbar-container {
+  max-width: 1280px !important;
+  padding-left: 4px !important;
+  padding-right: 18px !important;
+}
+
+.codepath-navbar-brand {
+  margin-left: -18px !important;
+  gap: 15px !important;
+  min-width: 265px !important;
+}
+
+.codepath-logo-box {
+  width: 62px !important;
+  height: 62px !important;
+  border-radius: 21px !important;
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 14px 34px rgba(79, 70, 229, 0.14) !important;
+}
+
+.codepath-logo-box img {
+  width: 49px !important;
+  height: 49px !important;
+  object-fit: contain !important;
+}
+
+.codepath-brand-text {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 4px !important;
+  line-height: 1.05 !important;
+}
+
+.codepath-brand-text strong {
+  color: #07133d !important;
+  font-size: 23px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.7px !important;
+  white-space: nowrap !important;
+}
+
+.codepath-brand-text span {
+  color: #4f46e5 !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.02em !important;
+  white-space: nowrap !important;
+}
+
+/* Menu ko thoda right adjust */
+.codepath-navbar-menu {
+  margin-left: 18px !important;
+}
+
+/* Hover light and readable */
+.codepath-nav-links a:hover {
+  color: #4f46e5 !important;
+  background: #ffffff !important;
+  border-color: rgba(79, 70, 229, 0.14) !important;
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* Mobile safe */
+@media (max-width: 920px) {
+  .codepath-navbar-brand {
+    margin-left: 0 !important;
+    min-width: auto !important;
+  }
+
+  .codepath-navbar-menu {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .codepath-logo-box {
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 17px !important;
+  }
+
+  .codepath-logo-box img {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .codepath-brand-text strong {
+    font-size: 19px !important;
+  }
+
+  .codepath-brand-text span {
+    font-size: 11px !important;
+  }
+}
+
+/* Final navbar alignment: brand start-left, menu right */
+.codepath-navbar-container {
+  max-width: 100% !important;
+  width: 100% !important;
+  padding-left: 22px !important;
+  padding-right: 28px !important;
+  justify-content: space-between !important;
+}
+
+.codepath-navbar-brand {
+  margin-left: 0 !important;
+  min-width: 330px !important;
+  gap: 16px !important;
+}
+
+.codepath-logo-box {
+  width: 68px !important;
+  height: 68px !important;
+  border-radius: 23px !important;
+}
+
+.codepath-logo-box img {
+  width: 54px !important;
+  height: 54px !important;
+}
+
+.codepath-brand-text strong {
+  font-size: 26px !important;
+  font-weight: 950 !important;
+  letter-spacing: -0.8px !important;
+}
+
+.codepath-brand-text span {
+  font-size: 14px !important;
+  font-weight: 850 !important;
+  color: #4f46e5 !important;
+}
+
+/* Push nav links to right side */
+.codepath-navbar-menu {
+  margin-left: auto !important;
+  justify-content: flex-end !important;
+  flex: 1 !important;
+  gap: 18px !important;
+}
+
+.codepath-nav-links {
+  margin-left: auto !important;
+}
+
+.codepath-nav-links a {
+  color: #334155 !important;
+  font-weight: 800 !important;
+}
+
+/* Hover light, text visible */
+.codepath-nav-links a:hover {
+  color: #4f46e5 !important;
+  background: #ffffff !important;
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.08) !important;
+}
+
+/* Active also readable */
+.codepath-nav-links a.active {
+  color: #ffffff !important;
+  background: linear-gradient(135deg, #3b82f6, #7c3aed) !important;
+}
+
+/* Register button right and clean */
+.codepath-register-button {
+  margin-left: 4px !important;
+  min-width: 148px !important;
+}
+
+/* Medium screens: reduce a little */
+@media (max-width: 1180px) {
+  .codepath-navbar-brand {
+    min-width: 285px !important;
+  }
+
+  .codepath-logo-box {
+    width: 60px !important;
+    height: 60px !important;
+  }
+
+  .codepath-logo-box img {
+    width: 48px !important;
+    height: 48px !important;
+  }
+
+  .codepath-brand-text strong {
+    font-size: 23px !important;
+  }
+
+  .codepath-brand-text span {
+    font-size: 12px !important;
+  }
+
+  .codepath-nav-links a {
+    padding: 9px 9px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* Mobile safe */
+@media (max-width: 920px) {
+  .codepath-navbar-container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .codepath-navbar-brand {
+    min-width: auto !important;
+  }
+
+  .codepath-navbar-menu {
+    margin-left: 0 !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .codepath-logo-box {
+    width: 52px !important;
+    height: 52px !important;
+  }
+
+  .codepath-logo-box img {
+    width: 42px !important;
+    height: 42px !important;
+  }
+
+  .codepath-brand-text strong {
+    font-size: 20px !important;
+  }
+
+  .codepath-brand-text span {
+    font-size: 11px !important;
+  }
+}
+
+/* Logo ko thoda right shift */
+.codepath-navbar-container {
+  padding-left: 42px !important;
+}
+
+.codepath-navbar-brand {
+  margin-left: 0 !important;
+}
+
+/* Mobile me zyada right na jaye */
+@media (max-width: 920px) {
+  .codepath-navbar-container {
+    padding-left: 18px !important;
+    padding-right: 16px !important;
+  }
+}

@@ -1,0 +1,209 @@
+
+/* ---------- Bigger Registration Form Fix ---------- */
+
+.registration-form-card,
+.enrollment-form-card,
+.register-form-card,
+.form-card {
+  width: 100%;
+  max-width: 760px !important;
+  margin: 0 auto;
+  padding: 34px !important;
+  border-radius: 28px !important;
+}
+
+.registration-form,
+.enrollment-form,
+.register-form {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.registration-form input,
+.registration-form select,
+.registration-form textarea,
+.enrollment-form input,
+.enrollment-form select,
+.enrollment-form textarea,
+.register-form input,
+.register-form select,
+.register-form textarea {
+  min-height: 52px;
+  font-size: 16px;
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+.registration-form label,
+.enrollment-form label,
+.register-form label {
+  font-size: 15px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.registration-form button,
+.enrollment-form button,
+.register-form button {
+  min-height: 54px;
+  font-size: 16px;
+  font-weight: 800;
+  border-radius: 16px;
+}
+
+@media (max-width: 768px) {
+  .registration-form-card,
+  .enrollment-form-card,
+  .register-form-card,
+  .form-card {
+    max-width: 100% !important;
+    padding: 22px !important;
+  }
+}
+
+/* ---------- Bigger Enrollment Form ---------- */
+
+.enrollment-form,
+.registration-form,
+.register-form,
+form {
+  font-size: 17px;
+}
+
+.enrollment-form-card,
+.registration-form-card,
+.register-form-card,
+.form-card {
+  max-width: 850px !important;
+  padding: 42px !important;
+  border-radius: 30px !important;
+  margin: 0 auto;
+}
+
+.enrollment-form-card h2,
+.registration-form-card h2,
+.register-form-card h2,
+.form-card h2 {
+  font-size: 34px !important;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.enrollment-form-card p,
+.registration-form-card p,
+.register-form-card p,
+.form-card p {
+  font-size: 17px !important;
+  line-height: 1.6;
+}
+
+.enrollment-form label,
+.registration-form label,
+.register-form label,
+form label {
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  margin-bottom: 10px;
+  color: #24144f;
+}
+
+.enrollment-form input,
+.enrollment-form select,
+.enrollment-form textarea,
+.registration-form input,
+.registration-form select,
+.registration-form textarea,
+.register-form input,
+.register-form select,
+.register-form textarea,
+form input,
+form select,
+form textarea {
+  min-height: 60px !important;
+  font-size: 18px !important;
+  padding: 16px 18px !important;
+  border-radius: 16px !important;
+}
+
+.enrollment-form button,
+.registration-form button,
+.register-form button,
+form button {
+  min-height: 62px !important;
+  font-size: 18px !important;
+  font-weight: 900 !important;
+  border-radius: 18px !important;
+}
+
+.enrollment-form select,
+.registration-form select,
+.register-form select {
+  cursor: pointer;
+}
+
+.enrollment-form-card small,
+.registration-form-card small,
+.register-form-card small,
+.form-card small {
+  font-size: 15px !important;
+}
+
+.payment-note,
+.registration-note,
+.form-note {
+  font-size: 16px !important;
+  line-height: 1.6;
+  font-weight: 600;
+}
+
+/* If registration page has grid layout */
+.registration-grid,
+.enrollment-grid,
+.register-grid {
+  gap: 36px !important;
+  align-items: start;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .enrollment-form-card,
+  .registration-form-card,
+  .register-form-card,
+  .form-card {
+    max-width: 100% !important;
+    padding: 26px !important;
+    border-radius: 24px !important;
+  }
+
+  .enrollment-form-card h2,
+  .registration-form-card h2,
+  .register-form-card h2,
+  .form-card h2 {
+    font-size: 28px !important;
+  }
+
+  .enrollment-form input,
+  .enrollment-form select,
+  .enrollment-form textarea,
+  .registration-form input,
+  .registration-form select,
+  .registration-form textarea,
+  .register-form input,
+  .register-form select,
+  .register-form textarea,
+  form input,
+  form select,
+  form textarea {
+    min-height: 56px !important;
+    font-size: 16.5px !important;
+  }
+
+  .enrollment-form button,
+  .registration-form button,
+  .register-form button,
+  form button {
+    min-height: 58px !important;
+    font-size: 17px !important;
+  }
+}

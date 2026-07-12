@@ -1,0 +1,22 @@
+Admissions Open - CodePath Learning Launch Batch
+
+Beginner-friendly coding courses with live Google Meet classes, notes, assignments, practical tasks and final assessment.
+
+Courses:
+- Web Development
+- Python Programming
+- C Programming
+- MySQL Database
+- OOPs Concepts
+- DSA Basics
+- Vibe Coding with AI
+- AI Tools for Smart Projects
+
+Launch Batch Fee: Rs. 599
+Mode: Live Online + Google Classroom
+Certificate: Private course completion certificate through partner computer center after successful completion.
+
+Register here: https://codepath-learning.vercel.app/register
+Website: https://codepath-learning.vercel.app/
+
+Learn - Practice - Build
