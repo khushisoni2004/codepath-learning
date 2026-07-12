@@ -19,6 +19,7 @@ const MONGODB_URI = buildMongoUri(
 );
 const MONGODB_CONNECT_TIMEOUT_MS = 30000;
 const MONGODB_RETRY_DELAY_MS = 10000;
+let lastMongoError = "";
 const requiredEnvironment = [
   "MONGODB_URI",
   "JWT_SECRET",
@@ -77,6 +78,21 @@ function mongoConnectionInfo(uri) {
   }
 }
 
+function safeMongoError(message) {
+  const text = String(message || "");
+  if (!text) return "";
+  if (/bad auth|authentication failed|auth failed/i.test(text)) {
+    return "MongoDB authentication failed. Check username and password in Render MONGODB_URI.";
+  }
+  if (/IP|whitelist|not authorized|not allowed/i.test(text)) {
+    return "MongoDB network access blocked. Allow Render outbound IP or 0.0.0.0/0 in Atlas Network Access.";
+  }
+  if (/ETIMEOUT|timed out|ENOTFOUND|ECONNREFUSED|querySrv/i.test(text)) {
+    return "MongoDB network/DNS timeout. Check Atlas Network Access and Render connectivity.";
+  }
+  return text.replace(/mongodb(\+srv)?:\/\/[^@\s]+@/gi, "mongodb$1://<credentials>@").slice(0, 220);
+}
+
 app.use(cors({
   origin(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
@@ -103,7 +119,9 @@ app.get("/api/health", (req, res) => {
     message: "CodePath Learning backend running",
     database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
     mongoConfigured: mongoInfo.configured,
+    mongoHost: mongoInfo.host,
     mongoDatabase: mongoInfo.database,
+    mongoError: mongoose.connection.readyState === 1 ? "" : lastMongoError,
   });
 });
 
@@ -153,9 +171,11 @@ async function connectDatabase() {
       connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
     });
 
+    lastMongoError = "";
     console.log(`MongoDB connected: ${mongoose.connection.name}`);
   } catch (error) {
-    console.error(`MongoDB connection failed: ${error.message}`);
+    lastMongoError = safeMongoError(error.message);
+    console.error(`MongoDB connection failed: ${lastMongoError}`);
     setTimeout(connectDatabase, MONGODB_RETRY_DELAY_MS);
   }
 }
