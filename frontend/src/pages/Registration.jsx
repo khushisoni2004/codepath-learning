@@ -12,6 +12,8 @@ const initialForm = {
   collegeName: "",
   course: "",
   plan: "Complete Learning Plan - ₹599",
+  password: "",
+  confirmPassword: "",
 };
 
 const courseOptions = [
@@ -57,16 +59,49 @@ Please keep this Registration ID safe for login and verification.`
     setError("");
 
     try {
+      const email = form.email.trim();
+      const phone = form.phone.trim();
+
+      if (!form.studentName.trim()) {
+        throw new Error("Please enter your full name.");
+      }
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        throw new Error("Please enter a valid email address.");
+      }
+
+      if (!/^\d{10}$/.test(phone)) {
+        throw new Error("Please enter a valid 10-digit WhatsApp number.");
+      }
+
+      if (!form.password) {
+        throw new Error("Please enter a password.");
+      }
+
+      if (form.password.length < 6) {
+        throw new Error("Password must be at least 6 characters.");
+      }
+
+      if (!form.confirmPassword) {
+        throw new Error("Please confirm your password.");
+      }
+
+      if (form.password !== form.confirmPassword) {
+        throw new Error("Password and confirm password must match.");
+      }
+
       const response = await apiFetch(`${API_URL}/registrations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           studentName: form.studentName.trim(),
-          email: form.email.trim(),
-          phone: form.phone.trim(),
+          email,
+          phone,
           collegeName: form.collegeName.trim(),
           course: form.course,
           plan: form.plan,
+          password: form.password,
+          confirmPassword: form.confirmPassword,
         }),
       });
 
@@ -77,6 +112,7 @@ Please keep this Registration ID safe for login and verification.`
       }
 
       setRegistration(data.registration);
+      localStorage.setItem("codepathStudent", JSON.stringify(data));
       window.scrollTo({ top: 0, behavior: "smooth" });
     } catch (requestError) {
       setError(
@@ -285,6 +321,32 @@ Please keep this Registration ID safe for login and verification.`
                   Complete Learning Plan – ₹599
                 </option>
               </select>
+            </label>
+
+            <label>
+              Password *
+              <input
+                type="password"
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                placeholder="Minimum 6 characters"
+                minLength="6"
+                required
+              />
+            </label>
+
+            <label>
+              Confirm Password *
+              <input
+                type="password"
+                name="confirmPassword"
+                value={form.confirmPassword}
+                onChange={handleChange}
+                placeholder="Re-enter password"
+                minLength="6"
+                required
+              />
             </label>
           </div>
 

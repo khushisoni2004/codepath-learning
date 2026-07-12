@@ -60,6 +60,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/registrations", registrationRoutes);
+app.use("/api/auth", registrationRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 

@@ -6,7 +6,7 @@ import { apiFetch } from "../services/api";
 import "../styles/login.css";
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", phone: "" });
+  const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [student, setStudent] = useState(null);
@@ -23,12 +23,20 @@ export default function Login() {
     setStudent(null);
 
     try {
+      if (!form.email.trim()) {
+        throw new Error("Please enter your registered email.");
+      }
+
+      if (!form.password) {
+        throw new Error("Please enter your password.");
+      }
+
       const response = await apiFetch(`${API_URL}/registrations/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: form.email.trim(),
-          phone: form.phone.trim(),
+          password: form.password,
         }),
       });
 
@@ -76,7 +84,7 @@ export default function Login() {
             </h1>
 
             <p>
-              Use your registered email and WhatsApp number to view your course registration.
+              Use your registered email and password to view your course registration.
             </p>
 
             <div className="login-small-points">
@@ -107,14 +115,13 @@ export default function Login() {
                 </label>
 
                 <label>
-                  WhatsApp Number
+                  Password
                   <input
-                    type="tel"
-                    name="phone"
-                    value={form.phone}
+                    type="password"
+                    name="password"
+                    value={form.password}
                     onChange={handleChange}
-                    placeholder="10-digit number"
-                    maxLength="10"
+                    placeholder="Enter password"
                     required
                   />
                 </label>

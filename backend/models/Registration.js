@@ -32,6 +32,11 @@ const registrationSchema = new mongoose.Schema(
       index: true,
     },
 
+    password: {
+      type: String,
+      select: false,
+    },
+
     collegeName: {
       type: String,
       trim: true,
