@@ -155,6 +155,20 @@
 @media (max-width: 1050px) { .courses-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .course-page-card { aspect-ratio: auto; min-height: 300px; } }
 @media (max-width: 650px) { .courses-hero { padding: 60px 0 55px; } .courses-hero h1 { font-size: 38px; line-height: 1.15; letter-spacing: -1.7px; } .courses-grid { width: min(100% - 24px, 520px); grid-template-columns: 1fr; gap: 22px; } .course-page-card { aspect-ratio: auto; min-height: auto; } }
 
+@media (max-width: 420px) {
+  .course-page-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .course-page-card h2 {
+    font-size: clamp(18px, 5vw, 21px);
+  }
+
+  .course-page-card p {
+    font-size: 14px;
+  }
+}
+
 /* Final white AI logo boxes - Courses */
 .course-page-custom-logo {
   background: #ffffff !important;

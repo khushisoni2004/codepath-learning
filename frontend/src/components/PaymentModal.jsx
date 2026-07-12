@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import { getStudent, loadRazorpay, paymentApi } from "../services/api";
@@ -13,6 +13,13 @@ export default function PaymentModal({ course, paid, onPaid }) {
   const [receipt, setReceipt] = useState(null);
   const submittingRef = useRef(false);
   const [details, setDetails] = useState({ name: student?.studentName || "", email: student?.email || "", phone: student?.phone || "" });
+
+  useEffect(() => {
+    if (!open && !receipt) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = prev; };
+  }, [open, receipt]);
 
   async function enroll(event) {
     event.preventDefault();

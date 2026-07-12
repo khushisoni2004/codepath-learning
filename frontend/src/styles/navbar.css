@@ -665,7 +665,55 @@
 /* Mobile me zyada right na jaye */
 @media (max-width: 920px) {
   .codepath-navbar-container {
-    padding-left: 18px !important;
-    padding-right: 16px !important;
+    padding-left: 14px !important;
+    padding-right: 14px !important;
+    gap: 10px !important;
+  }
+
+  .codepath-navbar-brand {
+    min-width: 0 !important;
+    max-width: calc(100% - 54px) !important;
+    flex: 1 1 auto !important;
+    gap: 10px !important;
+  }
+
+  .codepath-logo-box {
+    flex-shrink: 0 !important;
+  }
+
+  .codepath-brand-text {
+    min-width: 0 !important;
+  }
+
+  .codepath-brand-text strong,
+  .codepath-brand-text span {
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .codepath-navbar-container {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+
+  .codepath-logo-box {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 15px !important;
+  }
+
+  .codepath-logo-box img {
+    width: 34px !important;
+    height: 34px !important;
+  }
+
+  .codepath-brand-text strong {
+    font-size: clamp(15px, 4.8vw, 19px) !important;
+  }
+
+  .codepath-brand-text span {
+    font-size: 10px !important;
   }
 }

@@ -49,3 +49,15 @@
 .course-not-found a { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; color: #ffffff; border-radius: 12px; background: linear-gradient(90deg, #4f46e5, #7c3aed); font-size: 13px; font-weight: 850; text-decoration: none; }
 @media (max-width: 850px) { .detail-section-heading { align-items: flex-start; flex-direction: column; } .detail-topic-grid { grid-template-columns: 1fr; } }
 @media (max-width: 650px) { .course-detail-hero { padding: 60px 0 55px; } .detail-hero-simple h1 { font-size: 38px; letter-spacing: -1.7px; } .detail-content-section { padding: 60px 0; } }
+
+@media (max-width: 420px) {
+  .detail-buy-action .buy-course-button {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .detail-topic-item p {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+}

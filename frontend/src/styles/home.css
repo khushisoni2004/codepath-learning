@@ -1832,3 +1832,44 @@
   font-size: 30px !important;
   font-weight: 900 !important;
 }
+
+/* Responsive overflow fixes */
+@media (max-width: 640px) {
+  .home-hero-image {
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+  }
+
+  .home-hero-visual {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .home-visual-background {
+    width: 92% !important;
+    max-width: 100%;
+  }
+
+  .home-circle-two {
+    width: 200px;
+    height: 200px;
+    left: 0;
+  }
+
+  .home-floating-live {
+    left: 0 !important;
+  }
+
+  .home-floating-code {
+    right: 0 !important;
+  }
+
+  .home-shape-one {
+    right: -30px;
+  }
+
+  .home-shape-two {
+    left: -30px;
+  }
+}

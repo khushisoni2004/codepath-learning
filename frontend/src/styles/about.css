@@ -748,6 +748,18 @@
 }
 
 @media (max-width: 680px) {
+  .about-hero-light-one {
+    right: -80px;
+    width: 280px;
+    height: 280px;
+  }
+
+  .about-hero-light-two {
+    left: -80px;
+    width: 240px;
+    height: 240px;
+  }
+
   .professional-about-hero {
     padding: 60px 0 58px;
   }

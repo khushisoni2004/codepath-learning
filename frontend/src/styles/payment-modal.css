@@ -27,7 +27,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: rgba(2, 6, 23, 0.72);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -81,6 +82,15 @@
   font-size: 22px;
   line-height: 1;
   cursor: pointer;
+}
+
+.payment-close::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: -6px;
+  right: -6px;
+  bottom: -6px;
 }
 
 .enrollment-form {
@@ -183,7 +193,34 @@
 }
 
 .receipt-details span { color: #718096; }
-.receipt-details strong { color: #263653; overflow-wrap: anywhere; }
+.receipt-details strong {
+  color: #263653;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.receipt-modal .payment-modal h2 {
+  font-size: clamp(22px, 5vw, 28px);
+}
+
+@media (max-width: 480px) {
+  .receipt-details p {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 12px 0;
+  }
+
+  .receipt-details span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .receipt-details strong {
+    font-size: 14px;
+  }
+}
 
 @media (max-width: 600px) {
   .payment-overlay { padding: 12px; }

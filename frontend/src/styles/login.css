@@ -479,3 +479,17 @@
     padding: 18px !important;
   }
 }
+
+@media (max-width: 640px) {
+  .login-bg-one {
+    left: -120px;
+    width: 220px;
+    height: 220px;
+  }
+
+  .login-bg-two {
+    right: -120px;
+    width: 200px;
+    height: 200px;
+  }
+}
