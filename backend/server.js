@@ -11,6 +11,8 @@ const app = express();
 
 const PORT = process.env.PORT || 5001;
 const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_CONNECT_TIMEOUT_MS = 30000;
+const MONGODB_RETRY_DELAY_MS = 10000;
 const requiredEnvironment = [
   "MONGODB_URI",
   "JWT_SECRET",
@@ -97,15 +99,20 @@ async function startServer() {
     return;
   }
 
+  connectDatabase();
+}
+
+async function connectDatabase() {
   try {
     await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: 10000,
-      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+      connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
     });
 
     console.log(`MongoDB connected: ${mongoose.connection.name}`);
   } catch (error) {
     console.error(`MongoDB connection failed: ${error.message}`);
+    setTimeout(connectDatabase, MONGODB_RETRY_DELAY_MS);
   }
 }
 
