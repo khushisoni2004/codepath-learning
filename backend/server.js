@@ -10,7 +10,13 @@ const adminRoutes = require("./routes/adminRoutes");
 const app = express();
 
 const PORT = process.env.PORT || 5001;
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_DATABASE_NAME = process.env.MONGODB_DATABASE_NAME || "codepath_learning";
+const MONGODB_URI = buildMongoUri(
+  process.env.MONGODB_URI
+    || process.env.MONGO_URI
+    || process.env.MONGODB_URL
+    || process.env.DATABASE_URL
+);
 const MONGODB_CONNECT_TIMEOUT_MS = 30000;
 const MONGODB_RETRY_DELAY_MS = 10000;
 const requiredEnvironment = [
@@ -38,6 +44,39 @@ const allowedOrigins = [
   "https://codepath-learning.vercel.app",
 ].filter(Boolean);
 
+function buildMongoUri(uri) {
+  if (!uri) return "";
+
+  try {
+    const parsed = new URL(uri);
+    if (parsed.protocol === "mongodb+srv:" || parsed.protocol === "mongodb:") {
+      const databasePath = parsed.pathname.replace(/^\/+/, "");
+      if (!databasePath) parsed.pathname = `/${MONGODB_DATABASE_NAME}`;
+    }
+
+    return parsed.toString();
+  } catch (_error) {
+    return uri;
+  }
+}
+
+function mongoConnectionInfo(uri) {
+  try {
+    const parsed = new URL(uri);
+    return {
+      host: parsed.host,
+      database: parsed.pathname.replace(/^\/+/, "") || MONGODB_DATABASE_NAME,
+      configured: true,
+    };
+  } catch (_error) {
+    return {
+      host: "unknown",
+      database: MONGODB_DATABASE_NAME,
+      configured: Boolean(uri),
+    };
+  }
+}
+
 app.use(cors({
   origin(origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
@@ -58,10 +97,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/health", (req, res) => {
+  const mongoInfo = mongoConnectionInfo(MONGODB_URI);
   res.json({
     success: true,
     message: "CodePath Learning backend running",
     database: mongoose.connection.readyState === 1 ? "connected" : "disconnected",
+    mongoConfigured: mongoInfo.configured,
+    mongoDatabase: mongoInfo.database,
   });
 });
 
@@ -99,6 +141,8 @@ async function startServer() {
     return;
   }
 
+  const mongoInfo = mongoConnectionInfo(MONGODB_URI);
+  console.log(`MongoDB configured for ${mongoInfo.host}/${mongoInfo.database}`);
   connectDatabase();
 }
 
