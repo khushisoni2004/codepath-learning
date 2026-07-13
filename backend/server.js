@@ -154,6 +154,10 @@ async function startServer() {
     console.log(`CodePath Learning backend listening on port ${PORT}`);
   });
 
+  startDatabase();
+}
+
+function startDatabase() {
   if (!MONGODB_URI) {
     console.error("MongoDB connection skipped: MONGODB_URI is required.");
     return;
@@ -180,4 +184,10 @@ async function connectDatabase() {
   }
 }
 
-startServer();
+if (process.env.VERCEL) {
+  startDatabase();
+} else {
+  startServer();
+}
+
+module.exports = app;
