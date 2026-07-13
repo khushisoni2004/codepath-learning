@@ -20,6 +20,7 @@ const MONGODB_URI = buildMongoUri(
 const MONGODB_CONNECT_TIMEOUT_MS = 30000;
 const MONGODB_RETRY_DELAY_MS = 10000;
 let lastMongoError = "";
+let mongoConnectPromise = null;
 const requiredEnvironment = [
   "MONGODB_URI",
   "JWT_SECRET",
@@ -112,7 +113,11 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/api/health", (req, res) => {
+app.get("/api/health", async (req, res) => {
+  if (MONGODB_URI && mongoose.connection.readyState !== 1) {
+    await ensureDatabaseConnected().catch(() => {});
+  }
+
   const mongoInfo = mongoConnectionInfo(MONGODB_URI);
   res.json({
     success: true,
@@ -125,13 +130,19 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-app.use("/api", (req, res, next) => {
+app.use("/api", async (req, res, next) => {
   if (req.path === "/health" || mongoose.connection.readyState === 1) return next();
 
-  return res.status(503).json({
-    success: false,
-    message: "Database is not connected yet. Please try again shortly.",
-  });
+  try {
+    await ensureDatabaseConnected();
+    return next();
+  } catch (_error) {
+    return res.status(503).json({
+      success: false,
+      message: "Database is not connected yet. Please try again shortly.",
+      mongoError: lastMongoError,
+    });
+  }
 });
 
 app.use("/api/registrations", registrationRoutes);
@@ -170,18 +181,39 @@ function startDatabase() {
 
 async function connectDatabase() {
   try {
-    await mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
-      connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
-    });
-
-    lastMongoError = "";
+    await ensureDatabaseConnected();
     console.log(`MongoDB connected: ${mongoose.connection.name}`);
   } catch (error) {
     lastMongoError = safeMongoError(error.message);
     console.error(`MongoDB connection failed: ${lastMongoError}`);
     setTimeout(connectDatabase, MONGODB_RETRY_DELAY_MS);
   }
+}
+
+async function ensureDatabaseConnected() {
+  if (mongoose.connection.readyState === 1) return mongoose.connection;
+
+  if (!MONGODB_URI) {
+    throw new Error("MONGODB_URI is required.");
+  }
+
+  if (!mongoConnectPromise) {
+    mongoConnectPromise = mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+      connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+    })
+      .then(() => {
+        lastMongoError = "";
+        return mongoose.connection;
+      })
+      .catch((error) => {
+        lastMongoError = safeMongoError(error.message);
+        mongoConnectPromise = null;
+        throw error;
+      });
+  }
+
+  return mongoConnectPromise;
 }
 
 if (process.env.VERCEL) {
