@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { courseCatalog } from "../data/courseCatalog";
 import PaymentModal from "../components/PaymentModal";
-import { getStudent, paymentApi } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { paymentApi } from "../services/api";
 import "../styles/courses.css";
 
 const courseVisuals = {
@@ -62,10 +63,25 @@ function CourseLogo({ course }) {
 }
 
 export default function Courses() {
+  const { user, loading } = useAuth();
+  const userId = user?.id;
   const [paidCourses, setPaidCourses] = useState([]);
+
   useEffect(() => {
-    if (getStudent()?.token) paymentApi("/my-courses").then((data) => setPaidCourses(data.paidCourses)).catch(() => {});
-  }, []);
+    if (loading) return undefined;
+    if (!userId) {
+      setPaidCourses([]);
+      return undefined;
+    }
+
+    let cancelled = false;
+    paymentApi("/my-courses")
+      .then((data) => { if (!cancelled) setPaidCourses(data.paidCourses || []); })
+      .catch(() => { if (!cancelled) setPaidCourses([]); });
+
+    return () => { cancelled = true; };
+  }, [loading, userId]);
+
   const markPaid = (slug) => setPaidCourses((current) => current.includes(slug) ? current : [...current, slug]);
   return (
     <main className="courses-page">

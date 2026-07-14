@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCourseBySlug } from "../data/courseCatalog";
 import PaymentModal from "../components/PaymentModal";
-import { getStudent, paymentApi } from "../services/api";
+import { useAuth } from "../context/AuthContext";
+import { paymentApi } from "../services/api";
 import "../styles/course-details.css";
 
 const courseVisuals = {
@@ -48,12 +49,26 @@ function DetailLogo({ course }) {
 }
 
 export default function CourseDetails() {
+  const { user, loading } = useAuth();
+  const userId = user?.id;
   const { slug } = useParams();
   const course = getCourseBySlug(slug);
   const [paidCourses, setPaidCourses] = useState([]);
+
   useEffect(() => {
-    if (getStudent()?.token) paymentApi("/my-courses").then((data) => setPaidCourses(data.paidCourses)).catch(() => {});
-  }, []);
+    if (loading) return undefined;
+    if (!userId) {
+      setPaidCourses([]);
+      return undefined;
+    }
+
+    let cancelled = false;
+    paymentApi("/my-courses")
+      .then((data) => { if (!cancelled) setPaidCourses(data.paidCourses || []); })
+      .catch(() => { if (!cancelled) setPaidCourses([]); });
+
+    return () => { cancelled = true; };
+  }, [loading, userId]);
 
   if (!course) {
     return (
