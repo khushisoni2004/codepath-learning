@@ -13,7 +13,7 @@
 .course-detail-page *, .course-detail-page *::before, .course-detail-page *::after { box-sizing: border-box; }
 .course-detail-hero {
   position: relative;
-  padding: 72px 0 60px;
+  padding: 30px 0 28px;
   overflow: hidden;
   background: radial-gradient(circle at 85% 16%, rgba(124, 58, 237, 0.12), transparent 30%), radial-gradient(circle at 8% 88%, rgba(37, 99, 235, 0.09), transparent 30%), linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
 }
@@ -21,19 +21,20 @@
 .detail-hero-bg-one, .detail-hero-bg-two { position: absolute; border-radius: 50%; filter: blur(75px); }
 .detail-hero-bg-one { width: 340px; height: 340px; top: -120px; right: 8%; background: rgba(124, 58, 237, 0.12); }
 .detail-hero-bg-two { width: 280px; height: 280px; bottom: -130px; left: 6%; background: rgba(37, 99, 235, 0.1); }
-.detail-hero-simple { position: relative; z-index: 2; max-width: 850px; text-align: center; }
-.detail-back-top { margin-bottom: 22px; min-height: 42px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #ffffff; font-size: 12px; font-weight: 850; text-decoration: none; }
-.detail-course-icon { width: 78px; height: 78px; margin: 0 auto 18px; display: grid; place-items: center; color: #ffffff; border-radius: 19px; }
-.detail-single-logo, .detail-multi-logo { padding: 12px; border: 1px solid #e1e6f2; background: linear-gradient(145deg, #ffffff, #f3f5fb); box-shadow: 0 12px 25px rgba(37, 50, 92, 0.09); }
-.detail-single-logo img { width: 50px; height: 50px; object-fit: contain; }
+.detail-hero-simple { position: relative; z-index: 2; max-width: 700px; text-align: center; }
+.detail-back-top { margin-bottom: 10px; min-height: 34px; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #ffffff; font-size: 11px; font-weight: 850; text-decoration: none; }
+.detail-course-icon { width: 54px; height: 54px; margin: 0 auto 10px; display: grid; place-items: center; color: #ffffff; border-radius: 14px; }
+.detail-single-logo, .detail-multi-logo { padding: 8px; border: 1px solid #e1e6f2; background: linear-gradient(145deg, #ffffff, #f3f5fb); box-shadow: 0 8px 18px rgba(37, 50, 92, 0.08); }
+.detail-single-logo img { width: 36px; height: 36px; object-fit: contain; }
 .detail-multi-logo { grid-template-columns: repeat(2, 1fr); gap: 6px; }
-.detail-multi-logo img { width: 27px; height: 27px; object-fit: contain; }
-.detail-custom-logo { color: #ffffff; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 20px; font-weight: 900; }
-.detail-kicker, .detail-section-heading span { display: inline-flex; padding: 8px 14px; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #f0efff; font-size: 11px; font-weight: 850; letter-spacing: 1px; }
-.detail-hero-simple h1 { margin: 22px 0 16px; padding-bottom: 8px; color: var(--detail-navy); font-size: clamp(38px, 4.8vw, 60px); line-height: 1.12; letter-spacing: -2.4px; font-weight: 950; }
-.detail-hero-simple h1 span { display: block; padding-bottom: 10px; color: transparent; background: linear-gradient(90deg, #2563eb, #7c3aed); background-clip: text; -webkit-background-clip: text; }
-.detail-hero-simple p { max-width: 700px; margin: 0 auto; color: var(--detail-muted); font-size: 16px; line-height: 1.75; }
-.detail-buy-action{margin-top:24px}.detail-buy-action .buy-course-button{min-width:180px}
+.detail-multi-logo img { width: 18px; height: 18px; object-fit: contain; }
+.detail-custom-logo { color: #ffffff; background: linear-gradient(135deg, #2563eb, #7c3aed); font-size: 15px; font-weight: 900; }
+.detail-kicker { display: inline-flex; padding: 6px 11px; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #f0efff; font-size: 10px; font-weight: 850; letter-spacing: 1px; }
+.detail-section-heading span { display: inline-flex; padding: 8px 14px; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #f0efff; font-size: 11px; font-weight: 850; letter-spacing: 1px; }
+.detail-hero-simple h1 { margin: 11px 0 7px; padding-bottom: 2px; color: var(--detail-navy); font-size: clamp(28px, 3.5vw, 42px); line-height: 1.08; letter-spacing: -1.7px; font-weight: 950; }
+.detail-hero-simple h1 span { display: block; padding-bottom: 4px; color: transparent; background: linear-gradient(90deg, #2563eb, #7c3aed); background-clip: text; -webkit-background-clip: text; }
+.detail-hero-simple p { max-width: 610px; margin: 0 auto; color: var(--detail-muted); font-size: 14px; line-height: 1.55; }
+.detail-buy-action{margin-top:13px}.detail-buy-action .buy-course-button{min-width:145px;min-height:40px;padding:0 18px;font-size:12px}
 .detail-content-section { padding: 82px 0; background: #ffffff; }
 .detail-syllabus-card { padding: 0; border: 0; background: transparent; box-shadow: none; }
 .detail-section-heading { margin-bottom: 38px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
@@ -59,7 +60,7 @@
 .course-not-found-icon { width: 58px; height: 58px; margin: 0 auto 16px; display: grid; place-items: center; color: #ffffff; border-radius: 16px; background: linear-gradient(135deg, #4f46e5, #7c3aed); font-size: 24px; font-weight: 900; }
 .course-not-found a { min-height: 46px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; color: #ffffff; border-radius: 12px; background: linear-gradient(90deg, #4f46e5, #7c3aed); font-size: 13px; font-weight: 850; text-decoration: none; }
 @media (max-width: 850px) { .detail-section-heading { align-items: flex-start; flex-direction: column; } }
-@media (max-width: 650px) { .course-detail-hero { padding: 60px 0 55px; } .detail-hero-simple h1 { font-size: 38px; letter-spacing: -1.7px; } .detail-content-section { padding: 60px 0; } }
+@media (max-width: 650px) { .course-detail-hero { padding: 24px 0 22px; } .detail-hero-simple h1 { font-size: 30px; letter-spacing: -1.2px; } .detail-content-section { padding: 60px 0; } }
 
 @media (max-width: 420px) {
   .detail-buy-action .buy-course-button {
