@@ -299,7 +299,7 @@ CodePath Learning was founded with the vision of making coding education more pr
 <div align="center">
 
 [![Website](https://img.shields.io/badge/WEBSITE-codepathlearning.co.in-0891B2?style=for-the-badge&logo=googlechrome&logoColor=white)](https://www.codepathlearning.co.in/)
-[![Email](https://img.shields.io/badge/EMAIL-codepathlearning%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:codepathlearning@gmail.com)
+[![Email](https://img.shields.io/badge/EMAIL-codepathlearning2026%40gmail.com-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:codepathlearning@gmail.com)
 
 <br/>
 
