@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import logoIcon from "../assets/codepath-learning-logo2.png";
+import ProtectedStudentResourceLink from "./ProtectedStudentResourceLink";
 import "../styles/footer.css";
 
 export default function Footer() {
@@ -41,9 +42,9 @@ export default function Footer() {
           <div>
             <h3>Contact</h3>
             <a href="mailto:codepathlearning@gmail.com">Email Support</a>
-            <a href="https://chat.whatsapp.com/LAsxhBeD6ZX5CP6PhDxkeK" target="_blank" rel="noreferrer">
+            <ProtectedStudentResourceLink resource="whatsapp">
               WhatsApp Group
-            </a>
+            </ProtectedStudentResourceLink>
           </div>
         </div>
       </div>

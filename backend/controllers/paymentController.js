@@ -14,6 +14,12 @@ const COURSES = {
   "ai-tools-projects": "AI Tools for Smart Projects",
 };
 
+const STUDENT_RESOURCE_ENV = Object.freeze({
+  whatsapp: "WHATSAPP_GROUP_URL",
+  classroom: "GOOGLE_CLASSROOM_URL",
+  enrollment: "ENROLLMENT_FORM_URL",
+});
+
 function paymentConfig() {
   const coursePrice = Number(process.env.COURSE_PRICE);
   const amount = coursePrice * 100;
@@ -149,6 +155,34 @@ exports.myCourses = async (req, res) => {
   } catch (error) {
     console.error("Load paid courses error:", error);
     return res.status(500).json({ success: false, message: "Unable to load paid courses." });
+  }
+};
+
+exports.getStudentResource = async (req, res) => {
+  try {
+    const resource = String(req.params.resource || "").trim().toLowerCase();
+    const environmentName = STUDENT_RESOURCE_ENV[resource];
+    if (!environmentName) {
+      return res.status(404).json({ success: false, message: "Student resource not found." });
+    }
+
+    const paid = await Enrollment.exists({ userId: req.user._id, status: "ACTIVE" });
+    if (!paid) {
+      return res.status(403).json({
+        success: false,
+        message: "Access denied. Purchase a course to access student resources.",
+      });
+    }
+
+    const url = String(process.env[environmentName] || "").trim();
+    if (!/^https:\/\//i.test(url)) {
+      throw new Error(`${environmentName} must be configured as a secure HTTPS URL.`);
+    }
+
+    return res.json({ success: true, url });
+  } catch (error) {
+    console.error("Load student resource error:", error.message);
+    return res.status(500).json({ success: false, message: "Unable to open this student resource." });
   }
 };
 

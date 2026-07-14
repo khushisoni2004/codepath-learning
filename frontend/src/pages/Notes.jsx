@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import ProtectedStudentResourceLink from "../components/ProtectedStudentResourceLink";
 import "../styles/notes.css";
 
 const resources = [
@@ -127,7 +128,7 @@ const platformLinks = [
     title: "Join WhatsApp Group",
     description:
       "Receive class reminders, important announcements and quick student updates.",
-    link: "https://chat.whatsapp.com/LAsxhBeD6ZX5CP6PhDxkeK",
+    resource: "whatsapp",
     button: "Join WhatsApp Group",
     className: "notes-whatsapp-link",
   },
@@ -136,7 +137,7 @@ const platformLinks = [
     title: "Fill Enrollment Form",
     description:
       "Submit your course details, contact information and selected learning plan.",
-    link: "https://docs.google.com/forms/d/1ig0NxC4QurXuUf1TY_dJiwvshp63SnRGa2axAbnAtlQ/edit",
+    resource: "enrollment",
     button: "Open Google Form",
     className: "notes-form-link",
   },
@@ -194,24 +195,14 @@ export default function Notes() {
           </p>
 
           <div className="notes-hero-actions">
-            <a
-              href="https://classroom.google.com/c/ODcwMzIyNDc0MTc1?cjc=5xlrgzcx"
-              target="_blank"
-              rel="noreferrer"
-              className="notes-primary-button"
-            >
+            <ProtectedStudentResourceLink resource="classroom" className="notes-primary-button">
               Join Google Classroom
               <span>→</span>
-            </a>
+            </ProtectedStudentResourceLink>
 
-            <a
-              href="https://docs.google.com/forms/d/1ig0NxC4QurXuUf1TY_dJiwvshp63SnRGa2axAbnAtlQ/edit"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="notes-secondary-button"
-            >
+            <ProtectedStudentResourceLink resource="enrollment" className="notes-secondary-button">
               Fill Enrollment Form
-            </a>
+            </ProtectedStudentResourceLink>
           </div>
 
           <div className="notes-hero-points">
@@ -348,22 +339,10 @@ export default function Notes() {
                   <p>{item.description}</p>
                 </div>
 
-                {item.internal ? (
-                  <Link to={item.link} className="notes-platform-button">
-                    {item.button}
-                    <span>→</span>
-                  </Link>
-                ) : (
-                  <a
-                    href={item.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="notes-platform-button"
-                  >
-                    {item.button}
-                    <span>→</span>
-                  </a>
-                )}
+                <ProtectedStudentResourceLink resource={item.resource} className="notes-platform-button">
+                  {item.button}
+                  <span>→</span>
+                </ProtectedStudentResourceLink>
               </article>
             ))}
           </div>
