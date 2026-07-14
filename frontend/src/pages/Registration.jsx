@@ -26,11 +26,29 @@ const courseOptions = [
   "AI Tools for Smart Projects",
 ];
 
+async function copyText(value) {
+  if (navigator.clipboard?.writeText) {
+    await navigator.clipboard.writeText(value);
+    return;
+  }
+
+  const textArea = document.createElement("textarea");
+  textArea.value = value;
+  textArea.style.position = "fixed";
+  textArea.style.opacity = "0";
+  document.body.appendChild(textArea);
+  textArea.select();
+  const copied = document.execCommand("copy");
+  textArea.remove();
+  if (!copied) throw new Error("Unable to copy Registration ID.");
+}
+
 export default function Registration() {
   const [form, setForm] = useState(initialForm);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [registration, setRegistration] = useState(null);
+  const [registrationIdCopyStatus, setRegistrationIdCopyStatus] = useState("idle");
   const { registerAccount, refreshUser } = useAuth();
 
   function handleChange(event) {
@@ -53,6 +71,15 @@ WhatsApp: ${registration.phone}
 
 Please keep this Registration ID safe for login and verification.`
     );
+  }
+
+  async function copyRegistrationId() {
+    try {
+      await copyText(registration.registrationId);
+      setRegistrationIdCopyStatus("copied");
+    } catch {
+      setRegistrationIdCopyStatus("failed");
+    }
   }
 
   async function handleSubmit(event) {
@@ -115,6 +142,18 @@ Please keep this Registration ID safe for login and verification.`
           <div className="registration-id-box">
             <span>Your Registration ID</span>
             <strong>{registration.registrationId}</strong>
+            <button
+              type="button"
+              className={`registration-copy-id ${registrationIdCopyStatus === "copied" ? "is-copied" : ""}`}
+              onClick={copyRegistrationId}
+              aria-live="polite"
+            >
+              {registrationIdCopyStatus === "copied"
+                ? "✓ Copied!"
+                : registrationIdCopyStatus === "failed"
+                  ? "Copy failed — try again"
+                  : "Copy Registration ID"}
+            </button>
           </div>
 
           <div className="registration-summary">
@@ -167,6 +206,7 @@ Please keep this Registration ID safe for login and verification.`
               className="registration-light-button"
               onClick={() => {
                 setRegistration(null);
+                setRegistrationIdCopyStatus("idle");
                 setForm(initialForm);
               }}
             >
