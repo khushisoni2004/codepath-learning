@@ -19,8 +19,11 @@
 
 * { box-sizing: border-box; }
 html {
+  font-size: 16px;
   scroll-behavior: smooth;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 body {
   margin: 0;
@@ -35,6 +38,7 @@ body {
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 a { color: inherit; }
 img { max-width: 100%; }
@@ -45,7 +49,16 @@ main { animation: pageIn .45s ease both; }
 ::selection { background: #c7d2fe; color: #1e1b4b; }
 @keyframes pageIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes floatSoft { 50% { transform: translateY(-8px); } }
-@media (max-width: 640px) { .container { width: min(100% - 24px, 1160px); } }
+@media (max-width: 640px) {
+  .container { width: min(100% - 24px, 1160px); }
+
+  /* Keep mobile browsers from zooming the page when a form field receives focus. */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 
 /* ---------- Navbar + Footer Font Visibility Fix ---------- */
