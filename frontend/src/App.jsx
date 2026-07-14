@@ -11,6 +11,7 @@ import About from "./pages/About";
 import CertificatePolicy from "./pages/CertificatePolicy";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
+import ResetPassword from "./pages/ResetPassword";
 import VerifyRegistration from "./pages/VerifyRegistration";
 import AdminVerification from "./pages/AdminVerification";
 import NotFound from "./pages/NotFound";
@@ -29,6 +30,7 @@ export default function App() {
         <Route path="/certificate-policy" element={<CertificatePolicy />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify" element={<VerifyRegistration />} />
         <Route path="/admin/verification" element={<AdminVerification />} />
         <Route path="*" element={<NotFound />} />

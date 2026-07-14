@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import logoIcon from "../assets/codepath-learning-logo2.png";
 import "../styles/navbar.css";
 
@@ -16,28 +17,9 @@ const navLinks = [
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
-  const [user, setUser] = useState(() => readUser());
+  const { user, logout } = useAuth();
   const profileRef = useRef(null);
   const navigate = useNavigate();
-
-  function readUser() {
-    try {
-      const saved = JSON.parse(localStorage.getItem("codepathStudent"));
-      return saved?.token ? saved : null;
-    } catch {
-      return null;
-    }
-  }
-
-  useEffect(() => {
-    const syncUser = () => setUser(readUser());
-    const timer = window.setInterval(syncUser, 500);
-    window.addEventListener("storage", syncUser);
-    return () => {
-      window.clearInterval(timer);
-      window.removeEventListener("storage", syncUser);
-    };
-  }, []);
 
   useEffect(() => {
     function closeOutside(event) {
@@ -52,9 +34,8 @@ export default function Navbar() {
     setProfileOpen(false);
   }
 
-  function signOut() {
-    localStorage.removeItem("codepathStudent");
-    setUser(null);
+  async function signOut() {
+    await logout();
     closeMenu();
     navigate("/");
   }

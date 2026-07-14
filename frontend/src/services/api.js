@@ -5,13 +5,10 @@ const REQUEST_TIMEOUT_MS = 20000;
 export async function apiFetch(url, options = {}) {
   const controller = new AbortController();
   const timeout = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
-
   try {
     return await fetch(url, { ...options, signal: controller.signal });
   } catch (error) {
-    if (controller.signal.aborted) {
-      throw new Error("Backend request timed out. Please try again.");
-    }
+    if (controller.signal.aborted) throw new Error("Backend request timed out. Please try again.");
     throw error;
   } finally {
     window.clearTimeout(timeout);
@@ -23,12 +20,13 @@ export function getStudent() {
 }
 
 export async function paymentApi(path, options = {}) {
-  const student = getStudent();
+  const token = localStorage.getItem("codepathAuthToken");
+  if (!token) throw new Error("Please login to continue.");
   const response = await apiFetch(`${API_URL}/payments${path}`, {
     ...options,
     headers: {
       ...(options.body ? { "Content-Type": "application/json" } : {}),
-      ...(student?.token ? { Authorization: `Bearer ${student.token}` } : {}),
+      Authorization: `Bearer ${token}`,
       ...options.headers,
     },
   });

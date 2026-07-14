@@ -6,6 +6,8 @@ require("dotenv").config();
 const registrationRoutes = require("./routes/registrationRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
+const authRoutes = require("./routes/authRoutes");
+const User = require("./models/User");
 
 const app = express();
 
@@ -21,6 +23,8 @@ const MONGODB_CONNECT_TIMEOUT_MS = 30000;
 const MONGODB_RETRY_DELAY_MS = 10000;
 let lastMongoError = "";
 let mongoConnectPromise = null;
+let authStoragePreparationPromise = null;
+
 const requiredEnvironment = [
   "MONGODB_URI",
   "JWT_SECRET",
@@ -35,6 +39,7 @@ const missingEnvironment = requiredEnvironment.filter((name) => !process.env[nam
 if (missingEnvironment.length) {
   console.warn(`Missing environment variables: ${missingEnvironment.join(", ")}`);
 }
+
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   process.env.CLIENT_URL,
@@ -48,16 +53,14 @@ const allowedOrigins = [
 
 function buildMongoUri(uri) {
   if (!uri) return "";
-
   try {
     const parsed = new URL(uri);
     if (parsed.protocol === "mongodb+srv:" || parsed.protocol === "mongodb:") {
       const databasePath = parsed.pathname.replace(/^\/+/, "");
       if (!databasePath) parsed.pathname = `/${MONGODB_DATABASE_NAME}`;
     }
-
     return parsed.toString();
-  } catch (_error) {
+  } catch {
     return uri;
   }
 }
@@ -70,12 +73,8 @@ function mongoConnectionInfo(uri) {
       database: parsed.pathname.replace(/^\/+/, "") || MONGODB_DATABASE_NAME,
       configured: true,
     };
-  } catch (_error) {
-    return {
-      host: "unknown",
-      database: MONGODB_DATABASE_NAME,
-      configured: Boolean(uri),
-    };
+  } catch {
+    return { host: "unknown", database: MONGODB_DATABASE_NAME, configured: Boolean(uri) };
   }
 }
 
@@ -83,13 +82,13 @@ function safeMongoError(message) {
   const text = String(message || "");
   if (!text) return "";
   if (/bad auth|authentication failed|auth failed/i.test(text)) {
-    return "MongoDB authentication failed. Check username and password in Render MONGODB_URI.";
+    return "MongoDB authentication failed. Check the deployed MONGODB_URI.";
   }
   if (/IP|whitelist|not authorized|not allowed/i.test(text)) {
-    return "MongoDB network access blocked. Allow Render outbound IP or 0.0.0.0/0 in Atlas Network Access.";
+    return "MongoDB network access is blocked. Check Atlas Network Access.";
   }
   if (/ETIMEOUT|timed out|ENOTFOUND|ECONNREFUSED|querySrv/i.test(text)) {
-    return "MongoDB network/DNS timeout. Check Atlas Network Access and Render connectivity.";
+    return "MongoDB network/DNS timeout. Check Atlas connectivity.";
   }
   return text.replace(/mongodb(\+srv)?:\/\/[^@\s]+@/gi, "mongodb$1://<credentials>@").slice(0, 220);
 }
@@ -106,14 +105,11 @@ app.use(cors({
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({
-    success: true,
-    message: "CodePath Learning API is running",
-  });
+app.get("/", (_req, res) => {
+  res.json({ success: true, message: "CodePath Learning API is running" });
 });
 
-app.get("/api/health", async (req, res) => {
+app.get("/api/health", async (_req, res) => {
   if (MONGODB_URI && mongoose.connection.readyState !== 1) {
     await ensureDatabaseConnected().catch(() => {});
   }
@@ -132,11 +128,10 @@ app.get("/api/health", async (req, res) => {
 
 app.use("/api", async (req, res, next) => {
   if (req.path === "/health" || mongoose.connection.readyState === 1) return next();
-
   try {
     await ensureDatabaseConnected();
     return next();
-  } catch (_error) {
+  } catch {
     return res.status(503).json({
       success: false,
       message: "Database is not connected yet. Please try again shortly.",
@@ -145,8 +140,8 @@ app.use("/api", async (req, res, next) => {
   }
 });
 
+app.use("/api/auth", authRoutes);
 app.use("/api/registrations", registrationRoutes);
-app.use("/api/auth", registrationRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/admin", adminRoutes);
 
@@ -160,12 +155,47 @@ app.use((error, _req, res, _next) => {
   });
 });
 
-async function startServer() {
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`CodePath Learning backend listening on port ${PORT}`);
+async function prepareAuthStorage() {
+  if (authStoragePreparationPromise) return authStoragePreparationPromise;
+  authStoragePreparationPromise = (async () => {
+    try {
+      const userIndexes = await User.collection.indexes();
+      const obsoleteAuthIndex = userIndexes.find((index) => index.key?.firebaseUid === 1);
+      if (obsoleteAuthIndex) await User.collection.dropIndex(obsoleteAuthIndex.name);
+    } catch (error) {
+      if (error?.codeName !== "NamespaceNotFound" && error?.code !== 26) throw error;
+    }
+  })().catch((error) => {
+    authStoragePreparationPromise = null;
+    throw error;
   });
+  return authStoragePreparationPromise;
+}
 
-  startDatabase();
+async function ensureDatabaseConnected() {
+  if (mongoose.connection.readyState === 1) {
+    await prepareAuthStorage();
+    return mongoose.connection;
+  }
+  if (!MONGODB_URI) throw new Error("MONGODB_URI is required.");
+
+  if (!mongoConnectPromise) {
+    mongoConnectPromise = mongoose.connect(MONGODB_URI, {
+      serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+      connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+    })
+      .then(async () => {
+        lastMongoError = "";
+        await prepareAuthStorage();
+        return mongoose.connection;
+      })
+      .catch((error) => {
+        lastMongoError = safeMongoError(error.message);
+        mongoConnectPromise = null;
+        throw error;
+      });
+  }
+  return mongoConnectPromise;
 }
 
 function startDatabase() {
@@ -173,7 +203,6 @@ function startDatabase() {
     console.error("MongoDB connection skipped: MONGODB_URI is required.");
     return;
   }
-
   const mongoInfo = mongoConnectionInfo(MONGODB_URI);
   console.log(`MongoDB configured for ${mongoInfo.host}/${mongoInfo.database}`);
   connectDatabase();
@@ -190,30 +219,11 @@ async function connectDatabase() {
   }
 }
 
-async function ensureDatabaseConnected() {
-  if (mongoose.connection.readyState === 1) return mongoose.connection;
-
-  if (!MONGODB_URI) {
-    throw new Error("MONGODB_URI is required.");
-  }
-
-  if (!mongoConnectPromise) {
-    mongoConnectPromise = mongoose.connect(MONGODB_URI, {
-      serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
-      connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
-    })
-      .then(() => {
-        lastMongoError = "";
-        return mongoose.connection;
-      })
-      .catch((error) => {
-        lastMongoError = safeMongoError(error.message);
-        mongoConnectPromise = null;
-        throw error;
-      });
-  }
-
-  return mongoConnectPromise;
+function startServer() {
+  app.listen(PORT, "0.0.0.0", () => {
+    console.log(`CodePath Learning backend listening on port ${PORT}`);
+  });
+  startDatabase();
 }
 
 if (process.env.VERCEL) {

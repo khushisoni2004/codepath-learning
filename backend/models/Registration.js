@@ -32,6 +32,8 @@ const registrationSchema = new mongoose.Schema(
       index: true,
     },
 
+    // Retained read-only for seamless migration of existing backend accounts.
+    // New password hashes are stored in the User model.
     password: {
       type: String,
       select: false,

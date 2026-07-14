@@ -1,12 +1,13 @@
 import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { getStudent, loadRazorpay, paymentApi } from "../services/api";
+import { loadRazorpay, paymentApi } from "../services/api";
+import { useAuth } from "../context/AuthContext";
 import ReceiptModal from "./ReceiptModal";
 import "../styles/payment-modal.css";
 
 export default function PaymentModal({ course, paid, onPaid }) {
-  const student = getStudent();
+  const { user: student } = useAuth();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -57,7 +58,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
     </button>
     {createPortal(<>{open && <div className="payment-overlay" role="dialog" aria-modal="true"><section className="payment-modal">
       <button className="payment-close" type="button" onClick={() => setOpen(false)} aria-label="Close">×</button>
-      {!student?.token ? <><h2>Login Required</h2><p>Please register or login before purchasing this course.</p><div className="payment-actions"><Link to="/login">Login</Link><Link to="/register">Register</Link></div></> :
+      {!student ? <><h2>Login Required</h2><p>Please register or login before purchasing this course.</p><div className="payment-actions"><Link to="/login">Login</Link><Link to="/register">Register</Link></div></> :
         <form className="enrollment-form" onSubmit={enroll}>
           <h2>Enroll in {course.title}</h2><p>Confirm your details before opening the secure payment options.</p>
           <label>Student Name<input type="text" value={details.name} onChange={(e) => setDetails({ ...details, name: e.target.value })} required /></label>

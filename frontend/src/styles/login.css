@@ -198,6 +198,122 @@
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
 }
 
+.login-card .forgot-password-link {
+  display: block;
+  width: auto;
+  min-height: 0 !important;
+  margin: 7px 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #4f46e5;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.forgot-modal-backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.52);
+}
+
+.forgot-modal {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 26px;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.25);
+}
+
+.forgot-modal h2 {
+  margin: 0 36px 6px 0;
+  color: #07133d;
+  font-size: 24px;
+}
+
+.forgot-modal p {
+  margin: 0 0 16px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.forgot-modal label {
+  display: grid;
+  gap: 8px;
+  color: #16213e;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.forgot-modal input {
+  width: 100%;
+  padding: 14px 15px;
+  border: 1px solid #dbe3ef;
+  border-radius: 14px;
+  outline: none;
+}
+
+.forgot-modal input:focus {
+  border-color: #4f46e5;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+}
+
+.forgot-modal button[type="submit"] {
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: #ffffff;
+  font-weight: 850;
+  cursor: pointer;
+}
+
+.forgot-modal button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.forgot-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  padding: 4px 8px;
+  border: 0;
+  background: transparent;
+  color: #64748b;
+  font-size: 26px;
+  cursor: pointer;
+}
+
+.forgot-message {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #ecfdf5;
+  color: #047857;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.reset-password-layout {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.reset-password-card {
+  margin: 0;
+}
+
 .login-card button,
 .login-actions a,
 .login-actions button {
