@@ -10,6 +10,7 @@ const PAYMENT_FORM_URL = "https://docs.google.com/forms/d/1ex_D0DxLnx9hY1zRRR1X7
 
 export default function PaymentModal({ course, paid, onPaid }) {
   const { user: student } = useAuth();
+  const studentId = student?.id;
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState("details");
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,19 @@ export default function PaymentModal({ course, paid, onPaid }) {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previousOverflow; };
   }, [open, receipt]);
+
+  useEffect(() => {
+    if (!studentId || paid) return undefined;
+    let cancelled = false;
+    paymentApi(`/manual-status/${course.slug}`)
+      .then((data) => {
+        if (cancelled) return;
+        setManualPayment(data.payment);
+        if (data.payment?.status === "PAID") onPaid(course.slug);
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [studentId, paid, course.slug, onPaid]);
 
   useEffect(() => {
     if (!open || step !== "pending") return undefined;
@@ -59,8 +73,8 @@ export default function PaymentModal({ course, paid, onPaid }) {
 
   function openCheckout() {
     setError("");
-    setStep("details");
-    setManualPayment(null);
+    setStep(manualPayment?.status === "PENDING" ? "pending" : "details");
+    if (manualPayment?.status !== "PENDING") setManualPayment(null);
     setOpen(true);
   }
 
@@ -195,8 +209,8 @@ export default function PaymentModal({ course, paid, onPaid }) {
   }
 
   return <>
-    <button type="button" className={`buy-course-button ${paid ? "paid" : ""}`} onClick={openCheckout} disabled={paid || loading}>
-      {paid ? "Paid Course" : loading ? "Please wait..." : "Buy Now"}
+    <button type="button" className={`buy-course-button ${paid ? "paid" : manualPayment?.status === "PENDING" ? "pending" : ""}`} onClick={openCheckout} disabled={paid || loading}>
+      {paid ? "Paid Course" : manualPayment?.status === "PENDING" ? "Verification Pending" : loading ? "Please wait..." : "Buy Now"}
     </button>
     {createPortal(<>
       {open && <div className="payment-overlay" role="dialog" aria-modal="true" aria-label={`Buy ${course.title}`}>

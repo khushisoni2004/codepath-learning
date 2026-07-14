@@ -19,6 +19,13 @@
   cursor: default;
 }
 
+.buy-course-button.pending {
+  background: #fff7d6;
+  color: #8a5a00;
+  border: 1px solid #f2d577;
+  box-shadow: none;
+}
+
 .payment-overlay {
   position: fixed;
   z-index: 10000;
