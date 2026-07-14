@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { API_URL } from "../config/api";
 import { useAuth } from "../context/AuthContext";
-import { apiFetch } from "../services/api";
+import { apiFetch, getStudent } from "../services/api";
 import "../styles/feedback.css";
 
 const courseOptions = [
@@ -51,21 +51,24 @@ function RatingQuestion({ name, english, hindi, value, onChange }) {
 
 export default function Feedback() {
   const { user, loading: authLoading } = useAuth();
-  const userId = user?.id;
+  const [cachedStudent] = useState(() => localStorage.getItem("codepathAuthToken") ? getStudent() : null);
+  const activeUser = user || (authLoading ? cachedStudent : null);
+  const userId = activeUser?.id;
+  const dirtyForm = useRef(false);
   const [form, setForm] = useState(initialForm);
-  const [pageLoading, setPageLoading] = useState(true);
+  const [loadingExisting, setLoadingExisting] = useState(Boolean(userId));
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [savedAverage, setSavedAverage] = useState(null);
 
   useEffect(() => {
-    if (authLoading) return undefined;
-    if (!userId) { setPageLoading(false); return undefined; }
+    if (!userId) { setLoadingExisting(false); return undefined; }
     let cancelled = false;
+    setLoadingExisting(true);
     feedbackRequest("/me")
       .then((data) => {
-        if (cancelled || !data.feedback) return;
+        if (cancelled || dirtyForm.current || !data.feedback) return;
         setForm({
           course: data.feedback.course || "",
           ratings: { ...initialForm.ratings, ...data.feedback.ratings },
@@ -76,14 +79,16 @@ export default function Feedback() {
         setSavedAverage(data.feedback.averageRating);
       })
       .catch((loadError) => { if (!cancelled) setError(loadError.message); })
-      .finally(() => { if (!cancelled) setPageLoading(false); });
+      .finally(() => { if (!cancelled) setLoadingExisting(false); });
     return () => { cancelled = true; };
-  }, [authLoading, userId]);
+  }, [userId]);
 
   function updateRating(name, value) {
+    dirtyForm.current = true;
     setForm((current) => ({ ...current, ratings: { ...current.ratings, [name]: value } }));
   }
   function updateField(event) {
+    dirtyForm.current = true;
     const { name, value } = event.target;
     setForm((current) => ({ ...current, [name]: value }));
   }
@@ -96,8 +101,8 @@ export default function Feedback() {
     finally { setSaving(false); }
   }
 
-  if (authLoading || pageLoading) return <main className="feedback-page"><div className="feedback-state-card">Loading feedback form…</div></main>;
-  if (!user) {
+  if (authLoading && !activeUser) return <main className="feedback-page"><div className="feedback-state-card feedback-loading-card"><span className="feedback-loader" />Preparing your feedback form…</div></main>;
+  if (!activeUser) {
     return <main className="feedback-page"><section className="feedback-state-card">
       <span>STUDENT FEEDBACK</span><h1>Login Required</h1>
       <p>Please login with your registered student account to submit feedback.</p>
@@ -112,12 +117,17 @@ export default function Feedback() {
         <span>STUDENT FEEDBACK • छात्र प्रतिक्रिया</span>
         <h1>Help us improve your learning experience.</h1>
         <p>आपकी प्रतिक्रिया हमें classes, course content और platform को बेहतर बनाने में मदद करती है।</p>
+        <div className="feedback-hero-notes"><span>✓ Secure</span><span>✓ सिर्फ 2 मिनट</span><span>✓ You can update anytime</span></div>
       </div></section>
       <section className="container feedback-form-section">
         <form className="feedback-form" onSubmit={submitFeedback}>
+          <div className="feedback-form-heading">
+            <div><span>QUICK FEEDBACK</span><h2>Tell us about your experience</h2><p>हर सवाल का honest answer दें—आपकी पहचान सुरक्षित है।</p></div>
+            {loadingExisting ? <span className="feedback-sync-pill"><i /> Syncing saved feedback…</span> : null}
+          </div>
           <div className="feedback-student-row">
-            <div><span>Student / छात्र</span><strong>{user.studentName || user.name}</strong></div>
-            <div><span>Email / ईमेल</span><strong>{user.email}</strong></div>
+            <div><span>Student / छात्र</span><strong>{activeUser.studentName || activeUser.name}</strong></div>
+            <div><span>Email / ईमेल</span><strong>{activeUser.email}</strong></div>
           </div>
           <label className="feedback-field"><strong>Which course did you study? <span>आपने कौन-सा course पढ़ा?</span></strong>
             <select name="course" value={form.course} onChange={updateField} required>
