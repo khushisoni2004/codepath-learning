@@ -20,27 +20,54 @@ const STUDENT_RESOURCE_ENV = Object.freeze({
   enrollment: "ENROLLMENT_FORM_URL",
 });
 
-function paymentConfig() {
+function priceConfig() {
   const coursePrice = Number(process.env.COURSE_PRICE);
   const amount = coursePrice * 100;
   const currency = process.env.RAZORPAY_CURRENCY;
-  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET || coursePrice !== 599 || currency !== "INR") {
+  if (coursePrice !== 599 || currency !== "INR") {
     throw new Error("Payment environment must configure COURSE_PRICE=599 and RAZORPAY_CURRENCY=INR.");
   }
   return { amount, currency };
 }
 
+function razorpayConfig() {
+  if (!process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
+    throw new Error("Razorpay credentials are not configured.");
+  }
+  return priceConfig();
+}
+
 function receiptView(payment) {
   return {
     receiptNumber: payment.receiptNumber,
-    paymentId: payment.razorpayPaymentId,
-    orderId: payment.razorpayOrderId,
+    paymentId: payment.razorpayPaymentId || payment.utrNumber,
+    orderId: payment.razorpayOrderId || null,
+    paymentMethod: payment.paymentMethod || "RAZORPAY",
     courseTitle: payment.courseTitle,
     amount: payment.amount,
     studentName: payment.studentName,
     studentEmail: payment.studentEmail,
     paidAt: payment.paidAt,
   };
+}
+
+function manualPaymentView(payment) {
+  if (!payment) return null;
+  return {
+    id: payment._id,
+    courseSlug: payment.courseSlug,
+    courseTitle: payment.courseTitle,
+    amount: payment.amount,
+    currency: payment.currency,
+    status: payment.status,
+    utrNumber: payment.utrNumber,
+    submittedAt: payment.googleFormSubmittedAt || payment.createdAt,
+    receipt: payment.status === "PAID" ? receiptView(payment) : null,
+  };
+}
+
+function normalizedUtr(value) {
+  return String(value || "").trim().toUpperCase().replace(/\s+/g, "");
 }
 
 exports.createOrder = async (req, res) => {
@@ -62,7 +89,7 @@ exports.createOrder = async (req, res) => {
       return res.json({ success: true, alreadyPaid: true });
     }
 
-    const { amount, currency } = paymentConfig();
+    const { amount, currency } = razorpayConfig();
     const receiptCourse = courseSlug.replace(/[^a-z0-9]/g, "").slice(0, 8);
     const receiptUser = String(req.user._id).slice(-6);
     const receipt = `CPL_${receiptCourse}_${receiptUser}_${Date.now()}`;
@@ -79,8 +106,8 @@ exports.createOrder = async (req, res) => {
 
     await Payment.create({
       userId: req.user._id, courseSlug, courseTitle, amount: order.amount,
-      currency: order.currency, status: "PENDING", razorpayOrderId: order.id,
-      studentName: req.user.studentName, studentEmail: req.user.email,
+      currency: order.currency, paymentMethod: "RAZORPAY", status: "PENDING", razorpayOrderId: order.id,
+      studentName: req.user.studentName, studentEmail: req.user.email, studentPhone: req.user.phone,
     });
     return res.status(201).json({
       success: true, keyId: process.env.RAZORPAY_KEY_ID, orderId: order.id,
@@ -89,6 +116,93 @@ exports.createOrder = async (req, res) => {
   } catch (error) {
     console.error("Create Razorpay order error:", error);
     return res.status(500).json({ success: false, message: "Unable to start payment." });
+  }
+};
+
+exports.submitManualPayment = async (req, res) => {
+  const courseSlug = String(req.body?.courseSlug || "").trim().toLowerCase();
+  const courseTitle = COURSES[courseSlug];
+  const utrNumber = normalizedUtr(req.body?.utrNumber);
+
+  if (!courseTitle || !/^[A-Z0-9-]{6,40}$/.test(utrNumber) || req.body?.googleFormSubmitted !== true) {
+    return res.status(400).json({
+      success: false,
+      message: "Submit the Google Form and enter a valid UPI transaction ID/UTR.",
+    });
+  }
+
+  try {
+    const paid = await Enrollment.exists({ userId: req.user._id, courseSlug, status: "ACTIVE" });
+    if (paid) return res.json({ success: true, alreadyPaid: true });
+
+    const duplicate = await Payment.findOne({ utrNumber });
+    if (duplicate) {
+      if (String(duplicate.userId) === String(req.user._id) && duplicate.courseSlug === courseSlug) {
+        return res.json({ success: true, payment: manualPaymentView(duplicate) });
+      }
+      return res.status(409).json({ success: false, message: "This UTR has already been submitted." });
+    }
+
+    const pending = await Payment.findOne({
+      userId: req.user._id,
+      courseSlug,
+      paymentMethod: "UPI_QR",
+      status: "PENDING",
+    });
+    if (pending) {
+      return res.status(409).json({
+        success: false,
+        message: "A QR payment is already pending verification for this course.",
+        payment: manualPaymentView(pending),
+      });
+    }
+
+    const { amount, currency } = priceConfig();
+    const payment = await Payment.create({
+      userId: req.user._id,
+      courseSlug,
+      courseTitle,
+      amount,
+      currency,
+      paymentMethod: "UPI_QR",
+      status: "PENDING",
+      utrNumber,
+      googleFormSubmittedAt: new Date(),
+      studentName: req.user.studentName,
+      studentEmail: req.user.email,
+      studentPhone: req.user.phone,
+    });
+
+    return res.status(201).json({
+      success: true,
+      message: "Payment submitted for bank verification. Course access remains locked until approval.",
+      payment: manualPaymentView(payment),
+    });
+  } catch (error) {
+    console.error("Submit QR payment error:", error.message);
+    if (error?.code === 11000) {
+      return res.status(409).json({ success: false, message: "This UTR has already been submitted." });
+    }
+    return res.status(500).json({ success: false, message: "Unable to submit payment for verification." });
+  }
+};
+
+exports.getManualPaymentStatus = async (req, res) => {
+  try {
+    const courseSlug = String(req.params.courseSlug || "").trim().toLowerCase();
+    if (!COURSES[courseSlug]) return res.status(400).json({ success: false, message: "Invalid course." });
+
+    const payment = await Payment.findOne({
+      userId: req.user._id,
+      courseSlug,
+      paymentMethod: "UPI_QR",
+    }).sort({ createdAt: -1 });
+
+    if (!payment) return res.status(404).json({ success: false, message: "No QR payment submission found." });
+    return res.json({ success: true, payment: manualPaymentView(payment) });
+  } catch (error) {
+    console.error("Load QR payment status error:", error.message);
+    return res.status(500).json({ success: false, message: "Unable to check payment status." });
   }
 };
 
@@ -188,7 +302,12 @@ exports.getStudentResource = async (req, res) => {
 
 exports.getReceipt = async (req, res) => {
   try {
-    const payment = await Payment.findOne({ razorpayPaymentId: req.params.paymentId, userId: req.user._id, status: "PAID" });
+    const paymentId = String(req.params.paymentId || "").trim().toUpperCase();
+    const payment = await Payment.findOne({
+      userId: req.user._id,
+      status: "PAID",
+      $or: [{ razorpayPaymentId: req.params.paymentId }, { utrNumber: paymentId }],
+    });
     if (!payment) return res.status(404).json({ success: false, message: "Receipt not found." });
     return res.json({ success: true, receipt: receiptView(payment) });
   } catch (error) {

@@ -10,8 +10,9 @@ export default function ReceiptModal({ receipt, onClose }) {
           <p><span>Receipt No:</span><strong>{receipt.receiptNumber}</strong></p>
           <p><span>Course:</span><strong>{receipt.courseTitle}</strong></p>
           <p><span>Amount:</span><strong>₹{(receipt.amount / 100).toFixed(0)}</strong></p>
+          <p><span>Payment Method:</span><strong>{receipt.paymentMethod === "UPI_QR" ? "CODEPATH LEARNING QR" : "Razorpay"}</strong></p>
           <p><span>Payment ID:</span><strong>{receipt.paymentId}</strong></p>
-          <p><span>Order ID:</span><strong>{receipt.orderId}</strong></p>
+          {receipt.orderId ? <p><span>Order ID:</span><strong>{receipt.orderId}</strong></p> : null}
           <p><span>Student:</span><strong>{receipt.studentName}</strong></p>
           <p><span>Email:</span><strong>{receipt.studentEmail}</strong></p>
           <p><span>Date:</span><strong>{new Date(receipt.paidAt).toLocaleString()}</strong></p>

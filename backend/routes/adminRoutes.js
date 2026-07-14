@@ -1,4 +1,8 @@
 const express = require("express");
+const mongoose = require("mongoose");
+const Counter = require("../models/Counter");
+const Enrollment = require("../models/Enrollment");
+const Payment = require("../models/Payment");
 const Registration = require("../models/Registration");
 
 const router = express.Router();
@@ -102,5 +106,75 @@ router.patch(
     }
   }
 );
+
+router.get("/upi-payments", verifyAdmin, async (_req, res) => {
+  try {
+    const payments = await Payment.find({ paymentMethod: "UPI_QR" })
+      .select("courseSlug courseTitle amount currency status utrNumber receiptNumber studentName studentEmail studentPhone googleFormSubmittedAt manuallyVerifiedAt paidAt createdAt")
+      .sort({ createdAt: -1 });
+    return res.json({ success: true, payments });
+  } catch (error) {
+    console.error("Load UPI payments error:", error.message);
+    return res.status(500).json({ success: false, message: "Unable to load QR payment records." });
+  }
+});
+
+router.patch("/upi-payments/:paymentId", verifyAdmin, async (req, res) => {
+  const action = String(req.body?.action || "").trim().toLowerCase();
+  if (!mongoose.isValidObjectId(req.params.paymentId) || !["approve", "reject"].includes(action)) {
+    return res.status(400).json({ success: false, message: "Invalid payment action." });
+  }
+
+  try {
+    let updatedPayment;
+    await mongoose.connection.transaction(async (session) => {
+      const payment = await Payment.findOne({
+        _id: req.params.paymentId,
+        paymentMethod: "UPI_QR",
+      }).session(session);
+      if (!payment) return;
+
+      if (action === "reject") {
+        if (payment.status === "PAID") throw Object.assign(new Error("Paid payments cannot be rejected."), { statusCode: 409 });
+        payment.status = "FAILED";
+        payment.manuallyVerifiedAt = new Date();
+        payment.verifiedBy = "ADMIN";
+        await payment.save({ session });
+        updatedPayment = payment;
+        return;
+      }
+
+      if (payment.status !== "PAID") {
+        const counter = await Counter.findOneAndUpdate(
+          { name: "paymentReceipt" },
+          { $inc: { value: 1 } },
+          { new: true, upsert: true, setDefaultsOnInsert: true, session }
+        );
+        payment.status = "PAID";
+        payment.receiptNumber = `CPL-RCPT-${new Date().getFullYear()}-${String(counter.value).padStart(6, "0")}`;
+        payment.paidAt = new Date();
+        payment.manuallyVerifiedAt = payment.paidAt;
+        payment.verifiedBy = "ADMIN";
+        await payment.save({ session });
+        await Enrollment.findOneAndUpdate(
+          { userId: payment.userId, courseSlug: payment.courseSlug },
+          { $setOnInsert: { courseTitle: payment.courseTitle, paymentId: payment._id, enrolledAt: payment.paidAt, status: "ACTIVE" } },
+          { upsert: true, new: true, session }
+        );
+      }
+      updatedPayment = payment;
+    });
+
+    if (!updatedPayment) return res.status(404).json({ success: false, message: "QR payment not found." });
+    return res.json({
+      success: true,
+      message: action === "approve" ? "Payment marked paid. Receipt and course access are now active." : "Payment rejected. Course access remains locked.",
+      payment: updatedPayment,
+    });
+  } catch (error) {
+    console.error("Update UPI payment error:", error.message);
+    return res.status(error.statusCode || 500).json({ success: false, message: error.statusCode ? error.message : "Unable to update QR payment." });
+  }
+});
 
 module.exports = router;

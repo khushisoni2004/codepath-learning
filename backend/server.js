@@ -8,6 +8,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const Payment = require("./models/Payment");
 const User = require("./models/User");
 
 const app = express();
@@ -101,7 +102,7 @@ app.use(cors({
   },
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Admin-Key"],
 }));
 
 app.use(express.json());
@@ -165,8 +166,19 @@ async function prepareAuthStorage() {
       const obsoleteAuthIndex = userIndexes.find((index) => index.key?.firebaseUid === 1);
       if (obsoleteAuthIndex) await User.collection.dropIndex(obsoleteAuthIndex.name);
     } catch (error) {
-      if (error?.codeName !== "NamespaceNotFound" && error?.code !== 26) throw error;
+      if (![26, 27].includes(error?.code) && !["NamespaceNotFound", "IndexNotFound"].includes(error?.codeName)) throw error;
     }
+    try {
+      const paymentIndexes = await Payment.collection.indexes();
+      const oldRequiredOrderIndex = paymentIndexes.find(
+        (index) => index.key?.razorpayOrderId === 1 && index.sparse !== true
+      );
+      if (oldRequiredOrderIndex) await Payment.collection.dropIndex(oldRequiredOrderIndex.name);
+    } catch (error) {
+      if (![26, 27].includes(error?.code) && !["NamespaceNotFound", "IndexNotFound"].includes(error?.codeName)) throw error;
+    }
+    // Enforce UTR and provider transaction uniqueness at the database layer.
+    await Payment.createIndexes();
   })().catch((error) => {
     authStoragePreparationPromise = null;
     throw error;

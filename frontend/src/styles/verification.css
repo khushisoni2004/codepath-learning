@@ -48,14 +48,24 @@
 .admin-verify-heading { max-width: 720px; }
 .admin-key-form { max-width: 620px; }
 .admin-message { margin: 18px 0; padding: 12px 14px; border: 1px solid #dcdcff; border-radius: 11px; background: #f0efff; color: #4338ca; font-weight: 700; }
+.admin-list-heading { margin-top: 38px; }
+.admin-list-heading > span { color: #4f46e5; font-size: 10px; font-weight: 900; letter-spacing: 1px; }
+.admin-list-heading h2 { margin: 6px 0; color: #14213d; font-size: 25px; }
+.admin-list-heading p { max-width: 760px; margin: 0; color: #718096; line-height: 1.6; }
+.admin-list-heading.legacy-heading { padding-top: 25px; border-top: 1px solid #e1e5ef; }
+.admin-empty-state { padding: 22px; border: 1px dashed #cfd5e3; border-radius: 14px; background: rgba(255,255,255,.7); color: #7b8494; text-align: center; }
 .admin-registration-list { margin-top: 28px; display: grid; gap: 14px; }
 .admin-registration-card { padding: 20px; display: flex; justify-content: space-between; gap: 22px; border: 1px solid #e0e5f2; border-radius: 17px; background: #fff; box-shadow: 0 12px 28px rgba(37,48,96,.07); }
 .admin-registration-main > strong { color: #4f46e5; font-size: 12px; }
 .admin-registration-main h3 { margin: 5px 0 4px; color: #14213d; }
 .admin-registration-main p,
 .admin-registration-main small { display: block; margin: 0; color: #6f7a8d; }
+.admin-registration-main small + small { margin-top: 5px; }
 .admin-registration-status { min-width: 230px; display: grid; justify-items: end; gap: 14px; }
 .admin-registration-status > span { padding: 6px 10px; border-radius: 999px; background: #f3f4f6; color: #4b5563; font-size: 11px; font-weight: 800; }
+.admin-registration-status > span.admin-status-paid { color: #047857; background: #d1fae5; }
+.admin-registration-status > span.admin-status-pending { color: #a16207; background: #fef3c7; }
+.admin-registration-status > span.admin-status-failed { color: #b91c1c; background: #fee2e2; }
 .admin-registration-status > div { display: flex; gap: 8px; }
 .admin-registration-status button { min-height: 39px; padding: 0 14px; border: 0; border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; }
 .admin-approve { background: #059669; }
