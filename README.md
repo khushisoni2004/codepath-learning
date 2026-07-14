@@ -278,19 +278,38 @@ Production secrets are configured only in Vercel. A deployment must never contai
 
 ---
 
-## ✦ Founder
+## ✦ Leadership
 
 <div align="center">
 
-<img src="https://img.shields.io/badge/FOUNDER-KHUSHI_SONI-0891B2?style=for-the-badge&logo=starship&logoColor=white" alt="Khushi Soni, Founder" />
+<img src="https://readme-typing-svg.demolab.com?font=Outfit&weight=700&size=22&duration=2200&pause=700&color=F59E0B&center=true&vCenter=true&repeat=true&width=850&height=60&lines=Built+with+Vision+and+Purpose;Making+Coding+Education+Practical+and+Accessible;Leading+Students+from+Learning+to+Building" alt="CodePath Learning leadership" />
+
+<table>
+<tr>
+<td width="50%" align="center">
 
 ### Khushi Soni
 
 **Founder · Educator · Platform Developer**
 
+Platform vision, course strategy, student experience, technical development, and learning innovation.
+
+</td>
+<td width="50%" align="center">
+
+### Rudra Choudharry
+
+**Co-Founder · Strategy · Operations**
+
+Platform growth, operational support, collaboration, and the development of student-focused initiatives.
+
+</td>
+</tr>
+</table>
+
 </div>
 
-CodePath Learning was founded with the vision of making coding education more practical, understandable, and accessible for diploma students. The platform helps learners strengthen fundamentals, gain practical experience, and build meaningful projects with modern technologies.
+CodePath Learning is led with the vision of making coding education more practical, understandable, and accessible for diploma students. The platform helps learners strengthen fundamentals, gain practical experience, and build meaningful projects with modern technologies.
 
 ---
 
