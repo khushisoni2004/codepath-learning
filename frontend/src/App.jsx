@@ -14,6 +14,7 @@ import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import VerifyRegistration from "./pages/VerifyRegistration";
 import AdminVerification from "./pages/AdminVerification";
+import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
 export default function App() {
@@ -33,6 +34,7 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/verify" element={<VerifyRegistration />} />
         <Route path="/admin/verification" element={<AdminVerification />} />
+        <Route path="/feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
