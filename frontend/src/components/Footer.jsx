@@ -38,6 +38,7 @@ export default function Footer() {
             <Link to="/verify">Verify</Link>
             <Link to="/certificate-policy">Certificate Policy</Link>
             <Link to="/feedback">Student Feedback</Link>
+            <Link to="/admin/verification">Admin</Link>
           </div>
 
           <div>
