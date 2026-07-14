@@ -14,9 +14,12 @@ const syllabusFiles = [
 const policyPoints = [
   "Training, syllabus, live classes, assignments and projects are provided by CodePath Learning.",
   "Certificate is issued by CodePath Learning after successful completion of the program.",
+  "The complete course fee must be paid and verified before certificate issuance.",
   "Students must complete classes, assignments, practical tasks and final assessment.",
+  "Certificate details are based on the student's registered name and course information; corrections must be requested before issuance.",
   "Certificate is a private course completion certificate for skill-based learning only.",
   "No Government, AICTE, UGC, University, Board or placement guarantee claim is made.",
+  "CodePath Learning may withhold or cancel a certificate if submitted information, payment or coursework is found to be false or misused.",
 ];
 
 export default function CertificatePolicy() {
@@ -52,9 +55,9 @@ export default function CertificatePolicy() {
         </div>
       </section>
 
-      <section className="certificate-partner-section">
-        <div className="container certificate-partner-layout">
-          <div className="certificate-partner-content">
+      <section className="certificate-program-section">
+        <div className="container certificate-program-layout">
+          <div className="certificate-program-content">
             <span className="certificate-section-label">CODEPATH LEARNING PROGRAM</span>
             <h2>Professional training and certification model.</h2>
             <p>
@@ -78,8 +81,8 @@ export default function CertificatePolicy() {
           </div>
 
           <aside className="certificate-policy-box">
-            <span className="certificate-section-label">CERTIFICATE RULES</span>
-            <h3>Clear and honest wording</h3>
+            <span className="certificate-section-label">TERMS &amp; CONDITIONS</span>
+            <h3>Certificate eligibility and issuance</h3>
             <ul>
               {policyPoints.map((point) => (
                 <li key={point}><span>✓</span>{point}</li>
@@ -96,7 +99,7 @@ export default function CertificatePolicy() {
             <h2>Professional certificate format.</h2>
             <p>
               Same CodePath Learning logo, same brand theme and clean professional
-              certificate wording. No training partner text.
+              certificate wording, issued only by CodePath Learning.
             </p>
             <Link to="/register" className="certificate-primary-button">
               Register for Batch

@@ -30,12 +30,12 @@
 .certificate-primary-button { color:#fff; background:linear-gradient(90deg,#4f46e5,#7c3aed); box-shadow:0 14px 30px rgba(79,70,229,.22); }
 .certificate-secondary-button { color:#4f46e5; border:1.5px solid #8c7cf5; background:#fff; }
 .certificate-primary-button:hover,.certificate-secondary-button:hover { transform:translateY(-3px); }
-.certificate-partner-section,.certificate-sample-section,.certificate-download-section,.certificate-launch-section { padding:82px 0; }
-.certificate-partner-section,.certificate-download-section { background:#fff; }
+.certificate-program-section,.certificate-sample-section,.certificate-download-section,.certificate-launch-section { padding:82px 0; }
+.certificate-program-section,.certificate-download-section { background:#fff; }
 .certificate-sample-section,.certificate-launch-section { background:#f8f9ff; }
-.certificate-partner-layout,.certificate-sample-layout { display:grid; grid-template-columns:1fr .88fr; gap:34px; align-items:center; }
-.certificate-partner-content h2,.certificate-sample-layout h2,.certificate-section-heading h2,.certificate-launch-box h2 { margin:12px 0 12px; color:#14213d; font-size:clamp(30px,3.4vw,44px); line-height:1.1; letter-spacing:-1.7px; }
-.certificate-partner-content p,.certificate-sample-layout p,.certificate-section-heading p,.certificate-launch-box p { color:#718096; line-height:1.7; }
+.certificate-program-layout,.certificate-sample-layout { display:grid; grid-template-columns:1fr .88fr; gap:34px; align-items:center; }
+.certificate-program-content h2,.certificate-sample-layout h2,.certificate-section-heading h2,.certificate-launch-box h2 { margin:12px 0 12px; color:#14213d; font-size:clamp(30px,3.4vw,44px); line-height:1.1; letter-spacing:-1.7px; }
+.certificate-program-content p,.certificate-sample-layout p,.certificate-section-heading p,.certificate-launch-box p { color:#718096; line-height:1.7; }
 .certificate-role-grid { margin-top:24px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; }
 .certificate-role-grid article,.certificate-policy-box,.certificate-download-card,.certificate-launch-box { border:1px solid #e2e7f1; border-radius:21px; background:#fff; box-shadow:0 14px 34px rgba(35,47,88,.07); }
 .certificate-role-grid article { padding:22px; }
@@ -55,7 +55,7 @@
 .certificate-download-card strong { display:block; margin:16px 0 8px; color:#1e2d49; }
 .certificate-download-card small { color:#718096; }
 .certificate-launch-box { padding:34px; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-@media (max-width:1000px) { .certificate-partner-layout,.certificate-sample-layout { grid-template-columns:1fr; } .certificate-download-grid { grid-template-columns:repeat(2,1fr); } }
+@media (max-width:1000px) { .certificate-program-layout,.certificate-sample-layout { grid-template-columns:1fr; } .certificate-download-grid { grid-template-columns:repeat(2,1fr); } }
 @media (max-width:650px) { .certificate-policy-hero { padding:60px 0 55px; } .certificate-policy-hero h1 { font-size:38px; letter-spacing:-1.7px; } .certificate-role-grid,.certificate-download-grid { grid-template-columns:1fr; } .certificate-section-heading,.certificate-launch-box { align-items:flex-start; flex-direction:column; } .certificate-primary-button,.certificate-secondary-button { width:100%; } }
 
 /* Updated poster section */

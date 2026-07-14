@@ -311,9 +311,9 @@ export default function About() {
             </p>
 
             <div className="professional-certificate-policy">
-              <strong>Certificate Policy</strong>
+              <strong>Certificate Terms &amp; Conditions</strong>
               <p>
-                The training program is conducted by CodePath Learning. Completion certificate may be issued by our partnered computer center after classes, assignments, practical work and final assessment. This is not claimed as a Government, AICTE, UGC, University or Board certificate.
+                CodePath Learning directly issues the completion certificate after full payment verification, required classes, assignments, practical work and final assessment are completed. Student details must match the registered account. This is a private skill-based course completion certificate and is not a Government, AICTE, UGC, University or Board certificate.
               </p>
             </div>
           </aside>
@@ -321,16 +321,16 @@ export default function About() {
       </section>
 
 
-      <section className="professional-partner-section">
-        <div className="container professional-partner-layout">
-          <div className="professional-partner-content">
-            <span className="professional-section-label">PARTNER TRAINING CENTER</span>
-            <h2>Training by CodePath Learning, certificate through partner center.</h2>
+      <section className="professional-certificate-section">
+        <div className="container professional-certificate-layout">
+          <div className="professional-certificate-content">
+            <span className="professional-section-label">CERTIFICATE BY CODEPATH LEARNING</span>
+            <h2>Training and certificate issued directly by CodePath Learning.</h2>
             <p>
               CodePath Learning provides the course structure, live classes,
               assignments, practical learning support and final assessment.
-              The partnered computer center may issue the completion certificate
-              to eligible students after successful completion.
+              Eligible students receive the completion certificate directly from
+              CodePath Learning after satisfying the certificate requirements.
             </p>
             <Link to="/certificate-policy" className="professional-primary-button">
               View Certificate Policy
@@ -338,16 +338,16 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="professional-partner-cards">
+          <div className="professional-certificate-cards">
             <article>
               <span>01</span>
-              <h3>CodePath Learning</h3>
-              <p>Course delivery, assignments, projects, AI learning support and assessment.</p>
+              <h3>Eligibility Terms</h3>
+              <p>Full payment, required coursework, practical tasks and final assessment must be completed.</p>
             </article>
             <article>
               <span>02</span>
-              <h3>Partner Computer Center</h3>
-              <p>Certificate issuance and offline trust support for completed students.</p>
+              <h3>Direct Certificate Issuance</h3>
+              <p>CodePath Learning verifies eligibility and issues the private course completion certificate.</p>
             </article>
           </div>
         </div>

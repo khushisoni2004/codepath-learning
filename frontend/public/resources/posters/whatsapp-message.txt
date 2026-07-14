@@ -14,7 +14,7 @@ Courses:
 
 Launch Batch Fee: Rs. 599
 Mode: Live Online + Google Classroom
-Certificate: Private course completion certificate through partner computer center after successful completion.
+Certificate: Private course completion certificate issued directly by CodePath Learning after successful completion and eligibility verification.
 
 Register here: https://codepath-learning.vercel.app/register
 Website: https://codepath-learning.vercel.app/
