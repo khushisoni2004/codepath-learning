@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCourseBySlug } from "../data/courseCatalog";
 import PaymentModal from "../components/PaymentModal";
@@ -23,6 +23,64 @@ const courseVisuals = {
   "vibe-coding-ai": { icon: "AI" },
   "ai-tools-projects": { icon: "AI" },
 };
+
+const syllabusSectionTitles = [
+  "Getting Started",
+  "Core Concepts",
+  "Practical Learning",
+  "Practice and Project",
+];
+
+function groupSyllabus(syllabus) {
+  const sections = [];
+  for (let index = 0; index < syllabus.length; index += 4) {
+    sections.push({
+      title: syllabusSectionTitles[sections.length] || `Advanced Topics ${sections.length - 3}`,
+      topics: syllabus.slice(index, index + 4),
+      startIndex: index,
+    });
+  }
+  return sections;
+}
+
+function SyllabusSection({ section, sectionIndex }) {
+  const [open, setOpen] = useState(true);
+  const contentId = useId();
+
+  return (
+    <section className={`detail-syllabus-section ${open ? "is-open" : ""}`}>
+      <button
+        type="button"
+        className="detail-syllabus-toggle"
+        aria-expanded={open}
+        aria-controls={contentId}
+        onClick={() => setOpen((current) => !current)}
+      >
+        <div>
+          <span>SECTION {String(sectionIndex + 1).padStart(2, "0")}</span>
+          <h3>{section.title}</h3>
+          <p>{section.topics.length} topics</p>
+        </div>
+        <span className="detail-syllabus-chevron" aria-hidden="true">⌄</span>
+      </button>
+
+      <div id={contentId} className="detail-syllabus-topics" hidden={!open}>
+        {section.topics.map((topic, topicIndex) => {
+          const topicNumber = section.startIndex + topicIndex + 1;
+          return (
+            <article className="detail-syllabus-topic" key={topic.title}>
+              <span className="detail-topic-number">{String(topicNumber).padStart(2, "0")}</span>
+              <div>
+                <h4>{topic.title}</h4>
+                <p>{topic.description}</p>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
 
 function DetailLogo({ course }) {
   const visual = courseVisuals[course.slug] || { icon: course.icon };
@@ -53,6 +111,7 @@ export default function CourseDetails() {
   const userId = user?.id;
   const { slug } = useParams();
   const course = getCourseBySlug(slug);
+  const syllabusSections = course ? groupSyllabus(course.syllabus) : [];
   const [paidCourses, setPaidCourses] = useState([]);
 
   useEffect(() => {
@@ -110,19 +169,20 @@ export default function CourseDetails() {
         <div className="container detail-syllabus-card">
           <div className="detail-section-heading">
             <div>
-              <span>COMPLETE SYLLABUS</span>
-              <h2>Topics You Will Study</h2>
+              <span>STRUCTURED SYLLABUS</span>
+              <h2>Course Content</h2>
             </div>
 
             <Link to="/courses" className="detail-small-back">← Back to Courses</Link>
           </div>
 
-          <div className="detail-topic-grid">
-            {course.syllabus.map((topic, index) => (
-              <article className="detail-topic-item" key={`${course.slug}-${index}`}>
-                <span>{String(index + 1).padStart(2, "0")}</span>
-                <p>{topic.title}</p>
-              </article>
+          <div className="detail-syllabus-list">
+            {syllabusSections.map((section, index) => (
+              <SyllabusSection
+                section={section}
+                sectionIndex={index}
+                key={`${course.slug}-${section.title}`}
+              />
             ))}
           </div>
         </div>
