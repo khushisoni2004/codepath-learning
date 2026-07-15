@@ -1,0 +1,47 @@
+const links = (name) => ({
+  english: `https://www.youtube.com/results?search_query=${encodeURIComponent(`${name} diploma computer science preparation English`)}`,
+  hindi: `https://www.youtube.com/results?search_query=${encodeURIComponent(`${name} diploma computer science preparation Hindi`)}`,
+});
+
+const entries = [
+  ["Technician Apprentice (Computer Engg./CS/IT)", "Space Applications Centre", "Diploma CS/IT", "Usually up to 35", "Merit + document verification; diploma subjects"],
+  ["Technician Apprentice", "NMDC", "Diploma CS/IT", "As per notification", "Merit/interview; diploma technical subjects"],
+  ["Diploma Apprentice", "CSPGCL", "Diploma CS/IT", "As notified", "Merit-based apprenticeship"],
+  ["Diploma Apprentice", "State Electricity Distribution Companies (DISCOMs)", "Diploma CS/IT", "18–30", "Merit/interview, state-wise"],
+  ["Diploma Apprentice", "State GENCO / TRANSCO", "Diploma CS/IT", "18–30", "Diploma technical syllabus"],
+  ["Graduate & Diploma Apprentice", "GESCOM / Other State Power Utilities", "Diploma CS/IT", "18–30", "Merit-based selection"],
+  ["Computer Assistant", "State Government Departments", "3-Year Diploma CS/IT (some states)", "18–45 state-wise", "Computer fundamentals, typing, MS Office, GK"],
+  ["Junior Assistant (Computer)", "Government Universities / IITs / NITs", "Diploma CS/IT for selected posts", "18–35", "Computer knowledge, typing, reasoning"],
+  ["Junior Technician (Computer Lab)", "IITs / NITs / Central Institutes", "Diploma CS/IT", "18–35", "Hardware, networking, OS, programming"],
+  ["Computer Lab Technician", "Government Engineering Colleges", "Diploma CS/IT", "18–35", "Hardware, software, networking"],
+  ["IT Support Assistant", "Government Medical Colleges", "Diploma CS/IT", "18–35", "Networking, Windows, Linux, MS Office"],
+  ["System Assistant", "State Secretariat / Departments", "Diploma CS/IT", "18–35", "Computer basics, networking, office automation"],
+  ["Computer Programmer (Junior)", "State Departments", "Diploma CS/IT where accepted", "18–35", "C, C++, DBMS, SQL, programming"],
+  ["Help Desk / IT Assistant", "e-District & Digital Governance Projects", "Diploma CS/IT", "18–35", "Networking, OS, internet, troubleshooting"],
+  ["CSC / Digital Service Centre Technical Operator", "Government-supported CSC projects", "Diploma CS/IT / ITI COPA", "18+", "Computer operations, internet, office automation"],
+  ["Technical Assistant (Computer Cell)", "High Courts / District Courts", "Diploma CS/IT for selected notifications", "18–35", "Computer knowledge, typing, networking"],
+  ["Computer Instructor", "State Technical Education / Skill Missions", "Diploma + experience/CITS where required", "18–40", "Trade theory, teaching aptitude"],
+  ["COPA Instructor", "Government ITIs", "ITI COPA + CITS or Diploma notification-wise", "18–40", "COPA syllabus + teaching methodology"],
+  ["Lab Assistant (Computer Science)", "Technical Education Departments", "Diploma CS/IT", "18–35", "Hardware, networking, programming"],
+  ["District IT Assistant", "District Informatics / Collector Office", "Diploma CS/IT", "18–35", "Networking, office automation, DBMS"],
+  ["Smart City IT Executive (Contract)", "Smart City Missions", "Diploma CS/IT for some notifications", "18–35", "Networking, GIS basics, computer fundamentals"],
+  ["Computer Operator-cum-Programming Assistant", "Various Government Schemes", "ITI COPA / Diploma CS", "18–35", "COPA syllabus, MS Office, internet"],
+  ["Technical Operator (IT)", "State Police IT Cells", "Diploma CS/IT", "18–35", "Networking, cyber basics, OS"],
+  ["IT Cell Assistant", "Municipal Corporations", "Diploma CS/IT", "18–35", "Computer fundamentals, networking"],
+  ["Data Centre Operator", "State Data Centres", "Diploma CS/IT", "18–35", "Linux, networking, server basics"],
+  ["Network Support Technician", "Government ICT Projects", "Diploma CS/IT", "18–35", "CCNA-level basics, networking, troubleshooting"],
+  ["Hardware Maintenance Technician", "Government Institutions", "Diploma CS/IT", "18–35", "Hardware, OS installation, networking"],
+  ["Computer Operator", "Public Sector Undertakings", "Diploma CS/IT for post-specific notices", "18–30", "Computer awareness, typing, office automation"],
+];
+
+export const additionalGovernmentJobs = entries.map(([name, organization, qualification, age, syllabus]) => ({
+  name, organization, qualification, age, syllabus,
+  description: `${name} opportunity for eligible Diploma Computer Science / IT students. Check the exact notification before applying.`,
+  selection: "Merit, written/skill test, interview or document verification as notified.",
+  strategy: "Revise diploma fundamentals, practise objective questions and keep all documents ready.",
+  difficulty: "Notification-dependent",
+  salary: "As per the official notification",
+  website: `${organization} official website placeholder`,
+  growth: "Apprentice/technical role → senior technical or project-support responsibilities",
+  links: links(name),
+}));
