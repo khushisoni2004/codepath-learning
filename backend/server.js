@@ -8,6 +8,7 @@ const paymentRoutes = require("./routes/paymentRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
+const mentorshipRoutes = require("./routes/mentorshipRoutes");
 const Payment = require("./models/Payment");
 const User = require("./models/User");
 
@@ -21,8 +22,8 @@ const MONGODB_URI = buildMongoUri(
     || process.env.MONGODB_URL
     || process.env.DATABASE_URL
 );
-const MONGODB_CONNECT_TIMEOUT_MS = 30000;
-const MONGODB_RETRY_DELAY_MS = 10000;
+const MONGODB_CONNECT_TIMEOUT_MS = 10000;
+const MONGODB_RETRY_DELAY_MS = 5000;
 let lastMongoError = "";
 let mongoConnectPromise = null;
 let authStoragePreparationPromise = null;
@@ -146,6 +147,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/registrations", registrationRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/feedback", feedbackRoutes);
+app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use((error, _req, res, _next) => {
@@ -188,7 +190,6 @@ async function prepareAuthStorage() {
 
 async function ensureDatabaseConnected() {
   if (mongoose.connection.readyState === 1) {
-    await prepareAuthStorage();
     return mongoose.connection;
   }
   if (!MONGODB_URI) throw new Error("MONGODB_URI is required.");
@@ -197,10 +198,18 @@ async function ensureDatabaseConnected() {
     mongoConnectPromise = mongoose.connect(MONGODB_URI, {
       serverSelectionTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
       connectTimeoutMS: MONGODB_CONNECT_TIMEOUT_MS,
+      maxPoolSize: 10,
+      minPoolSize: 1,
+      maxIdleTimeMS: 120000,
+      family: 4,
     })
-      .then(async () => {
+      .then(() => {
         lastMongoError = "";
-        await prepareAuthStorage();
+        // Index maintenance is not on the critical authentication request path.
+        // Existing indexes remain available while this one-time maintenance runs.
+        setTimeout(() => {
+          prepareAuthStorage().catch((error) => console.error("MongoDB index preparation failed:", error.message));
+        }, 0);
         return mongoose.connection;
       })
       .catch((error) => {
