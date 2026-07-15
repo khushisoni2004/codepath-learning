@@ -110,7 +110,7 @@ router.patch(
 router.get("/upi-payments", verifyAdmin, async (_req, res) => {
   try {
     const payments = await Payment.find({ paymentMethod: "UPI_QR" })
-      .select("courseSlug courseTitle amount currency status utrNumber receiptNumber studentName studentEmail studentPhone googleFormSubmittedAt manuallyVerifiedAt paidAt createdAt")
+      .select("userId courseSlug courseTitle amount currency status utrNumber payerUpiId receiptNumber studentName studentEmail studentPhone manuallyVerifiedAt paidAt createdAt")
       .sort({ createdAt: -1 });
     return res.json({ success: true, payments });
   } catch (error) {
@@ -174,6 +174,39 @@ router.patch("/upi-payments/:paymentId", verifyAdmin, async (req, res) => {
   } catch (error) {
     console.error("Update UPI payment error:", error.message);
     return res.status(error.statusCode || 500).json({ success: false, message: error.statusCode ? error.message : "Unable to update QR payment." });
+  }
+});
+
+router.get("/mentorship-bookings", verifyAdmin, async (_req, res) => {
+  try {
+    const MentorshipBooking = require("../models/MentorshipBooking");
+    const bookings = await MentorshipBooking.find({}).sort({ createdAt: -1 }).lean();
+    return res.json({ success: true, bookings });
+  } catch (error) {
+    console.error("Load mentorship bookings error:", error.message);
+    return res.status(500).json({ success: false, message: "Unable to load placement mentorship requests." });
+  }
+});
+
+router.patch("/mentorship-bookings/:bookingId", verifyAdmin, async (req, res) => {
+  const action = String(req.body?.action || "").trim().toLowerCase();
+  if (!mongoose.isValidObjectId(req.params.bookingId) || !["approve", "reject"].includes(action)) {
+    return res.status(400).json({ success: false, message: "Invalid mentorship action." });
+  }
+  try {
+    const MentorshipBooking = require("../models/MentorshipBooking");
+    const booking = await MentorshipBooking.findByIdAndUpdate(
+      req.params.bookingId,
+      action === "approve"
+        ? { $set: { status: "PAID", verifiedAt: new Date(), verifiedBy: "ADMIN" } }
+        : { $set: { status: "REJECTED", verifiedAt: null, verifiedBy: "ADMIN" } },
+      { new: true }
+    ).lean();
+    if (!booking) return res.status(404).json({ success: false, message: "Mentorship request not found." });
+    return res.json({ success: true, message: action === "approve" ? "Placement payment approved." : "Placement request rejected.", booking });
+  } catch (error) {
+    console.error("Update mentorship booking error:", error.message);
+    return res.status(500).json({ success: false, message: "Unable to update placement request." });
   }
 });
 
