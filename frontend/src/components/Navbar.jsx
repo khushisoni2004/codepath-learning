@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useLanguage } from "../context/LanguageContext";
 import logoIcon from "../assets/codepath-learning-logo2.png";
 import "../styles/navbar.css";
 
@@ -9,15 +10,18 @@ const navLinks = [
   { label: "Courses", path: "/courses" },
   { label: "Notes", path: "/notes" },
   { label: "About", path: "/about" },
+  { label: "Mentorship", path: "/mentorship" },
+  { label: "Government Jobs", path: "/diploma-government-careers" },
   { label: "Certificate", path: "/certificate-policy" },
   { label: "Login", path: "/login" },
-  { label: "Verify", path: "/verify" },
 ];
+const hindiNavLabels = { Home: "होम", Courses: "कोर्स", Notes: "नोट्स", About: "अबाउट", Mentorship: "मेंटरशिप", "Government Jobs": "सरकारी नौकरियां", Certificate: "सर्टिफिकेट", Login: "लॉगिन" };
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const { user, logout } = useAuth();
+  const { isHindi, setLanguage } = useLanguage();
   const profileRef = useRef(null);
   const navigate = useNavigate();
 
@@ -75,9 +79,14 @@ export default function Navbar() {
                 onClick={closeMenu}
                 className={({ isActive }) => (isActive ? "active" : "")}
               >
-                {link.label}
+                {isHindi ? hindiNavLabels[link.label] : link.label}
               </NavLink>
             ))}
+          </div>
+
+          <div className="codepath-language-switch" aria-label="Language selector">
+            <button type="button" className={!isHindi ? "active" : ""} onClick={() => setLanguage("en")}>English</button>
+            <button type="button" className={isHindi ? "active" : ""} onClick={() => setLanguage("hi")}>हिन्दी</button>
           </div>
 
           {user ? (
@@ -107,7 +116,7 @@ export default function Navbar() {
             </div>
           ) : (
             <Link to="/register" className="codepath-register-button" onClick={closeMenu}>
-              Register Now <span>→</span>
+              {isHindi ? "अभी रजिस्टर करें" : "Register Now"} <span>→</span>
             </Link>
           )}
         </nav>
