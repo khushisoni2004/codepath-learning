@@ -12,10 +12,12 @@ import CertificatePolicy from "./pages/CertificatePolicy";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
-import VerifyRegistration from "./pages/VerifyRegistration";
 import AdminVerification from "./pages/AdminVerification";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
+import Mentorship from "./pages/Mentorship";
+import PlacementAdmin from "./pages/PlacementAdmin";
+import DiplomaGovernmentCareers from "./pages/DiplomaGovernmentCareers";
 
 export default function App() {
   return (
@@ -32,9 +34,11 @@ export default function App() {
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/verify" element={<VerifyRegistration />} />
         <Route path="/admin/verification" element={<AdminVerification />} />
         <Route path="/feedback" element={<Feedback />} />
+        <Route path="/mentorship" element={<Mentorship />} />
+        <Route path="/admin/placement" element={<PlacementAdmin />} />
+        <Route path="/diploma-government-careers" element={<DiplomaGovernmentCareers />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
