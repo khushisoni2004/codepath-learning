@@ -1,0 +1,38 @@
+.mentorship-section { padding: 86px 0; color: #334155; background: linear-gradient(135deg, #f8f9ff, #ffffff 52%, #f2f0ff); }
+.mentorship-container { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 500px); gap: 60px; align-items: center; }
+.mentorship-copy { max-width: 650px; }
+.mentorship-eyebrow, .mentorship-modal-label { display: inline-flex; padding: 8px 14px; color: #4f46e5; border: 1px solid #dcdcff; border-radius: 999px; background: #f0efff; font-size: 11px; font-weight: 850; letter-spacing: 1px; }
+.mentorship-copy h2 { margin: 18px 0 14px; color: #14213d; font-size: clamp(32px, 4vw, 52px); line-height: 1.08; letter-spacing: -1.8px; }
+.mentorship-copy p, .mentorship-card p { color: #718096; line-height: 1.75; }
+.mentorship-card { padding: 34px; border: 1px solid #e0e4f4; border-radius: 24px; background: rgba(255,255,255,.92); box-shadow: 0 20px 50px rgba(33,47,89,.1); }
+.mentorship-card-icon, .mentorship-success-icon { display: grid; place-items: center; width: 52px; height: 52px; color: #fff; border-radius: 16px; background: linear-gradient(135deg,#4f46e5,#7c3aed); font-size: 24px; font-weight: 800; }
+.mentorship-card h3 { margin: 20px 0 8px; color: #14213d; font-size: 24px; }
+.mentorship-book-button, .mentorship-submit, .mentorship-whatsapp-button, .mentorship-done-button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 48px; padding: 0 20px; border: 0; border-radius: 12px; color: #fff; background: linear-gradient(90deg,#4f46e5,#7c3aed); font-weight: 800; text-decoration: none; cursor: pointer; box-shadow: 0 12px 26px rgba(79,70,229,.2); }
+.mentorship-status { margin: 0; }
+.mentorship-overlay { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 20px; background: rgba(15,23,42,.62); }
+.mentorship-modal { position: relative; width: min(680px,100%); max-height: min(92vh,900px); overflow-y: auto; padding: 34px; border-radius: 24px; background: #fff; box-shadow: 0 28px 80px rgba(15,23,42,.28); }
+.mentorship-close { position: absolute; top: 14px; right: 17px; width: 36px; height: 36px; border: 0; border-radius: 50%; color: #64748b; background: #f1f5f9; font-size: 24px; cursor: pointer; }
+.mentorship-modal h2 { margin: 16px 45px 8px 0; color: #14213d; font-size: 30px; }
+.mentorship-modal-intro { margin: 0 0 24px; color: #718096; line-height: 1.65; }
+.mentorship-form { display: grid; gap: 14px; }
+.mentorship-form label, .mentorship-payment-box label { display: grid; gap: 7px; color: #334155; font-size: 13px; font-weight: 750; }
+.mentorship-form label > span, .mentorship-payment-box label > span { color: #94a3b8; font-weight: 500; }
+.mentorship-form input, .mentorship-form select, .mentorship-form textarea, .mentorship-payment-box input { width: 100%; padding: 12px 13px; border: 1px solid #dbe2ef; border-radius: 10px; color: #1e293b; background: #fff; font: inherit; }
+.mentorship-form input:focus, .mentorship-form select:focus, .mentorship-form textarea:focus { outline: 2px solid #c4b5fd; border-color: #7c3aed; }
+.mentorship-form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mentorship-payment-box { display: grid; gap: 13px; margin-top: 5px; padding: 18px; border: 1px solid #e4e0ff; border-radius: 16px; background: #faf9ff; }
+.mentorship-payment-box strong { display: block; margin-top: 5px; color: #14213d; font-size: 18px; }
+.mentorship-payment-label { color: #4f46e5; font-size: 11px; font-weight: 850; letter-spacing: 1px; }
+.mentorship-payment-box p { margin: 0; color: #475569; font-weight: 700; }
+.mentorship-payment-box p input { display: inline-block; width: 155px; padding: 5px 8px; }
+.mentorship-qr-placeholder { display: grid; min-height: 120px; place-items: center; color: #64748b; border: 1px dashed #a5b4fc; border-radius: 12px; background: repeating-linear-gradient(45deg,#f8f7ff,#f8f7ff 8px,#efedff 8px,#efedff 16px); font-weight: 800; }
+.mentorship-qr-placeholder span { display: block; font-size: 11px; font-weight: 500; }
+.mentorship-success { display: grid; justify-items: center; padding: 18px 8px; text-align: center; }
+.mentorship-success-icon { margin-bottom: 18px; border-radius: 50%; background: #10b981; }
+.mentorship-success h2 { margin: 16px 0 10px; }
+.mentorship-success p { margin: 3px 0; color: #64748b; }
+.mentorship-whatsapp-button { margin-top: 24px; background: #159447; box-shadow: 0 12px 26px rgba(21,148,71,.2); }
+.mentorship-success small { max-width: 500px; margin-top: 18px; color: #64748b; line-height: 1.6; }
+.mentorship-done-button { margin-top: 22px; color: #4f46e5; border: 1px solid #c4b5fd; background: #fff; box-shadow: none; }
+@media (max-width: 800px) { .mentorship-container { grid-template-columns: 1fr; gap: 28px; } .mentorship-copy { text-align: center; margin: 0 auto; } }
+@media (max-width: 560px) { .mentorship-section { padding: 64px 0; } .mentorship-card, .mentorship-modal { padding: 24px 18px; border-radius: 18px; } .mentorship-form-row { grid-template-columns: 1fr; gap: 14px; } .mentorship-modal h2 { font-size: 25px; } }
