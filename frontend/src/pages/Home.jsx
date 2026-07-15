@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import heroImage from "../assets/girl-coding.png";
+import MentorshipSection from "../components/MentorshipSection";
 import "../styles/home.css";
 
 const courses = [
@@ -404,6 +405,8 @@ export default function Home() {
           </Link>
         </div>
       </section>
+
+      <MentorshipSection />
 
       <section className="home-highlights-section">
         <div className="container home-highlights-grid">
