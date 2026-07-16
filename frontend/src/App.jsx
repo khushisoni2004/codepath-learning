@@ -18,6 +18,7 @@ import NotFound from "./pages/NotFound";
 import Mentorship from "./pages/Mentorship";
 import PlacementAdmin from "./pages/PlacementAdmin";
 import DiplomaGovernmentCareers from "./pages/DiplomaGovernmentCareers";
+import GovernmentJobDetails from "./pages/GovernmentJobDetails";
 
 export default function App() {
   return (
@@ -39,6 +40,7 @@ export default function App() {
         <Route path="/mentorship" element={<Mentorship />} />
         <Route path="/admin/placement" element={<PlacementAdmin />} />
         <Route path="/diploma-government-careers" element={<DiplomaGovernmentCareers />} />
+        <Route path="/diploma-government-careers/:slug" element={<GovernmentJobDetails />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
