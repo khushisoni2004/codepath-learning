@@ -40,7 +40,7 @@ function razorpayConfig() {
 function receiptView(payment) {
   return {
     receiptNumber: payment.receiptNumber,
-    paymentId: payment.razorpayPaymentId || payment.utrNumber,
+    paymentId: payment.razorpayPaymentId || payment.utrNumber || String(payment._id),
     orderId: payment.razorpayOrderId || null,
     paymentMethod: payment.paymentMethod || "RAZORPAY",
     courseTitle: payment.courseTitle,
@@ -61,13 +61,18 @@ function manualPaymentView(payment) {
     currency: payment.currency,
     status: payment.status,
     utrNumber: payment.utrNumber,
-    submittedAt: payment.googleFormSubmittedAt || payment.createdAt,
+    payerUpiId: payment.payerUpiId,
+    submittedAt: payment.createdAt,
     receipt: payment.status === "PAID" ? receiptView(payment) : null,
   };
 }
 
 function normalizedUtr(value) {
   return String(value || "").trim().toUpperCase().replace(/\s+/g, "");
+}
+
+function normalizedUpiId(value) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
 }
 
 exports.createOrder = async (req, res) => {
@@ -123,24 +128,38 @@ exports.submitManualPayment = async (req, res) => {
   const courseSlug = String(req.body?.courseSlug || "").trim().toLowerCase();
   const courseTitle = COURSES[courseSlug];
   const utrNumber = normalizedUtr(req.body?.utrNumber);
+  const payerUpiId = normalizedUpiId(req.body?.payerUpiId);
+  const hasUtr = utrNumber.length > 0;
+  const hasUpiId = payerUpiId.length > 0;
 
-  if (!courseTitle || !/^[A-Z0-9-]{6,40}$/.test(utrNumber) || req.body?.googleFormSubmitted !== true) {
+  if (!courseTitle) {
+    return res.status(400).json({ success: false, message: "Invalid course." });
+  }
+  if (!hasUtr && !hasUpiId) {
+    return res.status(400).json({ success: false, message: "Enter either your UPI ID or transaction ID/UTR." });
+  }
+  if (hasUtr && !/^(?=.*\d)[A-Z0-9-]{9,40}$/.test(utrNumber)) {
     return res.status(400).json({
       success: false,
-      message: "Submit the Google Form and enter a valid UPI transaction ID/UTR.",
+      message: "Enter a valid UPI transaction ID/UTR.",
     });
+  }
+  if (hasUpiId && !/^[a-z0-9._-]{2,100}@[a-z0-9.-]{2,64}$/.test(payerUpiId)) {
+    return res.status(400).json({ success: false, message: "Enter a valid UPI ID, for example name@bank." });
   }
 
   try {
     const paid = await Enrollment.exists({ userId: req.user._id, courseSlug, status: "ACTIVE" });
     if (paid) return res.json({ success: true, alreadyPaid: true });
 
-    const duplicate = await Payment.findOne({ utrNumber });
-    if (duplicate) {
-      if (String(duplicate.userId) === String(req.user._id) && duplicate.courseSlug === courseSlug) {
-        return res.json({ success: true, payment: manualPaymentView(duplicate) });
+    if (hasUtr) {
+      const duplicate = await Payment.findOne({ utrNumber });
+      if (duplicate) {
+        if (String(duplicate.userId) === String(req.user._id) && duplicate.courseSlug === courseSlug) {
+          return res.json({ success: true, payment: manualPaymentView(duplicate) });
+        }
+        return res.status(409).json({ success: false, message: "This UTR has already been submitted." });
       }
-      return res.status(409).json({ success: false, message: "This UTR has already been submitted." });
     }
 
     const pending = await Payment.findOne({
@@ -166,8 +185,8 @@ exports.submitManualPayment = async (req, res) => {
       currency,
       paymentMethod: "UPI_QR",
       status: "PENDING",
-      utrNumber,
-      googleFormSubmittedAt: new Date(),
+      utrNumber: hasUtr ? utrNumber : undefined,
+      payerUpiId: hasUpiId ? payerUpiId : undefined,
       studentName: req.user.studentName,
       studentEmail: req.user.email,
       studentPhone: req.user.phone,
