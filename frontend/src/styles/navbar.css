@@ -717,3 +717,12 @@
     font-size: 10px !important;
   }
 }
+
+
+
+/* CodePath language switch styling */
+.codepath-language-switch{display:inline-flex;align-items:center;gap:3px;margin-left:10px;padding:3px;border:1px solid rgba(79,70,229,.22);border-radius:999px;background:rgba(255,255,255,.92);box-shadow:0 6px 16px rgba(79,70,229,.08)}
+.codepath-language-switch button{min-width:62px;padding:7px 11px;border:0;border-radius:999px;color:#64748b;background:transparent;font:inherit;font-size:12px;font-weight:800;line-height:1;cursor:pointer;transition:color .18s ease,background .18s ease,transform .18s ease}
+.codepath-language-switch button:hover{color:#4f46e5;transform:translateY(-1px)}
+.codepath-language-switch button.active{color:#fff;background:linear-gradient(135deg,#4f46e5,#7c3aed);box-shadow:0 5px 12px rgba(79,70,229,.25)}
+@media(max-width:850px){.codepath-language-switch{width:max-content;margin:10px 0 0}.codepath-language-switch button{min-width:58px;padding:7px 9px}}
