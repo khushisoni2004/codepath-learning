@@ -3,3 +3,11 @@
 .diploma-detail-overlay{overflow:hidden;overscroll-behavior:contain;touch-action:none}
 .diploma-detail-modal{height:min(90dvh,760px);max-height:min(90dvh,760px);min-height:0;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:auto;-webkit-overflow-scrolling:touch;scrollbar-gutter:stable}
 @media(max-width:700px){.diploma-detail-overlay{padding:12px}.diploma-detail-modal{height:min(92dvh,760px);max-height:min(92dvh,760px);padding:26px 20px 24px;border-radius:20px}.diploma-detail-modal h2{font-size:26px}.diploma-detail-list{margin-top:18px}}
+.diploma-detail-page{min-height:calc(100vh - 90px);padding:54px 0 90px;background:linear-gradient(180deg,#f8f9ff,#fff)}
+.diploma-detail-back{display:inline-flex;margin-bottom:22px;color:#4f46e5;font-weight:800;text-decoration:none}
+.diploma-detail-sheet{max-width:940px;margin:0 auto;padding:42px;border:1px solid #e1e6f4;border-radius:26px;background:#fff;box-shadow:0 24px 60px rgba(33,47,89,.1)}
+.diploma-detail-sheet h1{margin:16px 0 10px;color:#14213d;font-size:clamp(32px,5vw,54px);letter-spacing:-2px}
+.diploma-detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:30px}
+.diploma-detail-grid section{padding:20px;border:1px solid #e6eaf4;border-radius:16px;background:#f8f9ff}.diploma-detail-grid h2,.diploma-youtube-section h2{margin:0 0 9px;color:#26365b;font-size:18px}.diploma-detail-grid p{margin:5px 0;color:#64748b;line-height:1.65}
+.diploma-youtube-section{margin-top:28px;padding:24px;border:1px solid #e4e0ff;border-radius:18px;background:#faf9ff}.diploma-youtube-section h2:not(:first-child){margin-top:24px}.diploma-youtube-links{display:flex;flex-wrap:wrap;gap:10px}.diploma-youtube-links a{padding:11px 14px;color:#4f46e5;border:1px solid #c4b5fd;border-radius:10px;background:#fff;font-size:13px;font-weight:750;text-decoration:none}.diploma-detail-note{margin:22px 0 0;color:#64748b;line-height:1.65}
+@media(max-width:700px){.diploma-detail-page{padding:35px 0 60px}.diploma-detail-sheet{padding:25px 18px;border-radius:20px}.diploma-detail-grid{grid-template-columns:1fr}.diploma-detail-sheet h1{font-size:34px}}
