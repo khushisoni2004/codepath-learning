@@ -6,8 +6,6 @@ import { useAuth } from "../context/AuthContext";
 import ReceiptModal from "./ReceiptModal";
 import "../styles/payment-modal.css";
 
-const PAYMENT_FORM_URL = "https://docs.google.com/forms/d/1ex_D0DxLnx9hY1zRRR1X7CgwgnK9dXrpbnXVu7fLvDM/viewform";
-
 export default function PaymentModal({ course, paid, onPaid }) {
   const { user: student } = useAuth();
   const studentId = student?.id;
@@ -18,7 +16,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
   const [error, setError] = useState("");
   const [receipt, setReceipt] = useState(null);
   const [utrNumber, setUtrNumber] = useState("");
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [payerUpiId, setPayerUpiId] = useState("");
   const [manualPayment, setManualPayment] = useState(null);
   const submittingRef = useRef(false);
   const [details, setDetails] = useState({
@@ -166,8 +164,17 @@ export default function PaymentModal({ course, paid, onPaid }) {
   async function submitQrPayment(event) {
     event.preventDefault();
     const normalizedUtr = utrNumber.trim().toUpperCase().replace(/\s+/g, "");
-    if (!/^[A-Z0-9-]{6,40}$/.test(normalizedUtr) || !formSubmitted) {
-      setError("First submit the Google Form, then enter a valid UPI transaction ID/UTR.");
+    const normalizedUpiId = payerUpiId.trim().toLowerCase().replace(/\s+/g, "");
+    if (!normalizedUtr && !normalizedUpiId) {
+      setError("Enter either your UPI ID or transaction ID/UTR.");
+      return;
+    }
+    if (normalizedUtr && !/^(?=.*\d)[A-Z0-9-]{9,40}$/.test(normalizedUtr)) {
+      setError("Enter a valid UPI transaction ID/UTR.");
+      return;
+    }
+    if (normalizedUpiId && !/^[a-z0-9._-]{2,100}@[a-z0-9.-]{2,64}$/.test(normalizedUpiId)) {
+      setError("Enter a valid UPI ID, for example name@bank.");
       return;
     }
     setLoading(true);
@@ -175,7 +182,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
     try {
       const data = await paymentApi("/manual-submit", {
         method: "POST",
-        body: JSON.stringify({ courseSlug: course.slug, utrNumber: normalizedUtr, googleFormSubmitted: true }),
+        body: JSON.stringify({ courseSlug: course.slug, utrNumber: normalizedUtr, payerUpiId: normalizedUpiId }),
       });
       if (data.alreadyPaid) { onPaid(course.slug); setOpen(false); return; }
       setManualPayment(data.payment);
@@ -248,7 +255,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
                 <small>Direct UPI payment</small><em>Manual bank verification required</em>
               </button>
             </div>
-            <div className="payment-security-note">🔒 A screenshot or form submission alone never unlocks a course.</div>
+            <div className="payment-security-note">🔒 QR payments are unlocked only after the bank transaction is verified.</div>
             {error ? <p className="payment-error" role="alert">{error}</p> : null}
             <button className="payment-back" type="button" onClick={() => setStep("details")}>← Back to details</button>
           </div> : null}
@@ -259,11 +266,12 @@ export default function PaymentModal({ course, paid, onPaid }) {
             <div className="qr-payment-layout">
               <div className="qr-payment-image-wrap"><img src="/QR.jpg" alt="CodePath Learning UPI payment QR code" /><strong>Scan with any UPI app</strong></div>
               <div className="qr-payment-instructions">
-                <ol><li>Scan and complete the ₹599 payment.</li><li>Open the secure form and upload payment screenshot with student details.</li><li>Enter the same UTR below for backend verification.</li></ol>
-                <a href={PAYMENT_FORM_URL} target="_blank" rel="noopener noreferrer">Open Payment Details Form ↗</a>
-                <small className="qr-form-login-note">Google sign-in is required by Google Forms for secure screenshot upload.</small>
-                <label>UPI Transaction ID / UTR<input type="text" autoComplete="off" maxLength="40" value={utrNumber} onChange={(event) => setUtrNumber(event.target.value.toUpperCase().replace(/\s/g, ""))} placeholder="Enter exact UTR from bank app" required /></label>
-                <label className="qr-confirmation"><input type="checkbox" checked={formSubmitted} onChange={(event) => setFormSubmitted(event.target.checked)} /><span>I submitted the Google Form with screenshot, name, number and student/registration ID.</span></label>
+                <ol><li>On a laptop, scan the QR using your phone.</li><li>On a phone, save the QR and select it from the gallery inside your UPI app.</li><li>Pay ₹599, then copy and enter the transaction ID/UTR below.</li></ol>
+                <a href="/QR.jpg" download="codepath-learning-payment-qr.jpg">Save QR to Phone</a>
+                <small className="qr-mobile-payment-note">GPay / PhonePe / Paytm: Scan QR → Gallery → select the saved QR. No screenshot needs to be submitted to CodePath Learning.</small>
+                <small className="qr-alternative-note">Enter any one of the following:</small>
+                <label>Your UPI ID (Optional)<input type="text" autoComplete="off" maxLength="165" value={payerUpiId} onChange={(event) => setPayerUpiId(event.target.value.toLowerCase().replace(/\s/g, ""))} placeholder="Example: yourname@okaxis" /></label>
+                <label>UPI Transaction ID / UTR (Optional)<input type="text" autoComplete="off" maxLength="40" value={utrNumber} onChange={(event) => setUtrNumber(event.target.value.toUpperCase().replace(/\s/g, ""))} placeholder="Enter exact UTR from bank app" /></label>
               </div>
             </div>
             <div className="payment-security-note warning">Course remains locked until the UTR is matched in the bank and approved.</div>
@@ -277,8 +285,8 @@ export default function PaymentModal({ course, paid, onPaid }) {
             <span className="payment-step-label">BANK VERIFICATION PENDING</span>
             <h2>Payment submitted securely</h2>
             <p>We will unlock <strong>{course.title}</strong> only after the UTR matches the received bank payment.</p>
-            <div className="manual-payment-summary"><span>UTR</span><strong>{manualPayment?.utrNumber || utrNumber}</strong><span>Status</span><strong>{manualPayment?.status || "PENDING"}</strong></div>
-            <div className="payment-security-note warning">Screenshot received ≠ payment verified. Access and receipt remain locked.</div>
+            <div className="manual-payment-summary"><span>UPI ID</span><strong>{manualPayment?.payerUpiId || payerUpiId || "Not provided"}</strong><span>UTR</span><strong>{manualPayment?.utrNumber || utrNumber || "Not provided"}</strong><span>Status</span><strong>{manualPayment?.status || "PENDING"}</strong></div>
+            <div className="payment-security-note warning">UTR submitted ≠ payment verified. Access and receipt remain locked until admin approval.</div>
             {error ? <p className="payment-error" role="alert">{error}</p> : null}
             <button className="payment-primary" type="button" onClick={checkPaymentNow} disabled={checking}>{checking ? "Checking bank approval…" : "Check Payment Status"}</button>
             <small className="manual-auto-check">This page also checks automatically every few seconds.</small>
