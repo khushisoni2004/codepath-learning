@@ -3,6 +3,19 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 const LanguageContext = createContext(null);
 const LANGUAGE_KEY = "codepathLanguage";
 
+function clearGoogleTranslationState() {
+  // Google writes this cookie for both the current host and the parent
+  // domain. Clear every common scope so returning to English restores the
+  // original source text immediately instead of leaving mixed translations.
+  ["", `domain=${window.location.hostname}`, `domain=.${window.location.hostname.replace(/^www\\./, "")}`]
+    .forEach((domain) => {
+      document.cookie = `googtrans=; Max-Age=0; path=/${domain ? `; ${domain}` : ""}`;
+    });
+  document.documentElement.style.removeProperty("top");
+  document.body.style.removeProperty("top");
+  document.body.classList.remove("translated-ltr", "translated-rtl");
+}
+
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => localStorage.getItem(LANGUAGE_KEY) || "en");
   useEffect(() => {
@@ -17,10 +30,11 @@ export function LanguageProvider({ children }) {
     } else {
       // English is the source document; remove all translator state so the
       // complete site renders directly without a reverse-translation pass.
-      document.cookie = "googtrans=; Max-Age=0; path=/";
-      document.cookie = `googtrans=; Max-Age=0; path=/; domain=${window.location.hostname}`;
+      clearGoogleTranslationState();
     }
-    if (!window.google?.translate && !document.querySelector("script[data-codepath-google-translate]")) {
+    // Load the translator only after Hindi is selected. English is the source
+    // document and should never wait for or trigger Google UI initialization.
+    if (language === "hi" && !window.google?.translate && !document.querySelector("script[data-codepath-google-translate]")) {
       window.googleTranslateElementInit = () => {
         if (window.google?.translate?.TranslateElement && document.getElementById("google_translate_element")) {
           new window.google.translate.TranslateElement({ pageLanguage: "en", includedLanguages: "en,hi", autoDisplay: false }, "google_translate_element");
@@ -37,10 +51,7 @@ export function LanguageProvider({ children }) {
     const value = next === "hi" ? "hi" : "en";
     localStorage.setItem(LANGUAGE_KEY, value);
     if (value === "hi") document.cookie = "googtrans=/en/hi;path=/";
-    else {
-      document.cookie = "googtrans=; Max-Age=0; path=/";
-      document.cookie = `googtrans=; Max-Age=0; path=/; domain=${window.location.hostname}`;
-    }
+    else clearGoogleTranslationState();
     // English is the source language. Reload directly instead of waiting for
     // Google Translate to reverse every text node on a Hindi-rendered page.
     if (value === "en" && language === "hi") {
