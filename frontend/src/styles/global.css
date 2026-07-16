@@ -161,6 +161,22 @@ nav a:hover {
     font-size: 14.5px !important;
   }
 }
+.codepath-google-translate{position:fixed;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none}
+/* Keep the translator invisible: language is controlled only by our own switch. */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+.goog-te-balloon-frame,
+iframe.goog-te-banner-frame,
+iframe[class*="goog-te-banner-frame"],
+body > .skiptranslate{display:none!important;visibility:hidden!important}
+html,body,body[style]{top:0!important;position:static!important;margin-top:0!important}
+.goog-te-gadget{font-size:0!important}.goog-logo-link,.goog-te-gadget span{display:none!important}
+/* Hide Google's fallback language control as well; the site switch is the only visible control. */
+#google_translate_element .goog-te-gadget,
+#google_translate_element .goog-te-combo,
+.codepath-google-translate .goog-te-gadget,
+.codepath-google-translate .goog-te-combo,
+select.goog-te-combo{display:none!important;visibility:hidden!important;width:0!important;height:0!important}
 
-/* Keep Google Translate fallback control hidden */
-#google_translate_element .goog-te-gadget,#google_translate_element .goog-te-combo,.codepath-google-translate .goog-te-gadget,.codepath-google-translate .goog-te-combo,select.goog-te-combo{display:none!important;visibility:hidden!important;width:0!important;height:0!important;}
+/* Hide translator hover cards and feedback popups. */
+#goog-gt-tt,.goog-te-balloon-frame,.goog-te-balloon-frame iframe,.goog-tooltip,.goog-tooltip:hover,.goog-text-highlight,.goog-te-spinner-pos{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}
