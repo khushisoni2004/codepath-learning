@@ -161,3 +161,6 @@ nav a:hover {
     font-size: 14.5px !important;
   }
 }
+
+/* Keep Google Translate fallback control hidden */
+#google_translate_element .goog-te-gadget,#google_translate_element .goog-te-combo,.codepath-google-translate .goog-te-gadget,.codepath-google-translate .goog-te-combo,select.goog-te-combo{display:none!important;visibility:hidden!important;width:0!important;height:0!important;}
