@@ -6,7 +6,11 @@ const LANGUAGE_KEY = "codepathLanguage";
 export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => localStorage.getItem(LANGUAGE_KEY) || "en");
   useEffect(() => {
-    document.documentElement.lang = language === "hi" ? "hi" : "en";
+    // Keep the document source language as English. Google Chrome shows its
+    // own translation infobar whenever the root language is switched to hi;
+    // our in-app switch already controls the translated DOM, so changing the
+    // root lang only creates an unwanted browser bar.
+    document.documentElement.lang = "en";
     if (language === "hi") {
       const targetCookie = "googtrans=/en/hi";
       if (!document.cookie.includes(targetCookie)) document.cookie = `${targetCookie};path=/`;
