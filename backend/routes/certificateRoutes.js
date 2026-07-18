@@ -41,7 +41,10 @@ router.post("/", verifyAdmin, async (req, res) => {
     const counter = await Counter.findOneAndUpdate({ name: "certificate" }, { $inc: { value: 1 } }, { new: true, upsert: true, setDefaultsOnInsert: true });
     const certificateId = `CPL-${codeForCourse(course)}-${issueDate.getFullYear()}-${String(counter.value).padStart(6, "0")}`;
     const certificate = await Certificate.create({ certificateId, studentName, course, instructor, issueDate, completionDate, certificatePdf: clean(req.body?.certificatePdf, 500) });
-    return res.status(201).json({ success: true, certificate });
+    const frontendOrigin = String(process.env.FRONTEND_URL || "https://www.codepathlearning.co.in").replace(/\/$/, "");
+    const verificationUrl = `${frontendOrigin}/verify/${encodeURIComponent(certificateId)}`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=140x140&data=${encodeURIComponent(verificationUrl)}`;
+    return res.status(201).json({ success: true, certificate: { ...certificate.toObject(), verificationUrl, qrUrl } });
   } catch (error) {
     console.error("Certificate creation error:", error.message);
     return res.status(500).json({ success: false, message: "Unable to create certificate." });
