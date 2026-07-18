@@ -1,18 +1,10 @@
 import { Link } from "react-router-dom";
 import logoIcon from "../assets/codepath-learning-logo2.png";
-import ProtectedStudentResourceLink from "./ProtectedStudentResourceLink";
 import "../styles/footer.css";
 
 export default function Footer() {
   return (
     <footer className="codepath-footer">
-      <div className="container codepath-footer-cta">
-        <div>
-          <span>YOUR NEXT SKILL STARTS HERE</span>
-          <h2>Learn with clarity. Build with confidence.</h2>
-        </div>
-        <Link to="/register">Join CodePath Learning <b>→</b></Link>
-      </div>
       <div className="container codepath-footer-main">
         <div className="codepath-footer-brand">
           <Link to="/" className="codepath-footer-logo">
@@ -22,50 +14,48 @@ export default function Footer() {
               <span>Learn • Practice • Build</span>
             </div>
           </Link>
-
-          <p>
-            Practical, beginner-first coding education built around live guidance,
-            real projects and career-ready confidence.
-          </p>
-          <div className="codepath-footer-badges">
-            <span>Live learning</span><span>Hindi + English</span><span>Practical projects</span>
-          </div>
+          <a className="codepath-footer-email" href="mailto:codepathlearning@gmail.com">
+            codepathlearning@gmail.com
+          </a>
         </div>
 
         <div className="codepath-footer-links">
           <div>
-            <h3>Pages</h3>
+            <h3>Explore</h3>
             <Link to="/">Home</Link>
             <Link to="/courses">Courses</Link>
-            <Link to="/notes">Notes</Link>
-            <Link to="/about">About</Link>
+            <Link to="/mentorship">Mentorship</Link>
+            <Link to="/diploma-government-careers">Government Jobs</Link>
           </div>
 
           <div>
             <h3>Student</h3>
             <Link to="/register">Register</Link>
             <Link to="/login">Login</Link>
-            <Link to="/certificate-policy">Certificate Policy</Link>
             <Link to="/verify">Verify Certificate</Link>
             <Link to="/msme">MSME Registered</Link>
-            <Link to="/feedback">Student Feedback</Link>
-            <Link to="/admin/verification">Admin Payment Verification</Link>
-            <Link to="/admin/placement">Placement Admin</Link>
           </div>
 
           <div>
-            <h3>Contact</h3>
-            <a href="mailto:codepathlearning@gmail.com">Email Support</a>
-            <ProtectedStudentResourceLink resource="whatsapp">
-              WhatsApp Group
-            </ProtectedStudentResourceLink>
+            <h3>Support</h3>
+            <Link to="/about">About</Link>
+            <Link to="/notes">Notes</Link>
+            <Link to="/certificate-policy">Certificate Policy</Link>
+            <Link to="/feedback">Feedback</Link>
+          </div>
+
+          <div>
+            <h3>Admin</h3>
+            <Link to="/admin/verification">Admin Payment Verification</Link>
+            <Link to="/admin/placement">Placement Admin</Link>
+            <Link to="/admin/certificates">Certificate Admin</Link>
           </div>
         </div>
       </div>
 
       <div className="container codepath-footer-bottom">
         <span>© 2026 CodePath Learning. All rights reserved.</span>
-        <span>Private skill-based learning platform.</span>
+        <span>MSME Registered · UDYAM-MP-22-0041513</span>
       </div>
     </footer>
   );
