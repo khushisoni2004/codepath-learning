@@ -115,6 +115,18 @@
   }
 }
 
+/* Certificate footer metadata: founder, issue date and certificate ID are
+   balanced into clear columns while the verification QR stays compact. */
+.certificate-bottom-row{grid-template-columns:1.15fr .8fr 1.25fr!important;gap:28px!important;align-items:end!important}
+.certificate-bottom-row>.certificate-founder-signature,.certificate-bottom-row>.certificate-plain-info{min-width:0}
+.certificate-bottom-row>.certificate-plain-info{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+.certificate-id-info{align-content:end!important}
+.certificate-msme-line{display:grid!important;gap:2px!important;margin-top:3px}
+.certificate-msme-line small{color:#64748b!important;font-size:9px!important;font-weight:800!important;text-transform:uppercase!important;letter-spacing:.08em!important}
+.certificate-verification-qr{display:flex!important;flex-direction:row!important;align-items:center!important;gap:7px!important;margin-top:4px!important;color:#4f46e5!important;font-size:8px!important;font-weight:900!important;text-align:left!important}
+.certificate-verification-qr img{width:42px!important;height:42px!important;object-fit:contain!important}
+@media (max-width:1000px){.certificate-bottom-row{grid-template-columns:1fr 1fr 1fr!important;gap:18px!important}}
+
 @media (max-width: 650px) {
   .certificate-poster-section {
     padding: 58px 0;
