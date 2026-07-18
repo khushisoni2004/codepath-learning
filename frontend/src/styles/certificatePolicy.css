@@ -43,3 +43,5 @@
   white-space: nowrap !important;
   text-align: center !important;
 }
+
+.certificate-verification-qr{display:flex;flex-direction:column;align-items:center;gap:4px;margin-left:auto;color:#4f46e5;font-size:9px;font-weight:800;text-align:center}.certificate-verification-qr img{width:64px;height:64px;object-fit:contain}
