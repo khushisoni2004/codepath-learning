@@ -1,14 +1,14 @@
 .codepath-footer {
   background: #07133d;
   color: #ffffff;
-  padding: 34px 0 16px;
+  padding: 22px 0 12px;
   margin-top: 0;
 }
 
 .codepath-footer-main {
   display: grid;
-  grid-template-columns: 1fr 1.45fr;
-  gap: 38px;
+  grid-template-columns: minmax(210px, .72fr) minmax(0, 2fr);
+  gap: 30px;
   align-items: start;
 }
 
@@ -21,8 +21,8 @@
 }
 
 .codepath-footer-logo img {
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
   border-radius: 12px;
   background: #ffffff;
@@ -31,7 +31,7 @@
 
 .codepath-footer-logo strong {
   display: block;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.1;
 }
 
@@ -43,24 +43,25 @@
   font-weight: 700;
 }
 
-.codepath-footer-brand p {
-  max-width: 430px;
-  margin: 16px 0 0;
+.codepath-footer-email {
+  display: block;
+  width: fit-content;
+  margin-top: 11px;
   color: #cbd5e1;
-  font-size: 14px;
-  line-height: 1.7;
+  font-size: 12px;
+  text-decoration: none;
 }
 
 .codepath-footer-links {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 26px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
 }
 
 .codepath-footer-links h3 {
-  margin: 0 0 12px;
+  margin: 0 0 7px;
   color: #ffffff;
-  font-size: 13px;
+  font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
 }
@@ -68,10 +69,10 @@
 .codepath-footer-links a {
   display: block;
   width: fit-content;
-  margin: 8px 0;
+  margin: 5px 0;
   color: #cbd5e1;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 12px;
   transition: color 0.2s ease, transform 0.2s ease;
 }
 
@@ -84,8 +85,8 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-top: 26px;
-  padding-top: 14px;
+  margin-top: 17px;
+  padding-top: 10px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   color: #94a3b8;
   font-size: 12px;
@@ -98,6 +99,7 @@
 
   .codepath-footer-links {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 17px 24px;
   }
 
   .codepath-footer-bottom {
@@ -107,11 +109,13 @@
 
 @media (max-width: 520px) {
   .codepath-footer {
-    padding: 28px 0 14px;
+    padding: 20px 0 11px;
   }
 
   .codepath-footer-links {
-    grid-template-columns: 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px 18px;
   }
+
+  .codepath-footer-bottom { gap: 5px; }
 }
