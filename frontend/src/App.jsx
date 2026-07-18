@@ -21,6 +21,7 @@ import DiplomaGovernmentCareers from "./pages/DiplomaGovernmentCareers";
 import GovernmentJobDetails from "./pages/GovernmentJobDetails";
 import Msme from "./pages/Msme";
 import VerifyCertificate from "./pages/VerifyCertificate";
+import CertificateAdmin from "./pages/CertificateAdmin";
 
 export default function App() {
   return (
@@ -46,6 +47,7 @@ export default function App() {
         <Route path="/msme" element={<Msme />} />
         <Route path="/verify" element={<VerifyCertificate />} />
         <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
+        <Route path="/admin/certificates" element={<CertificateAdmin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
