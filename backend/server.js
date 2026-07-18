@@ -9,6 +9,8 @@ const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes");
 const mentorshipRoutes = require("./routes/mentorshipRoutes");
+const certificateRoutes = require("./routes/certificateRoutes");
+const msmeRoutes = require("./routes/msmeRoutes");
 const Payment = require("./models/Payment");
 const User = require("./models/User");
 
@@ -148,6 +150,8 @@ app.use("/api/registrations", registrationRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/feedback", feedbackRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
+app.use("/api/certificates", certificateRoutes);
+app.use("/api/msme", msmeRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use((error, _req, res, _next) => {
