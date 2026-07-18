@@ -153,7 +153,7 @@ export default function CertificatePolicy() {
                     <span>CPL-2026-00001</span>
                   </div>
                   <div className="certificate-msme-line">
-                    <strong>MSME Registered</strong>
+                    <strong>MSME Registered - ID</strong>
                     <small>Registered ID</small>
                     <span>UDYAM-MP-22-0041513</span>
                   </div>
