@@ -19,6 +19,8 @@ import Mentorship from "./pages/Mentorship";
 import PlacementAdmin from "./pages/PlacementAdmin";
 import DiplomaGovernmentCareers from "./pages/DiplomaGovernmentCareers";
 import GovernmentJobDetails from "./pages/GovernmentJobDetails";
+import Msme from "./pages/Msme";
+import VerifyCertificate from "./pages/VerifyCertificate";
 
 export default function App() {
   return (
@@ -41,6 +43,9 @@ export default function App() {
         <Route path="/admin/placement" element={<PlacementAdmin />} />
         <Route path="/diploma-government-careers" element={<DiplomaGovernmentCareers />} />
         <Route path="/diploma-government-careers/:slug" element={<GovernmentJobDetails />} />
+        <Route path="/msme" element={<Msme />} />
+        <Route path="/verify" element={<VerifyCertificate />} />
+        <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
