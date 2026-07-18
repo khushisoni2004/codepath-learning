@@ -143,6 +143,15 @@ export default function CertificatePolicy() {
                     <strong>Issue Date</strong>
                     <span>DD / MM / YYYY</span>
                   </div>
+                  <div>
+                    <strong>MSME Registered</strong>
+                    <span>UDYAM-MP-22-0041513</span>
+                  </div>
+                </div>
+
+                <div className="certificate-verification-qr">
+                  <img src="/verify-demo-qr.png" alt="Scan to verify certificate online" />
+                  <span>Verify Online</span>
                 </div>
 
                 <div className="certificate-founder-signature">
