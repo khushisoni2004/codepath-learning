@@ -133,32 +133,34 @@ export default function CertificatePolicy() {
               </p>
 
               <div className="certificate-bottom-row">
-                <div className="certificate-plain-info">
-                  <div>
-                    <strong>Certificate ID</strong>
-                    <span>CPL-2026-00001</span>
-                  </div>
-
-                  <div>
-                    <strong>Issue Date</strong>
-                    <span>DD / MM / YYYY</span>
-                  </div>
-                  <div>
-                    <strong>MSME Registered</strong>
-                    <span>UDYAM-MP-22-0041513</span>
-                  </div>
-                </div>
-
-                <div className="certificate-verification-qr">
-                  <img src="/verify-demo-qr.png" alt="Scan to verify certificate online" />
-                  <span>Verify Online</span>
-                </div>
-
                 <div className="certificate-founder-signature">
                   <div className="founder-signature-space"></div>
                   <div className="founder-signature-line"></div>
                   <strong>Founder & Authorized Signatory</strong>
                   <span>CodePath Learning</span>
+                </div>
+
+                <div className="certificate-plain-info">
+                  <div>
+                    <strong>Issue Date</strong>
+                    <span>DD / MM / YYYY</span>
+                  </div>
+                </div>
+
+                <div className="certificate-plain-info certificate-id-info">
+                  <div>
+                    <strong>Certificate ID</strong>
+                    <span>CPL-2026-00001</span>
+                  </div>
+                  <div className="certificate-msme-line">
+                    <strong>MSME Registered</strong>
+                    <small>Registered ID</small>
+                    <span>UDYAM-MP-22-0041513</span>
+                  </div>
+                  <div className="certificate-verification-qr">
+                    <img src="/verify-demo-qr.png" alt="Scan to verify certificate online" />
+                    <span>Verify Online</span>
+                  </div>
                 </div>
               </div>
 
