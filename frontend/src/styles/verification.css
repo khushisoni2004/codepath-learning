@@ -55,27 +55,47 @@
 .admin-list-heading.legacy-heading { padding-top: 25px; border-top: 1px solid #e1e5ef; }
 .admin-empty-state { padding: 22px; border: 1px dashed #cfd5e3; border-radius: 14px; background: rgba(255,255,255,.7); color: #7b8494; text-align: center; }
 .admin-registration-list { margin-top: 28px; display: grid; gap: 14px; }
-.admin-registration-card { padding: 20px; display: flex; justify-content: space-between; gap: 22px; border: 1px solid #e0e5f2; border-radius: 17px; background: #fff; box-shadow: 0 12px 28px rgba(37,48,96,.07); }
+.admin-registration-card { padding: 20px; display: flex; justify-content: space-between; align-items: flex-start; gap: 22px; border: 1px solid #e0e5f2; border-radius: 17px; background: #fff; box-shadow: 0 12px 28px rgba(37,48,96,.07); }
+.admin-payment-card { position: relative; overflow: hidden; padding: 24px; border-radius: 20px; box-shadow: 0 16px 38px rgba(37,48,96,.08); }
+.admin-payment-card::before { position: absolute; inset: 0 auto 0 0; width: 4px; content: ""; background: #f59e0b; }
+.admin-payment-card-paid::before { background: #10b981; }
+.admin-payment-card-failed::before { background: #ef4444; }
 .admin-registration-main > strong { color: #4f46e5; font-size: 12px; }
+.admin-registration-main { min-width: 0; flex: 1; }
+.admin-record-label { display: block; color: #8a94a6; font-size: 9px; font-weight: 900; letter-spacing: 1px; }
+.admin-registration-main > strong.admin-record-utr { display: block; margin-top: 4px; color: #4f46e5; font-size: 17px; overflow-wrap: anywhere; }
+.admin-payment-details { margin: 16px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.admin-payment-details > div { min-width: 0; padding: 10px 12px; border: 1px solid #edf0f7; border-radius: 11px; background: #f9faff; }
+.admin-payment-details dt { color: #8a94a6; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: .45px; }
+.admin-payment-details dd { margin: 4px 0 0; color: #263653; font-size: 12px; font-weight: 750; overflow-wrap: anywhere; }
 .admin-registration-main h3 { margin: 5px 0 4px; color: #14213d; }
 .admin-registration-main p,
 .admin-registration-main small { display: block; margin: 0; color: #6f7a8d; }
 .admin-registration-main small + small { margin-top: 5px; }
-.admin-registration-status { min-width: 230px; display: grid; justify-items: end; gap: 14px; }
-.admin-registration-status > span { padding: 6px 10px; border-radius: 999px; background: #f3f4f6; color: #4b5563; font-size: 11px; font-weight: 800; }
+.admin-registration-status { min-width: 185px; display: flex; flex-direction: column; align-items: flex-end; justify-content: flex-start; gap: 14px; }
+.admin-registration-status > span { width: auto; min-height: 34px; padding: 0 13px; display: inline-flex; align-items: center; justify-content: center; border-radius: 999px; background: #f3f4f6; color: #4b5563; font-size: 10px; font-weight: 900; letter-spacing: .35px; white-space: nowrap; }
 .admin-registration-status > span.admin-status-paid { color: #047857; background: #d1fae5; }
 .admin-registration-status > span.admin-status-pending { color: #a16207; background: #fef3c7; }
 .admin-registration-status > span.admin-status-failed { color: #b91c1c; background: #fee2e2; }
-.admin-registration-status > div { display: flex; gap: 8px; }
-.admin-registration-status button { min-height: 39px; padding: 0 14px; border: 0; border-radius: 10px; color: #fff; font-weight: 800; cursor: pointer; }
-.admin-approve { background: #059669; }
-.admin-reject { background: #dc2626; }
+.admin-registration-status > div.admin-payment-actions { width: 100%; display: grid; gap: 9px; }
+.admin-registration-status button { width: 100%; min-height: 44px; padding: 0 16px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; border: 0; border-radius: 12px; color: #fff; font-size: 12px; font-weight: 850; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease; }
+.admin-registration-status button:hover { transform: translateY(-1px); }
+.admin-registration-status button:disabled { opacity: .55; cursor: wait; transform: none; }
+.admin-registration-status button span { font-size: 16px; line-height: 1; }
+.admin-approve { background: linear-gradient(135deg,#059669,#10b981); box-shadow: 0 8px 18px rgba(5,150,105,.2); }
+.admin-reject { background: #fff; color: #c62828 !important; border: 1px solid #fecaca !important; box-shadow: 0 6px 15px rgba(220,38,38,.08); }
+.admin-status-note { max-width: 180px; color: #637083; font-size: 10px; line-height: 1.5; text-align: right; }
+.admin-status-note.rejected { color: #a44a4a; }
 @media (max-width: 650px) {
   .verify-card { padding: 24px; }
   .verify-form,
   .admin-key-form { grid-template-columns: 1fr; }
   .admin-registration-card { flex-direction: column; }
-  .admin-registration-status { min-width: 0; justify-items: start; }
+  .admin-registration-status { width: 100%; min-width: 0; align-items: flex-start; }
+  .admin-registration-status > div.admin-payment-actions { grid-template-columns: 1fr 1fr; }
+  .admin-registration-status > div.admin-payment-actions:has(:only-child) { grid-template-columns: 1fr; }
+  .admin-status-note { max-width: none; text-align: left; }
+  .admin-payment-details { grid-template-columns: 1fr; }
   .verify-result dl > div { flex-direction: column; gap: 3px; }
   .verify-result dd { text-align: left; }
 }
@@ -197,5 +217,83 @@
 @media (max-width: 390px) {
   .verify-card h1 {
     font-size: 29px !important;
+  }
+}
+
+/* Certificate admin result: keep long IDs and URLs inside the card. */
+.certificate-admin-result {
+  overflow: hidden;
+}
+
+.certificate-admin-result-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  gap: 18px;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.certificate-admin-result dl {
+  min-width: 0;
+  grid-template-columns: 1fr !important;
+}
+
+.certificate-admin-result dl > div {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  align-items: start;
+}
+
+.certificate-admin-result dd,
+.certificate-admin-result dd a {
+  min-width: 0;
+  color: #263653;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  text-decoration: none;
+}
+
+.certificate-admin-result dd a:hover {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+.certificate-admin-qr {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+}
+
+.certificate-admin-qr img {
+  width: 140px;
+  height: 140px;
+  display: block;
+  border: 6px solid #fff;
+  border-radius: 12px;
+  object-fit: contain;
+}
+
+.certificate-admin-qr span {
+  color: #526079;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.certificate-admin-result > p {
+  margin: 18px 0 0;
+}
+
+@media (max-width: 640px) {
+  .certificate-admin-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-admin-result dl > div {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-admin-qr {
+    justify-self: center;
   }
 }
