@@ -181,7 +181,7 @@
 }
 
 .payment-method-step > p { margin: -2px 0 20px; color: #6b7280; }
-.payment-method-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+.payment-method-grid { display: grid; grid-template-columns: 1fr; gap: 13px; }
 .payment-method-card { min-height: 185px; padding: 20px 14px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 7px; border: 1px solid #dfe3ef; border-radius: 18px; background: #fff; color: #263653; cursor: pointer; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
 .payment-method-card:hover { transform: translateY(-3px); border-color: #9e94ed; box-shadow: 0 15px 32px rgba(66,55,142,.12); }
 .payment-method-card:disabled { opacity: .55; cursor: wait; }
@@ -203,8 +203,11 @@
 .qr-payment-image-wrap strong { padding-bottom: 5px; color: #fff; font-size: 11px; }
 .qr-payment-instructions ol { margin: 0 0 14px; padding-left: 20px; color: #606b7e; font-size: 12px; line-height: 1.65; }
 .qr-payment-instructions > a { min-height: 43px; margin-bottom: 15px; padding: 0 14px; display: inline-flex; align-items: center; justify-content: center; border-radius: 11px; background: #eef2ff; color: #4338ca; font-size: 12px; font-weight: 850; text-decoration: none; }
+.qr-mobile-payment-note { margin: -7px 0 13px; display: block; color: #667085; font-size: 10px; line-height: 1.5; }
+.qr-alternative-note { margin: 0 0 9px; display: block; color: #4338ca; font-size: 11px; font-weight: 850; }
 .qr-form-login-note { margin: -7px 0 13px; display: block; color: #8992a1; font-size: 10px; line-height: 1.45; }
 .qr-payment-instructions > label:not(.qr-confirmation) { display: grid; gap: 7px; color: #354258; font-size: 12px; font-weight: 800; }
+.qr-payment-instructions > label + label { margin-top: 12px; }
 .qr-payment-instructions input[type="text"] { width: 100%; min-height: 47px; padding: 0 13px; border: 1px solid #d9dfec; border-radius: 11px; outline: none; font: inherit; }
 .qr-payment-instructions input[type="text"]:focus { border-color: #7166e8; box-shadow: 0 0 0 4px rgba(79,70,229,.1); }
 .qr-confirmation { margin-top: 13px; display: flex; align-items: flex-start; gap: 9px; color: #596579; font-size: 11px; font-weight: 650; line-height: 1.5; cursor: pointer; }
