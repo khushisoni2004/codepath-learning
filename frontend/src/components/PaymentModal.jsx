@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
-import { loadRazorpay, paymentApi } from "../services/api";
+import { paymentApi } from "../services/api";
 import { useAuth } from "../context/AuthContext";
 import ReceiptModal from "./ReceiptModal";
 import "../styles/payment-modal.css";
@@ -18,7 +18,6 @@ export default function PaymentModal({ course, paid, onPaid }) {
   const [utrNumber, setUtrNumber] = useState("");
   const [payerUpiId, setPayerUpiId] = useState("");
   const [manualPayment, setManualPayment] = useState(null);
-  const submittingRef = useRef(false);
   const [details, setDetails] = useState({
     name: student?.studentName || "",
     email: student?.email || "",
@@ -84,60 +83,6 @@ export default function PaymentModal({ course, paid, onPaid }) {
     }
     setError("");
     setStep("method");
-  }
-
-  async function payWithRazorpay() {
-    if (submittingRef.current) return;
-    submittingRef.current = true;
-    setLoading(true);
-    setError("");
-    try {
-      if (!(await loadRazorpay())) throw new Error("Unable to load Razorpay Checkout.");
-      const order = await paymentApi("/create-order", {
-        method: "POST",
-        body: JSON.stringify({ courseSlug: course.slug }),
-      });
-      if (order.alreadyPaid) { onPaid(course.slug); setOpen(false); return; }
-
-      const razorpay = new window.Razorpay({
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        name: "CodePath Learning",
-        description: `${order.course.title} Certificate Plan`,
-        order_id: order.orderId,
-        prefill: { name: details.name.trim(), email: details.email.trim(), contact: details.phone.trim() },
-        notes: { courseSlug: order.course.slug, courseTitle: order.course.title },
-        theme: { color: "#4f46e5" },
-        handler: async (response) => {
-          try {
-            const verified = await paymentApi("/verify", {
-              method: "POST",
-              body: JSON.stringify({ courseSlug: course.slug, ...response }),
-            });
-            onPaid(course.slug);
-            setReceipt(verified.receipt);
-          } catch (verificationError) {
-            setError(verificationError.message);
-            setStep("method");
-            setOpen(true);
-          }
-        },
-      });
-      razorpay.on("payment.failed", (response) => {
-        setError(response.error?.description || "Payment was not completed.");
-        setStep("method");
-        setOpen(true);
-      });
-      setOpen(false);
-      razorpay.open();
-    } catch (requestError) {
-      setError(requestError.message);
-      setOpen(true);
-    } finally {
-      submittingRef.current = false;
-      setLoading(false);
-    }
   }
 
   async function openQrPayment() {
@@ -243,13 +188,9 @@ export default function PaymentModal({ course, paid, onPaid }) {
 
           {student && step === "method" ? <div className="payment-method-step">
             <span className="payment-step-label">STEP 2 OF 2</span>
-            <h2>Choose Payment Method</h2>
+            <h2>Pay with CODEPATH LEARNING QR</h2>
             <p>Course fee: <strong>₹599</strong></p>
             <div className="payment-method-grid">
-              <button type="button" className="payment-method-card razorpay-card" onClick={payWithRazorpay} disabled={loading}>
-                <span className="payment-method-icon">R</span><strong>Razorpay</strong>
-                <small>Automatic verification</small><em>Instant course unlock + receipt</em>
-              </button>
               <button type="button" className="payment-method-card qr-card" onClick={openQrPayment} disabled={checking}>
                 <span className="payment-method-icon">QR</span><strong>CODEPATH LEARNING QR</strong>
                 <small>Direct UPI payment</small><em>Manual bank verification required</em>
