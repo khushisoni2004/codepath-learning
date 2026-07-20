@@ -205,10 +205,10 @@ export default function PaymentModal({ course, paid, onPaid }) {
             <span className="payment-step-label">CODEPATH LEARNING QR</span>
             <h2>Pay ₹599 with UPI</h2>
             <div className="qr-payment-layout">
-              <div className="qr-payment-image-wrap"><img src="/QR.jpg" alt="CodePath Learning UPI payment QR code" /><strong>Scan with any UPI app</strong></div>
+              <div className="qr-payment-image-wrap"><img src="/payment-qr.png" alt="CodePath Learning UPI payment QR code" /><strong>Scan with any UPI app</strong></div>
               <div className="qr-payment-instructions">
                 <ol><li>On a laptop, scan the QR using your phone.</li><li>On a phone, save the QR and select it from the gallery inside your UPI app.</li><li>Pay ₹599, then copy and enter the transaction ID/UTR below.</li></ol>
-                <a href="/QR.jpg" download="codepath-learning-payment-qr.jpg">Save QR to Phone</a>
+                <a href="/payment-qr.png" download="codepath-learning-payment-qr.png">Save QR to Phone</a>
                 <small className="qr-mobile-payment-note">GPay / PhonePe / Paytm: Scan QR → Gallery → select the saved QR. No screenshot needs to be submitted to CodePath Learning.</small>
                 <small className="qr-alternative-note">Enter any one of the following:</small>
                 <label>Your UPI ID (Optional)<input type="text" autoComplete="off" maxLength="165" value={payerUpiId} onChange={(event) => setPayerUpiId(event.target.value.toLowerCase().replace(/\s/g, ""))} placeholder="Example: yourname@okaxis" /></label>
