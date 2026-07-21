@@ -67,14 +67,6 @@ function manualPaymentView(payment) {
   };
 }
 
-function normalizedUtr(value) {
-  return String(value || "").trim().toUpperCase().replace(/\s+/g, "");
-}
-
-function normalizedUpiId(value) {
-  return String(value || "").trim().toLowerCase().replace(/\s+/g, "");
-}
-
 exports.createOrder = async (req, res) => {
   try {
     const courseSlug = String(req.body.courseSlug || "").trim().toLowerCase();
@@ -127,34 +119,14 @@ exports.createOrder = async (req, res) => {
 exports.submitManualPayment = async (req, res) => {
   const courseSlug = String(req.body?.courseSlug || "").trim().toLowerCase();
   const courseTitle = COURSES[courseSlug];
-  const utrNumber = normalizedUtr(req.body?.utrNumber);
-  const payerUpiId = normalizedUpiId(req.body?.payerUpiId);
-  const hasUpiId = payerUpiId.length > 0;
 
   if (!courseTitle) {
     return res.status(400).json({ success: false, message: "Invalid course." });
-  }
-  if (!/^\d{12}$/.test(utrNumber)) {
-    return res.status(400).json({
-      success: false,
-      message: "Enter the valid 12-digit UPI reference number (UTR/RRN) shown after payment.",
-    });
-  }
-  if (hasUpiId && !/^[a-z0-9._-]{2,100}@[a-z0-9.-]{2,64}$/.test(payerUpiId)) {
-    return res.status(400).json({ success: false, message: "Enter a valid UPI ID, for example name@bank." });
   }
 
   try {
     const paid = await Enrollment.exists({ userId: req.user._id, courseSlug, status: "ACTIVE" });
     if (paid) return res.json({ success: true, alreadyPaid: true });
-
-    const duplicate = await Payment.findOne({ utrNumber });
-    if (duplicate) {
-      if (String(duplicate.userId) === String(req.user._id) && duplicate.courseSlug === courseSlug) {
-        return res.json({ success: true, payment: manualPaymentView(duplicate) });
-      }
-      return res.status(409).json({ success: false, message: "This UTR has already been submitted." });
-    }
 
     const pending = await Payment.findOne({
       userId: req.user._id,
@@ -179,8 +151,6 @@ exports.submitManualPayment = async (req, res) => {
       currency,
       paymentMethod: "UPI_QR",
       status: "PENDING",
-      utrNumber,
-      payerUpiId: hasUpiId ? payerUpiId : undefined,
       studentName: req.user.studentName,
       studentEmail: req.user.email,
       studentPhone: req.user.phone,
@@ -188,7 +158,7 @@ exports.submitManualPayment = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Verification request submitted. Payment is not confirmed until the UTR and ₹599 bank credit are matched by admin.",
+      message: "Verification request submitted. Payment is not confirmed until admin verifies the ₹599 bank credit.",
       payment: manualPaymentView(payment),
     });
   } catch (error) {
