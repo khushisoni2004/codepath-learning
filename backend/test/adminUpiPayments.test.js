@@ -70,6 +70,7 @@ test.beforeEach(() => {
     courseSlug: "python",
     courseTitle: "Python Programming",
     paymentMethod: "UPI_QR",
+    utrNumber: "123456789012",
     status: "PENDING",
     async save() {},
   };
@@ -100,5 +101,19 @@ test("admin rejection keeps the course locked and generates no receipt", async (
   assert.equal(result.statusCode, 200);
   assert.equal(payment.status, "FAILED");
   assert.equal(payment.receiptNumber, undefined);
+  assert.equal(enrollmentCreated, null);
+});
+
+test("admin cannot approve an old QR request without a transaction ID", async () => {
+  payment.utrNumber = undefined;
+  const { result, res } = responseRecorder();
+  await approveHandler({
+    params: { paymentId: "507f1f77bcf86cd799439011" },
+    body: { action: "approve" },
+  }, res);
+
+  assert.equal(result.statusCode, 400);
+  assert.match(result.body.message, /no transaction ID\/UTR/i);
+  assert.equal(payment.status, "PENDING");
   assert.equal(enrollmentCreated, null);
 });
