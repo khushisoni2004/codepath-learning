@@ -74,28 +74,53 @@ test.beforeEach(() => {
   enrollmentExists = false;
 });
 
-test("QR submission requires Google Form confirmation and a valid UTR", async () => {
+test("QR submission rejects an invalid provided UTR", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012" }), res);
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "bad", payerUpiId: "student@okaxis" }), res);
   assert.equal(result.statusCode, 400);
+  assert.equal(createdPayment, null);
+});
+
+test("QR submission requires a 12-digit UPI reference number", async () => {
+  const { result, res } = responseRecorder();
+  await submitManualPayment(request({ courseSlug: "python" }), res);
+  assert.equal(result.statusCode, 400);
+  assert.match(result.body.message, /12-digit/i);
+  assert.equal(createdPayment, null);
+});
+
+test("QR submission requires a valid payer UPI ID", async () => {
+  const { result, res } = responseRecorder();
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "not-a-upi-id" }), res);
+  assert.equal(result.statusCode, 400);
+  assert.match(result.body.message, /valid UPI ID/i);
   assert.equal(createdPayment, null);
 });
 
 test("QR submission stores a pending payment but does not unlock the course or create a receipt", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "utr-123456789", googleFormSubmitted: true }), res);
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "Student@OKAXIS" }), res);
   assert.equal(result.statusCode, 201);
   assert.equal(createdPayment.paymentMethod, "UPI_QR");
   assert.equal(createdPayment.status, "PENDING");
-  assert.equal(createdPayment.utrNumber, "UTR-123456789");
+  assert.equal(createdPayment.utrNumber, "123456789012");
+  assert.equal(createdPayment.payerUpiId, "student@okaxis");
   assert.equal(createdPayment.receiptNumber, undefined);
   assert.equal(result.body.payment.receipt, null);
 });
 
-test("the same UTR cannot be claimed by another student", async () => {
-  duplicatePayment = { userId: "another-student", courseSlug: "python", utrNumber: "UTR123456", status: "PENDING" };
+test("QR submission rejects a UPI ID without a UTR", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "utr123456", googleFormSubmitted: true }), res);
+  await submitManualPayment(request({ courseSlug: "python", payerUpiId: "student@okaxis" }), res);
+  assert.equal(result.statusCode, 400);
+  assert.match(result.body.message, /12-digit/i);
+  assert.equal(createdPayment, null);
+});
+
+test("the same UTR cannot be claimed by another student", async () => {
+  duplicatePayment = { userId: "another-student", courseSlug: "python", utrNumber: "123456789012", status: "PENDING" };
+  const { result, res } = responseRecorder();
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "student@okaxis" }), res);
   assert.equal(result.statusCode, 409);
   assert.match(result.body.message, /already been submitted/i);
 });
