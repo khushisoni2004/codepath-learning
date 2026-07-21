@@ -104,7 +104,7 @@ test("admin rejection keeps the course locked and generates no receipt", async (
   assert.equal(enrollmentCreated, null);
 });
 
-test("admin cannot approve an old QR request without a transaction ID", async () => {
+test("admin can approve an authenticated QR request without UPI fields", async () => {
   payment.utrNumber = undefined;
   const { result, res } = responseRecorder();
   await approveHandler({
@@ -112,8 +112,8 @@ test("admin cannot approve an old QR request without a transaction ID", async ()
     body: { action: "approve" },
   }, res);
 
-  assert.equal(result.statusCode, 400);
-  assert.match(result.body.message, /no transaction ID\/UTR/i);
-  assert.equal(payment.status, "PENDING");
-  assert.equal(enrollmentCreated, null);
+  assert.equal(result.statusCode, 200);
+  assert.equal(payment.status, "PAID");
+  assert.ok(payment.receiptNumber);
+  assert.equal(enrollmentCreated.update.$setOnInsert.status, "ACTIVE");
 });
