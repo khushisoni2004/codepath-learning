@@ -4,7 +4,6 @@ const test = require("node:test");
 process.env.COURSE_PRICE = "599";
 process.env.RAZORPAY_CURRENCY = "INR";
 
-let duplicatePayment = null;
 let pendingPayment = null;
 let latestPayment = null;
 let createdPayment = null;
@@ -25,7 +24,6 @@ require.cache[paymentModule] = {
   loaded: true,
   exports: {
     findOne(query) {
-      if (query.utrNumber) return queryResult(duplicatePayment);
       if (query.status === "PENDING") return queryResult(pendingPayment);
       return queryResult(latestPayment);
     },
@@ -67,62 +65,42 @@ function request(body = {}) {
 }
 
 test.beforeEach(() => {
-  duplicatePayment = null;
   pendingPayment = null;
   latestPayment = null;
   createdPayment = null;
   enrollmentExists = false;
 });
 
-test("QR submission rejects an invalid provided UTR", async () => {
-  const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "bad", payerUpiId: "student@okaxis" }), res);
-  assert.equal(result.statusCode, 400);
-  assert.equal(createdPayment, null);
-});
-
-test("QR submission requires a 12-digit UPI reference number", async () => {
+test("QR submission creates a pending authenticated request without UPI details", async () => {
   const { result, res } = responseRecorder();
   await submitManualPayment(request({ courseSlug: "python" }), res);
-  assert.equal(result.statusCode, 400);
-  assert.match(result.body.message, /12-digit/i);
-  assert.equal(createdPayment, null);
-});
-
-test("QR submission requires a valid payer UPI ID", async () => {
-  const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "not-a-upi-id" }), res);
-  assert.equal(result.statusCode, 400);
-  assert.match(result.body.message, /valid UPI ID/i);
-  assert.equal(createdPayment, null);
+  assert.equal(result.statusCode, 201);
+  assert.equal(createdPayment.paymentMethod, "UPI_QR");
+  assert.equal(createdPayment.status, "PENDING");
+  assert.equal(createdPayment.utrNumber, undefined);
+  assert.equal(createdPayment.payerUpiId, undefined);
+  assert.equal(createdPayment.studentEmail, "student@example.com");
+  assert.equal(result.body.payment.receipt, null);
 });
 
 test("QR submission stores a pending payment but does not unlock the course or create a receipt", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "Student@OKAXIS" }), res);
+  await submitManualPayment(request({ courseSlug: "python" }), res);
   assert.equal(result.statusCode, 201);
   assert.equal(createdPayment.paymentMethod, "UPI_QR");
   assert.equal(createdPayment.status, "PENDING");
-  assert.equal(createdPayment.utrNumber, "123456789012");
-  assert.equal(createdPayment.payerUpiId, "student@okaxis");
+  assert.equal(createdPayment.utrNumber, undefined);
+  assert.equal(createdPayment.payerUpiId, undefined);
   assert.equal(createdPayment.receiptNumber, undefined);
   assert.equal(result.body.payment.receipt, null);
 });
 
-test("QR submission rejects a UPI ID without a UTR", async () => {
+test("a second request is rejected while verification is pending", async () => {
+  pendingPayment = { userId: "student-id", courseSlug: "python", status: "PENDING" };
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", payerUpiId: "student@okaxis" }), res);
-  assert.equal(result.statusCode, 400);
-  assert.match(result.body.message, /12-digit/i);
-  assert.equal(createdPayment, null);
-});
-
-test("the same UTR cannot be claimed by another student", async () => {
-  duplicatePayment = { userId: "another-student", courseSlug: "python", utrNumber: "123456789012", status: "PENDING" };
-  const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012", payerUpiId: "student@okaxis" }), res);
+  await submitManualPayment(request({ courseSlug: "python" }), res);
   assert.equal(result.statusCode, 409);
-  assert.match(result.body.message, /already been submitted/i);
+  assert.match(result.body.message, /pending verification/i);
 });
 
 test("manual status exposes a receipt only after the payment is paid", async () => {
