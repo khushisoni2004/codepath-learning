@@ -110,12 +110,8 @@ export default function PaymentModal({ course, paid, onPaid }) {
     event.preventDefault();
     const normalizedUtr = utrNumber.trim().toUpperCase().replace(/\s+/g, "");
     const normalizedUpiId = payerUpiId.trim().toLowerCase().replace(/\s+/g, "");
-    if (!normalizedUtr && !normalizedUpiId) {
-      setError("Enter either your UPI ID or transaction ID/UTR.");
-      return;
-    }
-    if (normalizedUtr && !/^(?=.*\d)[A-Z0-9-]{9,40}$/.test(normalizedUtr)) {
-      setError("Enter a valid UPI transaction ID/UTR.");
+    if (!/^\d{12}$/.test(normalizedUtr)) {
+      setError("Enter the valid 12-digit UPI reference number (UTR/RRN) shown after payment.");
       return;
     }
     if (normalizedUpiId && !/^[a-z0-9._-]{2,100}@[a-z0-9.-]{2,64}$/.test(normalizedUpiId)) {
@@ -210,9 +206,9 @@ export default function PaymentModal({ course, paid, onPaid }) {
                 <ol><li>On a laptop, scan the QR using your phone.</li><li>On a phone, save the QR and select it from the gallery inside your UPI app.</li><li>Pay ₹599, then copy and enter the transaction ID/UTR below.</li></ol>
                 <a href="/payment-qr.png" download="codepath-learning-payment-qr.png">Save QR to Phone</a>
                 <small className="qr-mobile-payment-note">GPay / PhonePe / Paytm: Scan QR → Gallery → select the saved QR. No screenshot needs to be submitted to CodePath Learning.</small>
-                <small className="qr-alternative-note">Enter any one of the following:</small>
+                <small className="qr-alternative-note">Payment proof required: enter the 12-digit UPI reference number.</small>
                 <label>Your UPI ID (Optional)<input type="text" autoComplete="off" maxLength="165" value={payerUpiId} onChange={(event) => setPayerUpiId(event.target.value.toLowerCase().replace(/\s/g, ""))} placeholder="Example: yourname@okaxis" /></label>
-                <label>UPI Transaction ID / UTR (Optional)<input type="text" autoComplete="off" maxLength="40" value={utrNumber} onChange={(event) => setUtrNumber(event.target.value.toUpperCase().replace(/\s/g, ""))} placeholder="Enter exact UTR from bank app" /></label>
+                <label>12-digit UPI Reference Number / UTR (Required)<input type="text" inputMode="numeric" autoComplete="off" maxLength="12" value={utrNumber} onChange={(event) => setUtrNumber(event.target.value.replace(/\D/g, ""))} placeholder="Enter 12-digit reference number" required /></label>
               </div>
             </div>
             <div className="payment-security-note warning">Course remains locked until the UTR is matched in the bank and approved.</div>
@@ -224,8 +220,8 @@ export default function PaymentModal({ course, paid, onPaid }) {
           {student && step === "pending" ? <div className="manual-payment-pending">
             <div className="manual-pending-icon">⌛</div>
             <span className="payment-step-label">BANK VERIFICATION PENDING</span>
-            <h2>Payment submitted securely</h2>
-            <p>We will unlock <strong>{course.title}</strong> only after the UTR matches the received bank payment.</p>
+            <h2>Verification pending — payment not confirmed</h2>
+            <p>Your request is recorded. We will unlock <strong>{course.title}</strong> only after the UTR and ₹599 credit match the bank statement.</p>
             <div className="manual-payment-summary"><span>UPI ID</span><strong>{manualPayment?.payerUpiId || payerUpiId || "Not provided"}</strong><span>UTR</span><strong>{manualPayment?.utrNumber || utrNumber || "Not provided"}</strong><span>Status</span><strong>{manualPayment?.status || "PENDING"}</strong></div>
             <div className="payment-security-note warning">UTR submitted ≠ payment verified. Access and receipt remain locked until admin approval.</div>
             {error ? <p className="payment-error" role="alert">{error}</p> : null}
