@@ -145,6 +145,9 @@ router.patch("/upi-payments/:paymentId", verifyAdmin, async (req, res) => {
       }
 
       if (payment.status !== "PAID") {
+        if (!String(payment.utrNumber || "").trim()) {
+          throw Object.assign(new Error("Cannot approve this request because no transaction ID/UTR was submitted."), { statusCode: 400 });
+        }
         const counter = await Counter.findOneAndUpdate(
           { name: "paymentReceipt" },
           { $inc: { value: 1 } },
