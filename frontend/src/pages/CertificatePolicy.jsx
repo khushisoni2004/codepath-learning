@@ -108,8 +108,11 @@ export default function CertificatePolicy() {
           <div className="codepath-certificate-preview certificate-template-preview">
             <img className="certificate-template-image" src="/images/codepath-certificate-template.png" alt="CodePath Learning certificate of completion sample" />
             <div className="certificate-template-msme">MSME Certified Enterprise</div>
-            <div className="certificate-template-qr">
-              <img src="/images/certificate-template-qr.png" alt="Certificate verification QR" />
+            <div className="certificate-template-qr certificate-template-msme-qr">
+              <div className="certificate-template-msme-qr-crop">
+                <img src="/documents/udyam-msme-qr.png" alt="Official MSME Udyam registration QR" />
+              </div>
+              <span>Scan MSME QR</span>
             </div>
           </div>
         </div>
