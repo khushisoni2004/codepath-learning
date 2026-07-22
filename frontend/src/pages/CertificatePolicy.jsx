@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import logoIcon from "../assets/codepath-learning-logo2.png";
 import "../styles/certificate-policy.css";
 
 const syllabusFiles = [
@@ -106,67 +105,11 @@ export default function CertificatePolicy() {
             </Link>
           </div>
 
-          <div className="codepath-certificate-preview">
-            <div className="codepath-certificate-border">
-              <div className="certificate-watermark">CPL</div>
-
-              <div className="codepath-certificate-top">
-                <img src={logoIcon} alt="CodePath Learning logo" />
-                <div>
-                  <h3>CodePath Learning</h3>
-                  <p>Learn • Practice • Build</p>
-                </div>
-              </div>
-
-              <h2 className="certificate-main-title">CERTIFICATE OF COMPLETION</h2>
-              <div className="certificate-divider" />
-
-              <p className="certificate-presented">This certificate is proudly presented to</p>
-              <div className="certificate-name-line">Student Name</div>
-
-              <p className="certificate-course-text">for successfully completing the course</p>
-              <div className="certificate-course-name">Course Name</div>
-
-              <p className="certificate-desc">
-                This achievement reflects dedication, consistent effort and practical learning
-                through live classes, assignments, projects and final assessment.
-              </p>
-
-              <div className="certificate-bottom-row">
-                <div className="certificate-founder-signature">
-                  <div className="founder-signature-space"></div>
-                  <div className="founder-signature-line"></div>
-                  <strong>Founder & Authorized Signatory</strong>
-                  <span>CodePath Learning</span>
-                </div>
-
-                <div className="certificate-plain-info">
-                  <div>
-                    <strong>Issue Date</strong>
-                    <span>DD / MM / YYYY</span>
-                  </div>
-                </div>
-
-                <div className="certificate-plain-info certificate-id-info">
-                  <div>
-                    <strong>Certificate ID</strong>
-                    <span>CPL-2026-00001</span>
-                  </div>
-                  <div className="certificate-msme-line">
-                    <strong>MSME Registered - ID</strong>
-                    <small>Registered ID</small>
-                    <span>UDYAM-MP-22-0041513</span>
-                  </div>
-                  <div className="certificate-verification-qr">
-                    <img src="/verify-demo-qr.png" alt="Scan to verify certificate online" />
-                    <span>Verify Online</span>
-                  </div>
-                </div>
-              </div>
-
-              <p className="certificate-footer-line">
-                Private course completion certificate issued by CodePath Learning.
-              </p>
+          <div className="codepath-certificate-preview certificate-template-preview">
+            <img className="certificate-template-image" src="/images/codepath-certificate-template.png" alt="CodePath Learning certificate of completion sample" />
+            <div className="certificate-template-msme">MSME Certified Enterprise</div>
+            <div className="certificate-template-qr">
+              <img src="/images/certificate-template-qr.png" alt="Certificate verification QR" />
             </div>
           </div>
         </div>
