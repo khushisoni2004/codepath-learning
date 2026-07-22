@@ -71,13 +71,13 @@ test.beforeEach(() => {
   enrollmentExists = false;
 });
 
-test("QR submission creates a pending authenticated request without UPI details", async () => {
+test("QR submission requires and stores a valid 12-digit UTR", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python" }), res);
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012" }), res);
   assert.equal(result.statusCode, 201);
   assert.equal(createdPayment.paymentMethod, "UPI_QR");
   assert.equal(createdPayment.status, "PENDING");
-  assert.equal(createdPayment.utrNumber, undefined);
+  assert.equal(createdPayment.utrNumber, "123456789012");
   assert.equal(createdPayment.payerUpiId, undefined);
   assert.equal(createdPayment.studentEmail, "student@example.com");
   assert.equal(result.body.payment.receipt, null);
@@ -85,11 +85,11 @@ test("QR submission creates a pending authenticated request without UPI details"
 
 test("QR submission stores a pending payment but does not unlock the course or create a receipt", async () => {
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python" }), res);
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012" }), res);
   assert.equal(result.statusCode, 201);
   assert.equal(createdPayment.paymentMethod, "UPI_QR");
   assert.equal(createdPayment.status, "PENDING");
-  assert.equal(createdPayment.utrNumber, undefined);
+  assert.equal(createdPayment.utrNumber, "123456789012");
   assert.equal(createdPayment.payerUpiId, undefined);
   assert.equal(createdPayment.receiptNumber, undefined);
   assert.equal(result.body.payment.receipt, null);
@@ -98,9 +98,20 @@ test("QR submission stores a pending payment but does not unlock the course or c
 test("a second request is rejected while verification is pending", async () => {
   pendingPayment = { userId: "student-id", courseSlug: "python", status: "PENDING" };
   const { result, res } = responseRecorder();
-  await submitManualPayment(request({ courseSlug: "python" }), res);
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "123456789012" }), res);
   assert.equal(result.statusCode, 409);
   assert.match(result.body.message, /pending verification/i);
+});
+
+test("QR submission rejects missing or invalid UTR values", async () => {
+  const missing = responseRecorder();
+  await submitManualPayment(request({ courseSlug: "python" }), missing.res);
+  assert.equal(missing.result.statusCode, 400);
+
+  const invalid = responseRecorder();
+  await submitManualPayment(request({ courseSlug: "python", utrNumber: "12345" }), invalid.res);
+  assert.equal(invalid.result.statusCode, 400);
+  assert.equal(createdPayment, null);
 });
 
 test("manual status exposes a receipt only after the payment is paid", async () => {
