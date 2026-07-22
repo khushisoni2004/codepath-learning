@@ -144,6 +144,10 @@ router.patch("/upi-payments/:paymentId", verifyAdmin, async (req, res) => {
         return;
       }
 
+      if (!/^\d{12}$/.test(String(payment.utrNumber || ""))) {
+        throw Object.assign(new Error("A valid 12-digit UTR is required before approval."), { statusCode: 400 });
+      }
+
       if (payment.status !== "PAID") {
         const counter = await Counter.findOneAndUpdate(
           { name: "paymentReceipt" },
@@ -195,6 +199,11 @@ router.patch("/mentorship-bookings/:bookingId", verifyAdmin, async (req, res) =>
   }
   try {
     const MentorshipBooking = require("../models/MentorshipBooking");
+    const existingBooking = await MentorshipBooking.findById(req.params.bookingId).lean();
+    if (!existingBooking) return res.status(404).json({ success: false, message: "Mentorship request not found." });
+    if (action === "approve" && !/^\d{12}$/.test(String(existingBooking.transactionId || ""))) {
+      return res.status(400).json({ success: false, message: "A valid 12-digit UTR is required before approval." });
+    }
     const booking = await MentorshipBooking.findByIdAndUpdate(
       req.params.bookingId,
       action === "approve"
@@ -202,7 +211,6 @@ router.patch("/mentorship-bookings/:bookingId", verifyAdmin, async (req, res) =>
         : { $set: { status: "REJECTED", verifiedAt: null, verifiedBy: "ADMIN" } },
       { new: true }
     ).lean();
-    if (!booking) return res.status(404).json({ success: false, message: "Mentorship request not found." });
     return res.json({ success: true, message: action === "approve" ? "Placement payment approved." : "Placement request rejected.", booking });
   } catch (error) {
     console.error("Update mentorship booking error:", error.message);
