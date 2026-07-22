@@ -119,9 +119,13 @@ exports.createOrder = async (req, res) => {
 exports.submitManualPayment = async (req, res) => {
   const courseSlug = String(req.body?.courseSlug || "").trim().toLowerCase();
   const courseTitle = COURSES[courseSlug];
+  const utrNumber = String(req.body?.utrNumber || "").replace(/\s+/g, "");
 
   if (!courseTitle) {
     return res.status(400).json({ success: false, message: "Invalid course." });
+  }
+  if (!/^\d{12}$/.test(utrNumber)) {
+    return res.status(400).json({ success: false, message: "Enter the valid 12-digit bank UTR/RRN shown after payment." });
   }
 
   try {
@@ -151,6 +155,7 @@ exports.submitManualPayment = async (req, res) => {
       currency,
       paymentMethod: "UPI_QR",
       status: "PENDING",
+      utrNumber,
       studentName: req.user.studentName,
       studentEmail: req.user.email,
       studentPhone: req.user.phone,
