@@ -16,6 +16,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
   const [error, setError] = useState("");
   const [receipt, setReceipt] = useState(null);
   const [manualPayment, setManualPayment] = useState(null);
+  const [utrNumber, setUtrNumber] = useState("");
   const [details, setDetails] = useState({
     name: student?.studentName || "",
     email: student?.email || "",
@@ -106,12 +107,17 @@ export default function PaymentModal({ course, paid, onPaid }) {
 
   async function submitQrPayment(event) {
     event.preventDefault();
+    const normalizedUtr = utrNumber.replace(/\D/g, "");
+    if (!/^\d{12}$/.test(normalizedUtr)) {
+      setError("Enter the valid 12-digit bank UTR/RRN shown after completing the QR payment.");
+      return;
+    }
     setLoading(true);
     setError("");
     try {
       const data = await paymentApi("/manual-submit", {
         method: "POST",
-        body: JSON.stringify({ courseSlug: course.slug }),
+        body: JSON.stringify({ courseSlug: course.slug, utrNumber: normalizedUtr }),
       });
       if (data.alreadyPaid) { onPaid(course.slug); setOpen(false); return; }
       setManualPayment(data.payment);
@@ -191,10 +197,11 @@ export default function PaymentModal({ course, paid, onPaid }) {
             <div className="qr-payment-layout">
               <div className="qr-payment-image-wrap"><img src="/payment-qr.png" alt="CodePath Learning UPI payment QR code" /><strong>Scan with any UPI app</strong></div>
               <div className="qr-payment-instructions">
-                <ol><li>On a laptop, scan the QR using your phone.</li><li>On a phone, save the QR and select it from the gallery inside your UPI app.</li><li>Pay exactly ₹599, then submit the verification request.</li></ol>
+                <ol><li>On a laptop, scan the QR using your phone.</li><li>On a phone, save the QR and select it from the gallery inside your UPI app.</li><li>Pay exactly ₹599, then copy the 12-digit UTR/RRN from your UPI app.</li></ol>
                 <a href="/payment-qr.png" download="codepath-learning-payment-qr.png">Save QR to Phone</a>
                 <small className="qr-mobile-payment-note">GPay / PhonePe / Paytm: Scan QR → Gallery → select the saved QR. No screenshot needs to be submitted to CodePath Learning.</small>
-                <small className="qr-alternative-note">No UPI ID, UTR or screenshot is required. Admin will verify the bank credit manually.</small>
+                <label>Bank UTR / RRN (12 digits)<input type="text" inputMode="numeric" autoComplete="off" maxLength="12" value={utrNumber} onChange={(event) => setUtrNumber(event.target.value.replace(/\D/g, ""))} placeholder="Enter UTR after successful payment" required /></label>
+                <small className="qr-alternative-note">Only the UTR is required. Admin will match it with the ₹599 bank credit before approval.</small>
               </div>
             </div>
             <div className="payment-security-note warning">Course remains locked until admin verifies the ₹599 bank credit and marks this request paid.</div>
@@ -208,7 +215,7 @@ export default function PaymentModal({ course, paid, onPaid }) {
             <span className="payment-step-label">BANK VERIFICATION PENDING</span>
             <h2>Verification pending — payment not confirmed</h2>
             <p>Your request is recorded. We will unlock <strong>{course.title}</strong> only after admin verifies the ₹599 bank credit.</p>
-            <div className="manual-payment-summary"><span>Course</span><strong>{course.title}</strong><span>Amount</span><strong>₹599</strong><span>Status</span><strong>{manualPayment?.status || "PENDING"}</strong></div>
+            <div className="manual-payment-summary"><span>Course</span><strong>{course.title}</strong><span>Amount</span><strong>₹599</strong><span>UTR</span><strong>{manualPayment?.utrNumber || "—"}</strong><span>Status</span><strong>{manualPayment?.status || "PENDING"}</strong></div>
             <div className="payment-security-note warning">Request submitted ≠ payment verified. Access and receipt remain locked until admin approval.</div>
             {error ? <p className="payment-error" role="alert">{error}</p> : null}
             <button className="payment-primary" type="button" onClick={checkPaymentNow} disabled={checking}>{checking ? "Checking bank approval…" : "Check Payment Status"}</button>
