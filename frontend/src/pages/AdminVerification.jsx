@@ -88,7 +88,7 @@ export default function AdminVerification() {
         <div className="admin-list-heading">
           <span>CODEPATH LEARNING QR</span>
           <h2>Direct UPI Payments</h2>
-          <p>Match the exact UTR and ₹599 credit in the bank before approving. Screenshot alone is not proof of payment.</p>
+          <p>Match the exact UTR and ₹800 credit in the bank before approving. Screenshot alone is not proof of payment.</p>
         </div>
 
         <div className="admin-registration-list">

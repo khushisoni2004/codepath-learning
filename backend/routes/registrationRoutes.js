@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
     const phone = cleanPhone(req.body.phone || req.body.whatsapp);
     const collegeName = clean(req.body.collegeName || req.body.college);
     const course = clean(req.body.course);
-    const plan = clean(req.body.plan || "Complete Learning Plan - ₹599");
+    const plan = clean(req.body.plan || "Complete Learning Plan - ₹800");
 
     if (!studentName || !email || !phone || !course) {
       return res.status(400).json({
@@ -62,7 +62,7 @@ router.post("/", async (req, res) => {
       collegeName,
       course,
       plan,
-      amount: 599,
+      amount: 800,
       enrollmentStatus: "Registered",
     });
 

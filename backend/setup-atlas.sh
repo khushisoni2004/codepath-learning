@@ -164,7 +164,7 @@ const registrationSchema = new mongoose.Schema(
     amount: {
       type: Number,
       required: true,
-      enum: [599],
+      enum: [800],
     },
 
     utrNumber: {
@@ -310,7 +310,7 @@ router.post("/", async (req, res) => {
       });
     }
 
-    const amount = 599;
+    const amount = 800;
     const registrationId = await generateRegistrationId();
 
     const registration = await Registration.create({

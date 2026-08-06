@@ -14,7 +14,7 @@ const initialForm = {
   confirmPassword: "",
   collegeName: "",
   course: "",
-  plan: "Complete Learning Plan - ₹599",
+  plan: "Complete Learning Plan - ₹800",
 };
 
 const courseOptions = [
@@ -339,8 +339,8 @@ Please keep this Registration ID safe for login and verification.`
             <label>
               Select Plan *
               <select name="plan" value={form.plan} onChange={handleChange} required>
-                <option value="Complete Learning Plan - ₹599">
-                  Complete Learning Plan – ₹599
+                <option value="Complete Learning Plan - ₹800">
+                  Complete Learning Plan – ₹800
                 </option>
               </select>
             </label>

@@ -24,8 +24,8 @@ function priceConfig() {
   const coursePrice = Number(process.env.COURSE_PRICE);
   const amount = coursePrice * 100;
   const currency = process.env.RAZORPAY_CURRENCY;
-  if (coursePrice !== 599 || currency !== "INR") {
-    throw new Error("Payment environment must configure COURSE_PRICE=599 and RAZORPAY_CURRENCY=INR.");
+  if (coursePrice !== 800 || currency !== "INR") {
+    throw new Error("Payment environment must configure COURSE_PRICE=800 and RAZORPAY_CURRENCY=INR.");
   }
   return { amount, currency };
 }
@@ -163,7 +163,7 @@ exports.submitManualPayment = async (req, res) => {
 
     return res.status(201).json({
       success: true,
-      message: "Verification request submitted. Payment is not confirmed until admin verifies the ₹599 bank credit.",
+      message: "Verification request submitted. Payment is not confirmed until admin verifies the ₹800 bank credit.",
       payment: manualPaymentView(payment),
     });
   } catch (error) {

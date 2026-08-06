@@ -1,7 +1,7 @@
 const assert = require("node:assert/strict");
 const test = require("node:test");
 
-process.env.COURSE_PRICE = "599";
+process.env.COURSE_PRICE = "800";
 process.env.RAZORPAY_CURRENCY = "INR";
 
 let pendingPayment = null;
@@ -120,7 +120,7 @@ test("manual status exposes a receipt only after the payment is paid", async () 
     userId: "student-id",
     courseSlug: "python",
     courseTitle: "Python Programming",
-    amount: 59900,
+    amount: 80000,
     currency: "INR",
     paymentMethod: "UPI_QR",
     utrNumber: "UTR123456",

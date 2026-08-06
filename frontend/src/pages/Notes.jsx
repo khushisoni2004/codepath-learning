@@ -418,7 +418,7 @@ export default function Notes() {
             <div className="notes-launch-fee-plans notes-single-fee-plan">
               <div className="notes-launch-featured-plan">
                 <span>Complete Learning Plan</span>
-                <strong>₹599</strong>
+                <strong>₹800</strong>
                 <small>
                   Live Google Meet classes + notes + assignments + practical exercises + final assessment + CodePath Learning completion certificate
                 </small>

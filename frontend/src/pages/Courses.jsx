@@ -21,6 +21,9 @@ const courseVisuals = {
   "c-programming": {
     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg",
   },
+  "cpp-programming": {
+    logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+  },
   mysql: {
     logo: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
   },

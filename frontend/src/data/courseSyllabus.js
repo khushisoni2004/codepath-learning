@@ -426,6 +426,65 @@ export const courseSyllabus = {
         "Solve maze, subset, permutation and N-Queens problems.",
     },
   ],
+
+  "cpp-programming": [
+    {
+      title: "C++ Introduction & Setup",
+      description: "Set up GCC/Clang compiler, editor, and understand basic C++ boilerplate code.",
+    },
+    {
+      title: "Variables, Input & Output",
+      description: "Learn dynamic variables, cout, cin, namespace std, and type conversion.",
+    },
+    {
+      title: "Control Flow & Decisions",
+      description: "Write conditional blocks using if-else, nested checks, and switch statements.",
+    },
+    {
+      title: "Loops & Iterations",
+      description: "Implement code repetition using for, while, and do-while loops.",
+    },
+    {
+      title: "Functions & Parameters",
+      description: "Declare and define modular functions; understand call by value and call by reference.",
+    },
+    {
+      title: "Arrays & C++ Vectors",
+      description: "Work with multi-dimensional arrays and dynamic vectors (std::vector).",
+    },
+    {
+      title: "Pointers & References",
+      description: "De-mystify memory addresses, pointer operators, dereferencing, and references.",
+    },
+    {
+      title: "Strings & Stream Processing",
+      description: "Handle string operations using standard string libraries and stream buffers.",
+    },
+    {
+      title: "Classes & Objects",
+      description: "Introduction to Object-Oriented C++: write custom classes, instantiating objects.",
+    },
+    {
+      title: "Constructors & Destructors",
+      description: "Manage memory lifecycle using constructors, copy constructors, and destructors.",
+    },
+    {
+      title: "Encapsulation & Access Control",
+      description: "Enforce security boundaries using public, private, and protected access specifiers.",
+    },
+    {
+      title: "Inheritance & Polymorphism",
+      description: "Reuse classes via single/multiple inheritance; implement function and operator overloading.",
+    },
+    {
+      title: "File Handling",
+      description: "Read, write, and append data storage files using ifstream and ofstream.",
+    },
+    {
+      title: "C++ Capstone Mini Project",
+      description: "Assemble class-based solutions to build a functional console application.",
+    },
+  ],
 };
 
 function normalizeCourseKey(course) {
@@ -442,6 +501,7 @@ function normalizeCourseKey(course) {
     return "mysql";
   }
 
+  if (value.includes("c++") || value.includes("cpp")) return "cpp-programming";
   if (value.includes("c programming")) return "c-programming";
 
   if (

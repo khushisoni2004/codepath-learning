@@ -297,7 +297,7 @@ export default function About() {
               <div className="professional-price-grid professional-single-price-grid">
                 <div className="professional-complete-plan">
                   <span>Complete Learning Plan</span>
-                  <strong>₹599</strong>
+                  <strong>₹800</strong>
                   <small>
                     Live Google Meet classes + notes + assignments + practical coding exercises + final assessment + CodePath Learning completion certificate
                   </small>

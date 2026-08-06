@@ -34,6 +34,14 @@ const courses = [
   },
   {
     logo:
+      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg",
+    title: "C++ Programming",
+    description: "Learn OOPs and logic building using C++",
+    className: "course-cpp",
+    slug: "cpp-programming",
+  },
+  {
+    logo:
       "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg",
     title: "MySQL Database",
     description: "Queries, tables and database concepts",
@@ -380,7 +388,7 @@ export default function Home() {
 
               <div className="home-price-header">
                 <span>Complete Learning Plan</span>
-                <h3>₹599</h3>
+                <h3>₹800</h3>
                 <p>Best for live learning, assignments, practical knowledge and certification.</p>
               </div>
 

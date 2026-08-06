@@ -55,12 +55,12 @@ const registrationSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      default: "Complete Learning Plan - ₹599",
+      default: "Complete Learning Plan - ₹800",
     },
 
     amount: {
       type: Number,
-      default: 599,
+      default: 800,
     },
 
     enrollmentStatus: {

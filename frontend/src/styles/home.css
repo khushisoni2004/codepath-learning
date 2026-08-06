@@ -1650,6 +1650,7 @@
 /* Old course colors should not cover actual logos */
 .home-course-single-logo.course-python,
 .home-course-single-logo.course-c,
+.home-course-single-logo.course-cpp,
 .home-course-single-logo.course-sql,
 .home-course-single-logo.course-oop,
 .home-course-multi-logo.course-web {
