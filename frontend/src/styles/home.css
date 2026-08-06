@@ -1873,3 +1873,189 @@
     left: -30px;
   }
 }
+
+/* =========================================================
+   STUDENT MILESTONE SECTION
+========================================================= */
+
+.home-milestone-section {
+  padding: 90px 0;
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9ff 100%);
+  position: relative;
+}
+
+.home-milestone-card {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 50px;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(79, 70, 229, 0.12);
+  border-radius: var(--radius, 24px);
+  padding: 50px;
+  box-shadow: 0 20px 45px rgba(31, 46, 89, 0.05);
+}
+
+.home-milestone-content {
+  text-align: left;
+}
+
+.home-milestone-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  color: var(--primary);
+  border: 1px solid rgba(79, 70, 229, 0.16);
+  border-radius: 99px;
+  background: rgba(79, 70, 229, 0.06);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.home-milestone-content h2 {
+  font-size: clamp(32px, 3.5vw, 42px);
+  color: var(--navy);
+  line-height: 1.15;
+  margin: 0 0 18px;
+  letter-spacing: -1.5px;
+}
+
+.home-milestone-description {
+  font-size: 16px;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+.home-milestone-description strong {
+  color: var(--primary);
+}
+
+.home-milestone-stats {
+  display: flex;
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.home-stat-item {
+  flex: 1;
+}
+
+.home-stat-item h3 {
+  font-size: 38px;
+  color: var(--primary);
+  margin: 0 0 4px;
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--blue), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  width: fit-content;
+}
+
+.home-stat-item p {
+  font-size: 13px;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0;
+}
+
+.home-milestone-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home-milestone-visual-card {
+  width: 100%;
+  max-width: 340px;
+  background: linear-gradient(135deg, rgba(79, 70, 229, 0.03) 0%, rgba(124, 58, 237, 0.05) 100%), #ffffff;
+  border: 1px solid rgba(79, 70, 229, 0.1);
+  border-radius: 20px;
+  padding: 35px 28px;
+  box-shadow: 0 15px 35px rgba(31, 46, 89, 0.06);
+  position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.home-milestone-visual-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 45px rgba(31, 46, 89, 0.1);
+}
+
+.home-milestone-icon-wrapper {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--blue), var(--secondary));
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+}
+
+.home-milestone-icon {
+  color: #ffffff;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.home-milestone-visual-card h4 {
+  font-size: 18px;
+  color: var(--navy);
+  margin: 0 0 10px;
+  font-weight: 700;
+}
+
+.home-milestone-visual-card p {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+.home-milestone-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home-milestone-tags span {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(79, 70, 229, 0.06);
+  padding: 4px 10px;
+  border-radius: 99px;
+  border: 1px solid rgba(79, 70, 229, 0.08);
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .home-milestone-card {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 35px;
+  }
+  
+  .home-milestone-visual-card {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-milestone-section {
+    padding: 60px 0;
+  }
+  
+  .home-milestone-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .home-milestone-card {
+    padding: 25px 20px;
+  }
+}

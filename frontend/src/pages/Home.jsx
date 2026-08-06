@@ -162,7 +162,7 @@ export default function Home() {
           <div className="home-hero-content">
             <div className="home-program-badge">
               <span />
-              1–2 MONTH BEGINNER-FRIENDLY PROGRAM
+              1-2 MONTHS BEGINNER-FRIENDLY PROGRAM
             </div>
 
             <h1 className="home-heading">
@@ -175,7 +175,7 @@ export default function Home() {
 
             <p className="home-hero-description">
               Learn programming through live classes, practical assignments,
-              projects and simple Hindi-English explanations designed specially
+              projects and simple Hindi-English explanations designed especially
               for beginners and diploma students.
             </p>
 
@@ -257,6 +257,51 @@ export default function Home() {
               <div>
                 <span>Completion</span>
                 <strong>Certificate</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="home-milestone-section">
+        <div className="container">
+          <div className="home-milestone-card">
+            <div className="home-milestone-content">
+              <span className="home-milestone-badge">STUDENT MILESTONE</span>
+              <h2>Empowering the Next Generation of Developers</h2>
+              <p className="home-milestone-description">
+                Over <strong>45+ students</strong> have successfully completed their internship 
+                and training programs with CodePath Learning. By working on real-world projects, 
+                participating in daily live coding sessions, and writing clean code, our students 
+                gain the practical industry experience required to stand out.
+              </p>
+              <div className="home-milestone-stats">
+                <div className="home-stat-item">
+                  <h3>45+</h3>
+                  <p>Interns & Trainees</p>
+                </div>
+                <div className="home-stat-item">
+                  <h3>10+</h3>
+                  <p>Real Projects Built</p>
+                </div>
+                <div className="home-stat-item">
+                  <h3>100%</h3>
+                  <p>Live Coding Focus</p>
+                </div>
+              </div>
+            </div>
+            <div className="home-milestone-visual">
+              <div className="home-milestone-visual-card">
+                <div className="home-milestone-icon-wrapper">
+                  <span className="home-milestone-icon">✦</span>
+                </div>
+                <h4>Hands-on Training & Internships</h4>
+                <p>Collaborative coding environment with professional mentoring and live doubt resolution.</p>
+                <div className="home-milestone-tags">
+                  <span>#Internship</span>
+                  <span>#LiveCoding</span>
+                  <span>#Projects</span>
+                </div>
               </div>
             </div>
           </div>
