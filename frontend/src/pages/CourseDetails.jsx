@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getCourseBySlug } from "../data/courseCatalog";
 import PaymentModal from "../components/PaymentModal";
+import ProtectedStudentResourceLink from "../components/ProtectedStudentResourceLink";
 import { useAuth } from "../context/AuthContext";
 import { paymentApi } from "../services/api";
 import "../styles/course-details.css";
@@ -113,6 +114,7 @@ export default function CourseDetails() {
   const course = getCourseBySlug(slug);
   const syllabusSections = course ? groupSyllabus(course.syllabus) : [];
   const [paidCourses, setPaidCourses] = useState([]);
+  const hasCourseAccess = paidCourses.includes(course?.slug);
 
   useEffect(() => {
     if (loading) return undefined;
@@ -160,10 +162,30 @@ export default function CourseDetails() {
 
           <p>{course.description}</p>
           <div className="detail-buy-action">
-            <PaymentModal course={course} paid={paidCourses.includes(course.slug)} onPaid={(paidSlug) => setPaidCourses((current) => current.includes(paidSlug) ? current : [...current, paidSlug])} />
+            <PaymentModal course={course} paid={hasCourseAccess} onPaid={(paidSlug) => setPaidCourses((current) => current.includes(paidSlug) ? current : [...current, paidSlug])} />
           </div>
         </div>
       </section>
+
+      {hasCourseAccess ? (
+        <section className="detail-student-access-section">
+          <div className="container detail-student-access">
+            <div>
+              <span>ENROLLED STUDENT ACCESS</span>
+              <h2>Your course community is ready.</h2>
+              <p>Open your WhatsApp group for updates and Google Classroom for notes, assignments and class resources.</p>
+            </div>
+            <div className="detail-student-access-actions">
+              <ProtectedStudentResourceLink resource="whatsapp" className="detail-resource-button">
+                Join WhatsApp Group <span>→</span>
+              </ProtectedStudentResourceLink>
+              <ProtectedStudentResourceLink resource="classroom" className="detail-resource-button detail-resource-button-secondary">
+                Open Google Classroom <span>→</span>
+              </ProtectedStudentResourceLink>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="detail-content-section">
         <div className="container detail-syllabus-card">

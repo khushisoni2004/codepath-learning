@@ -265,7 +265,47 @@
   font-size: clamp(22px, 5vw, 28px);
 }
 
+.receipt-course-access {
+  margin: 0 0 18px;
+  padding: 16px;
+  border: 1px solid #ddd6fe;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #faf5ff, #eef2ff);
+}
+
+.receipt-course-access > p {
+  margin: 0 0 12px;
+  color: #475569;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.receipt-course-access-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.receipt-resource-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  height: auto;
+  padding: 10px 12px;
+  text-decoration: none;
+  text-align: center;
+}
+
+.receipt-resource-link-secondary {
+  border: 1px solid #c4b5fd;
+  background: #fff;
+  color: #6d28d9;
+}
+
 @media (max-width: 480px) {
+  .receipt-course-access-actions { grid-template-columns: 1fr; }
+
   .receipt-details p {
     grid-template-columns: 1fr;
     gap: 4px;

@@ -373,70 +373,8 @@ export default function Home() {
 
       <section className="home-plans-section">
         <div className="container">
-          <div className="home-section-heading">
-            <span>FLEXIBLE LEARNING OPTIONS</span>
-            <h2>Choose Your Learning Plan</h2>
-            <p>
-              Select the plan that matches your learning and certification
-              requirements.
-            </p>
-          </div>
-
-          <div className="home-pricing-layout">
-            <article className="home-price-card home-price-featured">
-              <div className="home-popular-badge">LAUNCH BATCH</div>
-
-              <div className="home-price-header">
-                <span>Complete Learning Plan</span>
-                <h3>₹800</h3>
-                <p>Best for live learning, assignments, practical knowledge and certification.</p>
-              </div>
-
-              <ul>
-                <li>Live classes through Google Meet</li>
-                <li>Topic-wise notes and learning material</li>
-                <li>Assignments and practical coding questions</li>
-                <li>Google Classroom access</li>
-                <li>Final assessment</li>
-                <li>CodePath Learning private completion certificate</li>
-              </ul>
-
-              <Link to="/register" className="home-plan-button">
-                Register Now
-              </Link>
-            </article>
-
-            <div className="home-certificate-preview">
-              <div className="home-certificate-card">
-                <div className="home-certificate-brand">
-                  <div className="home-certificate-logo">&lt;/&gt;</div>
-                  <strong>CodePath Learning</strong>
-                </div>
-
-                <span className="home-certificate-label">
-                  CERTIFICATE OF COMPLETION
-                </span>
-
-                <p>This is to certify that</p>
-
-                <h3>STUDENT NAME</h3>
-
-                <p>
-                  has successfully completed the selected programming course
-                  conducted by CodePath Learning.
-                </p>
-
-                <div className="home-certificate-info">
-                  <span>Date</span>
-                  <span>Certificate ID</span>
-                  <span>Signature</span>
-                </div>
-              </div>
-
-              <p className="home-certificate-note">
-                Private course completion certificate issued by CodePath Learning after classes, assignments, practical exercises and final assessment.
-              </p>
-            </div>
+          <div className="home-batch-announcement">
+            <h2>More Courses Coming Soon</h2>
           </div>
         </div>
       </section>
