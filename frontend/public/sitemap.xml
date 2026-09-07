@@ -17,12 +17,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.codepathlearning.co.in/notes</loc>
+    <loc>https://www.codepathlearning.co.in/about</loc>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.codepathlearning.co.in/about</loc>
-    <priority>0.7</priority>
+    <loc>https://www.codepathlearning.co.in/achievements</loc>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://www.codepathlearning.co.in/certificate-policy</loc>

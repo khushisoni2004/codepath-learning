@@ -11,6 +11,7 @@ const feedbackRoutes = require("./routes/feedbackRoutes");
 const mentorshipRoutes = require("./routes/mentorshipRoutes");
 const certificateRoutes = require("./routes/certificateRoutes");
 const msmeRoutes = require("./routes/msmeRoutes");
+const achievementRoutes = require("./routes/achievementRoutes");
 const Payment = require("./models/Payment");
 const User = require("./models/User");
 
@@ -108,7 +109,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization", "X-Admin-Key"],
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: "3mb" }));
 
 app.get("/", (_req, res) => {
   res.json({ success: true, message: "CodePath Learning API is running" });
@@ -152,6 +153,7 @@ app.use("/api/feedback", feedbackRoutes);
 app.use("/api/mentorship", mentorshipRoutes);
 app.use("/api/certificates", certificateRoutes);
 app.use("/api/msme", msmeRoutes);
+app.use("/api/achievements", achievementRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.use((error, _req, res, _next) => {

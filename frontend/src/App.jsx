@@ -6,7 +6,6 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Courses from "./pages/Courses";
 import CourseDetails from "./pages/CourseDetails";
-import Notes from "./pages/Notes";
 import About from "./pages/About";
 import CertificatePolicy from "./pages/CertificatePolicy";
 import Registration from "./pages/Registration";
@@ -22,6 +21,8 @@ import GovernmentJobDetails from "./pages/GovernmentJobDetails";
 import Msme from "./pages/Msme";
 import VerifyCertificate from "./pages/VerifyCertificate";
 import CertificateAdmin from "./pages/CertificateAdmin";
+import Achievements from "./pages/Achievements";
+import AchievementAdmin from "./pages/AchievementAdmin";
 
 export default function App() {
   return (
@@ -32,9 +33,9 @@ export default function App() {
         <Route path="/" element={<Home />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:slug" element={<CourseDetails />} />
-        <Route path="/notes" element={<Notes />} />
         <Route path="/about" element={<About />} />
         <Route path="/certificate-policy" element={<CertificatePolicy />} />
+        <Route path="/achievements" element={<Achievements />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ResetPassword />} />
@@ -48,6 +49,7 @@ export default function App() {
         <Route path="/verify" element={<VerifyCertificate />} />
         <Route path="/verify/:certificateId" element={<VerifyCertificate />} />
         <Route path="/admin/certificates" element={<CertificateAdmin />} />
+        <Route path="/admin/achievements" element={<AchievementAdmin />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 

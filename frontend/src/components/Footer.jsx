@@ -39,7 +39,6 @@ export default function Footer() {
           <div>
             <h3>Support</h3>
             <Link to="/about">About</Link>
-            <Link to="/notes">Notes</Link>
             <Link to="/certificate-policy">Certificate Policy</Link>
             <Link to="/feedback">Feedback</Link>
           </div>
@@ -49,6 +48,7 @@ export default function Footer() {
             <Link to="/admin/verification">Admin Payment Verification</Link>
             <Link to="/admin/placement">Placement Admin</Link>
             <Link to="/admin/certificates">Certificate Admin</Link>
+            <Link to="/admin/achievements">Manage Achievements</Link>
           </div>
         </div>
       </div>

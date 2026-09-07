@@ -181,8 +181,8 @@ export default function About() {
               <span>→</span>
             </Link>
 
-            <Link to="/notes" className="professional-secondary-button">
-              View Learning Resources
+            <Link to="/courses" className="professional-secondary-button">
+              View Courses
             </Link>
           </div>
         </div>

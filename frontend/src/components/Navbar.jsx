@@ -8,14 +8,12 @@ import "../styles/navbar.css";
 const navLinks = [
   { label: "Home", path: "/" },
   { label: "Courses", path: "/courses" },
-  { label: "Notes", path: "/notes" },
   { label: "About", path: "/about" },
   { label: "Mentorship", path: "/mentorship" },
-  { label: "Government Jobs", path: "/diploma-government-careers" },
-  { label: "Certificate", path: "/certificate-policy" },
+  { label: "Achievements", path: "/achievements" },
   { label: "Login", path: "/login" },
 ];
-const hindiNavLabels = { Home: "होम", Courses: "कोर्स", Notes: "नोट्स", About: "अबाउट", Mentorship: "मेंटरशिप", "Government Jobs": "सरकारी नौकरियां", Certificate: "सर्टिफिकेट", Login: "लॉगिन" };
+const hindiNavLabels = { Home: "होम", Courses: "कोर्स", About: "अबाउट", Mentorship: "मेंटरशिप", Achievements: "उपलब्धियां", Login: "लॉगिन" };
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
