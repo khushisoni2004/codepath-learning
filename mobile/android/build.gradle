@@ -1,0 +1,2 @@
+allprojects { buildDir = "${rootProject.buildDir}/${project.name}" }
+tasks.register('clean', Delete) { delete rootProject.buildDir }
