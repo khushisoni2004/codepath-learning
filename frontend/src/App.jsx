@@ -24,6 +24,7 @@ import CertificateAdmin from "./pages/CertificateAdmin";
 import Achievements from "./pages/Achievements";
 import AchievementAdmin from "./pages/AchievementAdmin";
 import Hackathon from "./pages/Hackathon";
+import Notes from "./pages/Notes";
 
 export default function App() {
   return (
@@ -33,6 +34,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hackathon" element={<Hackathon />} />
+        <Route path="/resources" element={<Notes />} />
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:slug" element={<CourseDetails />} />
         <Route path="/about" element={<About />} />
