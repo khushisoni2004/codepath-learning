@@ -10,10 +10,11 @@ const navLinks = [
   { label: "Courses", path: "/courses" },
   { label: "About", path: "/about" },
   { label: "Mentorship", path: "/mentorship" },
+  { label: "Hackathon", path: "/hackathon" },
   { label: "Achievements", path: "/achievements" },
   { label: "Login", path: "/login" },
 ];
-const hindiNavLabels = { Home: "होम", Courses: "कोर्स", About: "अबाउट", Mentorship: "मेंटरशिप", Achievements: "उपलब्धियां", Login: "लॉगिन" };
+const hindiNavLabels = { Home: "होम", Courses: "कोर्स", About: "अबाउट", Mentorship: "मेंटरशिप", Hackathon: "हैकाथॉन", Achievements: "उपलब्धियां", Login: "लॉगिन" };
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
