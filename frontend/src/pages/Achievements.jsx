@@ -27,7 +27,8 @@ const DEFAULT_POSTER_COPY = {
 
 function withDefaultPosterCopy(poster) {
   const isPythonPoster = `${poster.title || ""} ${poster.posterImage || ""}`.toLowerCase().includes("python");
-  if (!isPythonPoster) return poster;
+  const isUnlabelledUpload = !poster.title && !poster.description;
+  if (!isPythonPoster && !isUnlabelledUpload) return poster;
 
   return {
     ...poster,
