@@ -18,6 +18,24 @@ const FEATURED_POSTERS = [
   },
 ];
 
+const DEFAULT_POSTER_COPY = {
+  python: {
+    title: "Python Programming Top Performers",
+    description: "Celebrating outstanding performance, consistent learning, and dedication throughout the Python Programming internship.",
+  },
+};
+
+function withDefaultPosterCopy(poster) {
+  const isPythonPoster = `${poster.title || ""} ${poster.posterImage || ""}`.toLowerCase().includes("python");
+  if (!isPythonPoster) return poster;
+
+  return {
+    ...poster,
+    title: poster.title || DEFAULT_POSTER_COPY.python.title,
+    description: poster.description || DEFAULT_POSTER_COPY.python.description,
+  };
+}
+
 function Poster({ poster, priority = false }) {
   const [failed, setFailed] = useState(false);
   if (failed) return <div className="achievement-poster-fallback" aria-label="Achievement poster unavailable">🏆</div>;
@@ -34,7 +52,7 @@ export default function Achievements() {
       .then((response) => response.json().then((data) => ({ response, data })))
       .then(({ response, data }) => {
         if (!active || !response.ok) return;
-        const remotePosters = data.achievements || [];
+        const remotePosters = (data.achievements || []).map(withDefaultPosterCopy);
         setPosters([...FEATURED_POSTERS, ...remotePosters.filter((poster) => !FEATURED_POSTERS.some((featured) => featured.posterImage === poster.posterImage))]);
       })
       .catch(() => {});
