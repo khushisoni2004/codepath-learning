@@ -1,53 +1,68 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { hackathonConfig as event } from "../data/hackathonConfig";
 import "../styles/hackathon.css";
 
-const tracks = [
-  { icon: "⌘", name: "Smart campus", detail: "Solve everyday challenges in labs, libraries, hostels and classrooms." },
-  { icon: "◈", name: "Build for your branch", detail: "Create practical ideas for mechanical, civil, electrical, electronics or CS." },
-  { icon: "✦", name: "Technology for good", detail: "Make useful, inclusive solutions for your community and environment." },
+const rounds = [
+  ["ROUND 1", "Idea presentation", "Submit a PowerPoint explaining the real-world problem, target users, proposed solution, features, technology stack and expected impact."],
+  ["ROUND 2", "Top 10 shortlisting", "Judges select 10 teams using problem relevance, feasibility, originality, impact and presentation clarity."],
+  ["ROUND 3", "Build your project", "Shortlisted teams develop a working prototype during the announced development period and prepare their source code and live demonstration."],
+  ["ROUND 4", "Final demonstration", "Present your project to the judges. The top 3 teams receive prizes and winner certificates according to the published event rules."],
 ];
-
-const steps = ["Pick a real problem", "Build a four-member team", "Create a working prototype", "Present your solution"];
-const prizes = [
-  { place: "1st place", amount: "₹5,000", detail: "Winner", className: "prize-first", medal: "✦" },
-  { place: "2nd place", amount: "₹2,500", detail: "Runner-up", className: "prize-second", medal: "◆" },
-  { place: "3rd place", amount: "₹1,000", detail: "Second runner-up", className: "prize-third", medal: "●" },
+const slides = ["Project title and team details", "Problem statement", "Target users and their difficulties", "Existing solutions and limitations", "Proposed solution", "Key features and workflow or UI sketches", "Technology stack, implementation plan and expected impact"];
+const judging = [["Problem relevance",25],["Feasibility",25],["Innovation",20],["Expected real-world impact",20],["Presentation clarity",10]];
+const faqs = [
+  ["Who can participate?", "Diploma Computer Science students from 1st, 2nd and 3rd year."],
+  ["Can beginners participate?", "Yes. Teams are evaluated on the quality and feasibility of their ideas, not only on advanced coding skills."],
+  ["Is participation individual or team-based?", "Students participate in teams of 2–4 members."],
+  ["Do we need a completed project to register?", "No. The first round requires a PPT explaining the proposed idea. Selected teams build their projects afterward."],
+  ["Can we use AI tools?", "Yes, subject to the published rules. Teams must understand and explain their implementation."],
+  ["Can we submit our own project idea?", "Yes. Use the Open Innovation category. All listed ideas are suggestions, not mandatory projects."],
+  ["What is the registration fee?", `${event.fee.display}. The organizer must confirm whether this applies per student or per team before registration and payment open.`],
+  ["How are winners selected?", "Through the published judging criteria and project demonstration."],
+  ["Will all participants receive certificates?", "Eligible participants receive participation certificates; shortlisted teams may receive finalist certificates, subject to the final event rules."],
+  ["When will the event take place?", event.schedule + "."],
 ];
 
 export default function Hackathon() {
-  return (
-    <main className="hackathon-page">
-      <section className="hackathon-hero">
-        <div className="container hackathon-hero-grid">
-          <div className="hackathon-hero-copy">
-            <span className="hackathon-eyebrow"><i /> CODEPATH POLYTECHNIC HACKATHON</span>
-            <h1>Big ideas.<br /><span>Built together.</span></h1>
-            <p className="hackathon-hero-lede">A hands-on build challenge for polytechnic students ready to turn what they know into something that matters.</p>
-            <div className="hackathon-hero-facts"><div><b>4</b><span>students per team</span></div><i /><div><b>₹8,500</b><span>total prize money</span></div><i /><div><b>All</b><span>branches welcome</span></div></div>
-            <div className="hackathon-actions"><Link className="hackathon-primary" to="/register">Register your interest <span>→</span></Link><a className="hackathon-secondary" href="#prizes">Explore prizes <span>↓</span></a></div>
-            <p className="hackathon-hero-note">No hackathon experience needed. Bring your curiosity and your team.</p>
-          </div>
-          <div className="hackathon-hero-visual" aria-label="Hackathon details: teams of four, prizes for the top three teams">
-            <div className="hackathon-visual-glow" />
-            <div className="hackathon-visual-top"><span>THE STUDENT BUILD CHALLENGE</span><b>CP / 01</b></div>
-            <div className="hackathon-visual-title">IDEA<br /><span>TO IMPACT</span></div>
-            <div className="hackathon-visual-code"><span>team.prototype</span><div><i /><i /><i /><i /></div><small><b>●</b> made by students, for the real world</small></div>
-            <div className="hackathon-visual-stamp">BUILD<br />TOGETHER</div>
-            <div className="hackathon-visual-footer"><span>POLYTECHNIC + DIPLOMA STUDENTS</span><span>LEARN · MAKE · PRESENT</span></div>
-          </div>
-        </div>
-        <div className="hackathon-marquee"><div>THINK PRACTICAL <span>✳</span> BUILD TOGETHER <span>✳</span> SHOW WHAT YOU CAN DO <span>✳</span> THINK PRACTICAL <span>✳</span> BUILD TOGETHER <span>✳</span></div></div>
-      </section>
+  const [activeChallenge, setActiveChallenge] = useState(null);
+  const [formError, setFormError] = useState("");
+  useEffect(() => {
+    document.title = `${event.name} | CodePath Learning`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute("content", "Join CodePath Buildathon 1.0: a problem-solving and project-building challenge for diploma Computer Science students.");
+  }, []);
+  function handleSubmit(e) {
+    e.preventDefault();
+    setFormError("Registration is not open yet. The organizer must configure the submission backend and confirm whether the ₹200 fee is per student or per team before submissions or payment can be accepted.");
+  }
+  return <main className="hackathon-page">
+    <section className="hb-hero"><div className="container hb-hero-grid"><div>
+      <span className="hb-kicker"><i /> CODEPATH LEARNING PRESENTS</span>
+      <h1>{event.name}</h1><h2>Turn Your Ideas Into <em>Real-World Solutions.</em></h2>
+      <p>Join a technology innovation challenge where diploma CS students identify real problems, develop practical software solutions, and present their projects to judges.</p>
+      <div className="hb-actions"><a className="hb-button" href="#registration">Register Your Team <span>→</span></a><a className="hb-button hb-outline" href="#challenges">Explore Problem Statements</a><a className="hb-text-link" href="#how-it-works">How It Works ↓</a></div>
+      <div className="hb-tagline">{event.tagline}</div>
+    </div><div className="hb-hero-art"><img src="https://assets-global.website-files.com/63dbec72e592cd9154576c6f/6405d4b6e98faa296048814f_students-having-fun.png" alt="Students collaborating on a coding project" /><span>Your idea<br/>can make<br/><b>a difference.</b></span></div></div></section>
 
-      <section className="hackathon-prizes" id="prizes"><div className="container"><div className="hackathon-prize-heading"><div><span className="hackathon-label">A LITTLE MOTIVATION FOR BIG IDEAS</span><h2>Build it. Pitch it.<br /><span>Win together.</span></h2></div><p>Three standout teams will take home prize money for the ideas they bring to life.</p></div><div className="hackathon-prize-grid">{prizes.map((prize) => <article className={`hackathon-prize-card ${prize.className}`} key={prize.place}><div className="hackathon-prize-card-top"><span className="hackathon-medal">{prize.medal}</span><span className="hackathon-place">{prize.place}</span></div><strong>{prize.amount}</strong><span className="hackathon-prize-caption">{prize.detail}</span><div className="hackathon-prize-rule" /><small>PER WINNING TEAM</small></article>)}</div><p className="hackathon-prize-note">Prize amounts are awarded to the winning team.</p></div></section>
+    <section className="hb-overview"><div className="container hb-overview-row"><div className="hb-section-head"><span className="hb-eyebrow">EVENT OVERVIEW</span><h2>Quick Overview</h2><p>Everything you need to know about the CodePath Buildathon 1.0.</p></div><div className="hb-facts">{[["♟","Eligible Participants","Diploma CS (Years 1–3)"],["♟","Team Size","2–4 students"],["₹","Registration Fee",`${event.fee.display} (${event.fee.unit})`],["▤","First Round","PPT Idea Submission"],["★","Shortlisting","Top 10 Teams"],["♜","Final Stage","Working Project Demonstration"]].map(([icon,a,b])=><article key={a}><i>{icon}</i><span>{a}</span><strong>{b}</strong></article>)}</div></div><div className="container"><p className="hb-note">Schedule and fee unit are subject to organizer confirmation. No event dates or prize amounts have been announced.</p></div></section>
 
-      <section className="hackathon-team"><div className="container hackathon-team-grid"><div className="hackathon-team-art"><div className="hackathon-team-orbit" /><div className="hackathon-team-number">04</div><div className="hackathon-team-label">ONE TEAM<br />ONE BIG IDEA</div><span className="team-spark spark-a">✳</span><span className="team-spark spark-b">✦</span></div><div className="hackathon-team-copy"><span className="hackathon-label">FOUR MINDS. ONE BUILD.</span><h2>Better ideas happen<br />when you build <span>together.</span></h2><p>Each team must have exactly four student members. Bring your friends from the same branch or mix your skills across disciplines—programming, electronics, design, fabrication and presentation all matter.</p><div className="hackathon-team-points"><span><b>01</b> Polytechnic and diploma students</span><span><b>02</b> Exactly 4 members per team</span><span><b>03</b> Every branch and skill level welcome</span></div></div></div></section>
+    <section className="hb-challenges" id="challenges"><div className="container hb-challenge-layout"><div className="hb-section-head"><span className="hb-eyebrow">CHALLENGE CATEGORIES</span><h2>Problem Statements</h2><p>Choose a challenge, explore the problem, and bring your idea to life.</p><a className="hb-button" href="#challenge-grid">View All Topics <span>→</span></a></div><div className="hb-challenge-grid" id="challenge-grid">{event.categories.map((c,i)=><article className="hb-challenge" key={c.title}><div className="hb-challenge-icon">{c.icon}</div><h3><span>{i+1}.</span> {c.title}</h3><p>{c.description} {c.ideas.slice(0,3).join(", ")}.</p><button className="hb-explore" type="button" onClick={()=>setActiveChallenge(c)} aria-label={`Explore ${c.title}`}>Explore Challenge <span>→</span></button></article>)}</div></div></section>
 
-      <section className="hackathon-tracks"><div className="container"><div className="hackathon-section-heading"><span className="hackathon-label">CHOOSE YOUR CHALLENGE</span><h2>Start with a problem<br />you understand.</h2><p>Bring your classroom knowledge to the real world around you.</p></div><div className="hackathon-track-grid">{tracks.map((track, index) => <article className="hackathon-track-card" key={track.name}><div className="hackathon-track-top"><span>{track.icon}</span><small>0{index + 1}</small></div><h3>{track.name}</h3><p>{track.detail}</p><div className="hackathon-track-line" /></article>)}</div></div></section>
+    <section className="hb-process" id="how-it-works"><div className="container hb-process-grid"><div className="hb-section-head"><span className="hb-eyebrow">THE PROCESS</span><h2>How It Works</h2><p>From idea to impact — in 4 exciting stages.</p></div><ol className="hb-timeline">{rounds.map(([label,title,body],i)=><li key={label}><span className="hb-round-num">0{i+1}</span><div><small>{label}</small><h3>{title}</h3><p>{body}</p></div></li>)}</ol></div></section>
 
-      <section className="hackathon-journey"><div className="container hackathon-journey-grid"><div><span className="hackathon-label">HOW THE CHALLENGE WORKS</span><h2>From “what if?”<br />to “we built it.”</h2><p>Keep the first version simple. Share the work, test your idea and show the thinking behind your solution.</p><Link to="/register" className="hackathon-primary">Register your interest <span>→</span></Link></div><ol>{steps.map((step, index) => <li key={step}><span>0{index + 1}</span><b>{step}</b><i>↗</i></li>)}</ol></div></section>
+    <section className="hb-ppt"><div className="container hb-ppt-grid"><div><span className="hb-eyebrow">ROUND 1 · YOUR FIRST PITCH</span><h2>Make your idea<br/>easy to understand.</h2><p>Use these seven slides to tell a focused story about the problem, the people affected and what you want to build.</p><a className="hb-button" href="#registration">Submit Your Idea <span>→</span></a></div><ol>{slides.map((s,i)=><li key={s}><span>0{i+1}</span>{s}</li>)}</ol><aside><b>Submission requirements</b><ul><li>Accepted format: PDF or PPT/PPTX, subject to organizer configuration.</li><li>Explain the project idea clearly and be ready to discuss it.</li><li>Original work is encouraged; do not present copied work as original.</li><li>Submission deadline will be announced by the organizer.</li></ul></aside></div></section>
 
-      <section className="hackathon-cta"><div className="container hackathon-cta-inner"><span className="hackathon-label">YOUR TEAM’S STORY STARTS HERE</span><h2>Ready to make<br />something real?</h2><p>Get your four-member team together and register your interest. We’ll share event schedule and venue details when they’re confirmed.</p><Link className="hackathon-primary" to="/register">Register your interest <span>→</span></Link><small>For polytechnic and diploma students · All branches welcome</small></div></section>
-    </main>
-  );
+    <section className="hb-judging"><div className="container hb-judging-grid"><div className="hb-section-head"><span className="hb-eyebrow">HOW IDEAS ARE REVIEWED</span><h2>Clear criteria.<br/>Thoughtful judging.</h2><p>Round 1 submissions are assessed out of 100 marks.</p></div><div className="hb-score">{judging.map(([title,score])=><div className="hb-score-row" key={title}><div><span>{title}</span><b>{score} marks</b></div><i><em style={{width:`${score*4}%`}} /></i></div>)}<div className="hb-total"><span>Total</span><b>100 marks</b></div></div></div><div className="container hb-rubric"><b>Final project round</b><p>A separate rubric will be published, focused on working functionality, problem-solving effectiveness, innovation, usability, technical implementation and demonstration.</p></div></section>
+
+    <section className="hb-prizes"><div className="container"><div className="hb-section-head"><span className="hb-eyebrow">RECOGNIZING YOUR WORK</span><h2>Celebrate the work<br/>behind every solution.</h2><p>Prize details remain editable until officially confirmed.</p></div><div className="hb-prize-grid">{["First Prize","Second Prize","Third Prize"].map((x,i)=><article key={x}><span>0{i+1}</span><h3>{x}</h3><strong>[Prize details to be announced]</strong></article>)}<article><span>✳</span><h3>Participation Certificate</h3><strong>For eligible participants, according to final event rules.</strong></article><article><span>✦</span><h3>Finalist Certificate</h3><strong>For shortlisted teams, according to final event rules.</strong></article></div><p className="hb-note">The top 3 teams receive winner certificates and prizes according to the final rules. No cash amounts, sponsors or internships are implied.</p></div></section>
+
+    <section className="hb-registration" id="registration"><div className="container hb-registration-grid"><div><span className="hb-eyebrow">TEAM REGISTRATION</span><h2>Get your team<br/>idea ready.</h2><p>Registration will open when the organizer has configured a submission backend and confirmed the registration fee unit.</p><div className="hb-fee"><span>Registration fee</span><b>{event.fee.display}</b><small>Unit: {event.fee.unit}. Payment is not enabled.</small></div><div className="hb-form-status">Registration is currently closed</div></div><form className="hb-form" onSubmit={handleSubmit} noValidate>
+      <div className="hb-form-grid"><label>Team name<input required placeholder="Your team name" /></label><label>Team leader full name<input required placeholder="Full name" /></label><label>Team leader email<input type="email" required placeholder="name@example.com" /></label><label>Contact number<input type="tel" required pattern="[+0-9 ()-]{7,20}" placeholder="Phone number" /></label><label>College name<input required placeholder="College" /></label><label>State and city<input required placeholder="State, city" /></label><label>Diploma year<select required defaultValue=""><option value="" disabled>Select year</option><option>1st year</option><option>2nd year</option><option>3rd year</option></select></label><label>Team size<select required defaultValue=""><option value="" disabled>Select members</option><option>2 members</option><option>3 members</option><option>4 members</option></select></label><label className="hb-wide">Member names and email addresses<textarea required placeholder="List each teammate and email address" rows="3" /></label><label>Challenge category<select required defaultValue=""><option value="" disabled>Select category</option>{event.categories.map(c=><option key={c.title}>{c.title}</option>)}</select></label><label>Proposed project title<input required placeholder="Project title" /></label><label className="hb-wide">Short problem statement<textarea required rows="3" placeholder="What problem does your project address?" /></label><label className="hb-wide">Proposed solution summary<textarea required rows="3" placeholder="How could your team help solve it?" /></label><label className="hb-check hb-wide"><input type="checkbox" required /> I have read the eligibility criteria and event rules.</label></div><button className="hb-button" type="submit" disabled={!event.registrationOpen}>Registration opening soon</button>{formError&&<p className="hb-form-error" role="alert">{formError}</p>}<p className="hb-form-caption">No payment is collected here. File upload, registration storage and payment will be enabled only after the organizer configures the existing backend/provider.</p></form></div></section>
+
+    <section className="hb-faq"><div className="container hb-faq-grid"><div className="hb-section-head"><span className="hb-eyebrow">GOOD TO KNOW</span><h2>Questions, answered.</h2></div><div className="hb-faq-list">{faqs.map(([q,a])=><details key={q}><summary>{q}<span>+</span></summary><p>{a}</p></details>)}</div></div></section>
+
+    <section className="hb-final"><div className="container"><span className="hb-eyebrow">CODEPATH BUILDATHON 1.0</span><h2>Ready to Build<br/>Something That Matters?</h2><p>Bring your idea, collaborate with your team, and create a solution to a real-world problem.</p><div><a className="hb-button hb-light" href="#registration">Register Now</a><a className="hb-button hb-clear" href="#challenges">Explore Challenges</a></div></div></section>
+
+    {activeChallenge&&<div className="hb-modal-backdrop" role="presentation" onMouseDown={e=>{if(e.target===e.currentTarget)setActiveChallenge(null)}}><section className="hb-modal" role="dialog" aria-modal="true" aria-labelledby="hb-modal-title"><button className="hb-close" onClick={()=>setActiveChallenge(null)} aria-label="Close challenge details">×</button><span className="hb-eyebrow">SUGGESTED CHALLENGE</span><h2 id="hb-modal-title">{activeChallenge.title}</h2><p className="hb-modal-intro">{activeChallenge.overview}</p><dl>{[["Who experiences this problem?",activeChallenge.users],["What could you build?",activeChallenge.solution],["Suggested features",activeChallenge.features],["Possible technologies",activeChallenge.tech],["Expected project outcome",activeChallenge.outcome]].map(([a,b])=><div key={a}><dt>{a}</dt><dd>{b}</dd></div>)}</dl><p className="hb-note">Suggestions are starting points. Your team may propose a different original solution.</p></section></div>}
+  </main>;
 }
